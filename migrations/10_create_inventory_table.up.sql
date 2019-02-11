@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS "inventory"(
+    "id" SERIAL primary key,
+    "inventory_type" VARCHAR,
+    "uom" VARCHAR,
+    "qty_pmeasure" INT,
+    "qty_in" INT,
+    "qty_out" INT,
+    "unit_cost" DOUBLE PRECISION,
+    "srp" DOUBLE PRECISION,
+    "item_id" INT,
+    "branch_id" INT,
+    "podel_id" INT,
+    "transfer_id" INT,
+    FOREIGN KEY (podel_id) REFERENCES podels(id),
+    FOREIGN KEY (transfer_id) REFERENCES transfers(id),
+    FOREIGN KEY (item_id) REFERENCES items(id),
+    FOREIGN KEY (branch_id) REFERENCES branches(id));

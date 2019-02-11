@@ -1,0 +1,22 @@
+package tools
+
+import (
+	"encoding/json"
+	"net/http"
+)
+
+type R map[string]interface{}
+
+//RespondWithError - response with error message
+func RespondWithError(w http.ResponseWriter, code int, message string) {
+	RespondWithJSON(w, code, map[string]string{"error": message})
+}
+
+//RespondWithJSON - json format response
+func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
