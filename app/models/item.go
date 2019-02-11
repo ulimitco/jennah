@@ -14,6 +14,8 @@ type Item struct {
 	UOM              string  `json:"uom" db:"uom"`
 	Packaging        string  `json:"packaging" db:"packaging"`
 	PackageQty       int     `json:"package_qty" db:"package_qty"`
+	DefaultUnitCost  float64 `json:"default_unit_cost" db:"default_unit_cost"`
+	DefaultSRP       float64 `json:"default_srp" db:"default_srp"`
 	MarkupPercent    float64 `json:"markup_percent" db:"markup_percent"`
 	MarkupAmount     float64 `json:"markup_amount" db:"markup_amount"`
 	StockNotifyLimit int     `json:"stock_notify_limit" db:"stock_notify_limit"`
@@ -31,6 +33,8 @@ type ItemDTO struct {
 	UOM                 string  `json:"uom" db:"uom"`
 	Packaging           string  `json:"packaging" db:"packaging"`
 	PackageQty          int     `json:"package_qty" db:"package_qty"`
+	DefaultUnitCost     float64 `json:"default_unit_cost" db:"default_unit_cost"`
+	DefaultSRP          float64 `json:"default_srp" db:"default_srp"`
 	MarkupPercent       float64 `json:"markup_percent" db:"markup_percent"`
 	MarkupAmount        float64 `json:"markup_amount" db:"markup_amount"`
 	StockNotifyLimit    int     `json:"stock_notify_limit" db:"stock_notify_limit"`
@@ -67,22 +71,8 @@ func GetItem(db *sqlx.DB, id int) (Item, error) {
 //StoreItem create new item
 func StoreItem(db *sqlx.DB, item *Item) (int64, error) {
 
-	// ID               int     `json:"id" db:"id"`
-	// Item             string  `json:"item" db:"item"`
-	// Description      string  `json:"description" db:"description"`
-	// StockCode        string  `json:"stock_code" db:"stock_code"`
-	// Barcode          string  `json:"barcode" db:"barcode"`
-	// CategoryID       int     `json:"category_id" db:"category_id"`
-	// UOM              string  `json:"uom" db:"uom"`
-	// Packaging        string  `json:"packaging" db:"packaging"`
-	// PackageQty       int     `json:"package_qty" db:"package_qty"`
-	// MarkupPercent    float64 `json:"markup_percent" db:"markup_percent"`
-	// MarkupAmount     float64 `json:"markup_amount" db:"markup_amount"`
-	// StockNotifyLimit int     `json:"stock_notify_limit" db:"stock_notify_limit"`
-	// StockLimit       int     `json:"stock_limit" db:"stock_limit"`
-
-	insertItem := `INSERT INTO items (item, description, stock_code, barcode, category_id, uom, packaging, package_qty, markup_percent, markup_amount, stock_notify_limit, stock_limit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id`
-	_, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID, item.UOM, item.Packaging, item.PackageQty, item.MarkupPercent, item.MarkupAmount, item.StockNotifyLimit, item.StockLimit)
+	insertItem := `INSERT INTO items (item, description, stock_code, barcode, category_id, uom, packaging, package_qty, default_unit_cost, default_srp, markup_percent, markup_amount, stock_notify_limit, stock_limit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`
+	_, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID, item.UOM, item.Packaging, item.PackageQty, item.DefaultUnitCost, item.DefaultSRP, item.MarkupPercent, item.MarkupAmount, item.StockNotifyLimit, item.StockLimit)
 
 	if err != nil {
 		return 404, err

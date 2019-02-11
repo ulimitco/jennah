@@ -195,6 +195,7 @@ class AdminItemsMgmt extends React.Component {
           ) : null}
 
           <Form layout={'horizontal'}>
+
             <JInput
               gfd={getFieldDecorator}
               required
@@ -248,6 +249,47 @@ class AdminItemsMgmt extends React.Component {
               initVal={record.description}
               label={'Description'}
             />
+
+            <JInput
+              gfd={getFieldDecorator}
+              required
+              message={'Please input unit of measure'}
+              name={'uom'}
+              placeholder={'Enter unit of measure'}
+              initVal={record.uom}
+              label={'UOM'}
+            />
+
+            <JInput
+              gfd={getFieldDecorator}
+              required
+              message={'Please input packaging'}
+              name={'packaging'}
+              placeholder={'Enter type of packaging'}
+              initVal={record.packaging}
+              label={'Packaging'}
+            />
+
+            <JInput
+              gfd={getFieldDecorator}
+              required
+              message={'Please input quantity per package'}
+              name={'package_qty'}
+              placeholder={'Enter quantity per package'}
+              initVal={record.package_qty}
+              label={'Package Quantity'}
+            />
+
+            <JInput
+              gfd={getFieldDecorator}
+              required
+              message={'Enter item name'}
+              name={'item'}
+              placeholder={'Enter item name'}
+              initVal={record.code}
+              label={'Item Name'}
+            />
+
           </Form>
         </Modal>
       </div>
