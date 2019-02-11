@@ -2,6 +2,8 @@ import React from 'react'
 import { Table, Button, Modal, Form, Icon, Alert, notification } from 'antd'
 import { _getItems, _saveItem, _deleteItem } from '../../../rest/items.api'
 import { _getCategories } from '../../../rest/categories.api'
+import numeral from 'numeral'
+
 
 import { JInput } from 'components'
 import _ from 'lodash'
@@ -159,8 +161,18 @@ class AdminItemsMgmt extends React.Component {
         }
       },
       {
-        title: 'Description',
-        dataIndex: 'description',
+        title: 'Cost',
+        dataIndex: 'default_unit_cost',
+        render: (text, record) => {
+          return numeral(record.default_unit_cost).format('0.00')
+        }
+      },
+      {
+        title: 'SRP',
+        dataIndex: 'default_srp',
+        render: (text, record) => {
+          return numeral(record.default_srp).format('0.00')
+        }
       },
       {
         title: 'Action',
