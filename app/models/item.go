@@ -1,36 +1,40 @@
 package models
 
 import (
-	"database/sql"
-
 	"github.com/guregu/null"
 	"github.com/jmoiron/sqlx"
 )
 
 type Item struct {
-	ID               int            `json:"id" db:"id"`
-	Item             string         `json:"item" db:"item"`
-	Description      string         `json:"description,omitempty" db:"description"`
-	StockCode        string         `json:"stock_code,omitempty" db:"stock_code"`
-	Barcode          string         `json:"barcode,omitempty" db:"barcode"`
-	CategoryID       int            `json:"category_id" db:"category_id"`
-	UOM              sql.NullString `json:"uom,omitempty" db:"uom"`
-	Packaging        null.String    `json:"packaging,omitempty" db:"packaging"`
-	PackageQty       null.Int       `json:"package_qty,omitempty" db:"package_qty"`
-	DefaultUnitCost  null.Float     `json:"default_unit_cost,omitempty" db:"default_unit_cost"`
-	DefaultSRP       null.Float     `json:"default_srp,omitempty" db:"default_srp"`
-	MarkupPercent    null.Float     `json:"markup_percent,omitempty" db:"markup_percent"`
-	MarkupAmount     null.Float     `json:"markup_amount,omitempty" db:"markup_amount"`
-	StockNotifyLimit null.Int       `json:"stock_notify_limit,omitempty" db:"stock_notify_limit"`
-	StockLimit       null.Int       `json:"stock_limit,omitempty" db:"stock_limit"`
+	ID               int         `json:"id" db:"id"`
+	Item             string      `json:"item" db:"item"`
+	Description      string      `json:"description,omitempty" db:"description"`
+	StockCode        string      `json:"stock_code,omitempty" db:"stock_code"`
+	Barcode          string      `json:"barcode,omitempty" db:"barcode"`
+	CategoryID       int         `json:"category_id" db:"category_id"`
+	UOM              null.String `json:"uom,omitempty" db:"uom"`
+	Packaging        null.String `json:"packaging,omitempty" db:"packaging"`
+	PackageQty       null.Int    `json:"package_qty,omitempty" db:"package_qty"`
+	DefaultUnitCost  null.Float  `json:"default_unit_cost,omitempty" db:"default_unit_cost"`
+	DefaultSRP       null.Float  `json:"default_srp,omitempty" db:"default_srp"`
+	MarkupPercent    null.Float  `json:"markup_percent,omitempty" db:"markup_percent"`
+	MarkupAmount     null.Float  `json:"markup_amount,omitempty" db:"markup_amount"`
+	StockNotifyLimit null.Int    `json:"stock_notify_limit,omitempty" db:"stock_notify_limit"`
+	StockLimit       null.Int    `json:"stock_limit,omitempty" db:"stock_limit"`
+}
+
+type ItemDTO struct {
+	ID null.Int `json:"item_id,omitempty" db:"item_id"`
+	Item
+	Category
 }
 
 //GetItems get all items
-func GetItems(db *sqlx.DB) ([]Item, error) {
+func GetItems(db *sqlx.DB) ([]ItemDTO, error) {
 
-	objects := []Item{}
+	objects := []ItemDTO{}
 
-	err := db.Select(&objects, "SELECT * FROM items")
+	err := db.Select(&objects, "SELECT *, i.id AS item_id FROM items i, categories c WHERE i.category_id = c.id")
 
 	if err != nil {
 		return nil, err
