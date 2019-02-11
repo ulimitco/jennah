@@ -68,15 +68,15 @@ func GetInventory(db *sqlx.DB, id int) (Inventory, error) {
 //StoreInventories create new item
 func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 
-	id, err := StoreTransfer(db, binv.BranchFrom)
+	// id, err := StoreTransfer(db, binv.BranchFrom)
 
-	if err != nil {
-		return 404, err
-	}
+	// if err != nil {
+	// 	return 404, err
+	// }
 
-	for _, val := range binv.Data {
+	// for _, val := range binv.Data {
 
-	}
+	// }
 
 	// _, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID)
 
@@ -106,8 +106,6 @@ func StoreInventory(db *sqlx.DB, inventory *Inventory) (int64, error) {
 
 	_, err := db.Exec(insertInventory,
 		inventory.InventoryType,
-		inventory.UOM,
-		inventory.QtyPMeasure,
 		inventory.QtyIN,
 		inventory.QtyOUT,
 		inventory.UnitCost,
