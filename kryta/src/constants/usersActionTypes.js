@@ -1,0 +1,3 @@
+export const UPDATE_FORM_INPUT_USER = 'UPDATE_FORM_INPUT_USER'
+export const LOAD_USERS = 'LOAD_USERS'
+export const LOAD_USER = 'LOAD_USER'
