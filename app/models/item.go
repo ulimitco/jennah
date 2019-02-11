@@ -1,52 +1,36 @@
 package models
 
 import (
+	"database/sql"
+
+	"github.com/guregu/null"
 	"github.com/jmoiron/sqlx"
 )
 
 type Item struct {
-	ID               int     `json:"id" db:"id"`
-	Item             string  `json:"item" db:"item"`
-	Description      string  `json:"description" db:"description"`
-	StockCode        string  `json:"stock_code" db:"stock_code"`
-	Barcode          string  `json:"barcode" db:"barcode"`
-	CategoryID       int     `json:"category_id" db:"category_id"`
-	UOM              string  `json:"uom" db:"uom"`
-	Packaging        string  `json:"packaging" db:"packaging"`
-	PackageQty       int     `json:"package_qty" db:"package_qty"`
-	DefaultUnitCost  float64 `json:"default_unit_cost" db:"default_unit_cost"`
-	DefaultSRP       float64 `json:"default_srp" db:"default_srp"`
-	MarkupPercent    float64 `json:"markup_percent" db:"markup_percent"`
-	MarkupAmount     float64 `json:"markup_amount" db:"markup_amount"`
-	StockNotifyLimit int     `json:"stock_notify_limit" db:"stock_notify_limit"`
-	StockLimit       int     `json:"stock_limit" db:"stock_limit"`
-}
-
-type ItemDTO struct {
-	ID                  int     `json:"id" db:"id"`
-	Item                string  `json:"item" db:"item"`
-	Description         string  `json:"description" db:"description"`
-	StockCode           string  `json:"stock_code" db:"stock_code"`
-	Barcode             string  `json:"barcode" db:"barcode"`
-	CategoryCode        string  `json:"category_code" db:"category_code"`
-	CategoryDescription string  `json:"category_description" db:"category_description"`
-	UOM                 string  `json:"uom" db:"uom"`
-	Packaging           string  `json:"packaging" db:"packaging"`
-	PackageQty          int     `json:"package_qty" db:"package_qty"`
-	DefaultUnitCost     float64 `json:"default_unit_cost" db:"default_unit_cost"`
-	DefaultSRP          float64 `json:"default_srp" db:"default_srp"`
-	MarkupPercent       float64 `json:"markup_percent" db:"markup_percent"`
-	MarkupAmount        float64 `json:"markup_amount" db:"markup_amount"`
-	StockNotifyLimit    int     `json:"stock_notify_limit" db:"stock_notify_limit"`
-	StockLimit          int     `json:"stock_limit" db:"stock_limit"`
+	ID               int            `json:"id" db:"id"`
+	Item             string         `json:"item" db:"item"`
+	Description      string         `json:"description,omitempty" db:"description"`
+	StockCode        string         `json:"stock_code,omitempty" db:"stock_code"`
+	Barcode          string         `json:"barcode,omitempty" db:"barcode"`
+	CategoryID       int            `json:"category_id" db:"category_id"`
+	UOM              sql.NullString `json:"uom,omitempty" db:"uom"`
+	Packaging        null.String    `json:"packaging,omitempty" db:"packaging"`
+	PackageQty       null.Int       `json:"package_qty,omitempty" db:"package_qty"`
+	DefaultUnitCost  null.Float     `json:"default_unit_cost,omitempty" db:"default_unit_cost"`
+	DefaultSRP       null.Float     `json:"default_srp,omitempty" db:"default_srp"`
+	MarkupPercent    null.Float     `json:"markup_percent,omitempty" db:"markup_percent"`
+	MarkupAmount     null.Float     `json:"markup_amount,omitempty" db:"markup_amount"`
+	StockNotifyLimit null.Int       `json:"stock_notify_limit,omitempty" db:"stock_notify_limit"`
+	StockLimit       null.Int       `json:"stock_limit,omitempty" db:"stock_limit"`
 }
 
 //GetItems get all items
-func GetItems(db *sqlx.DB) ([]ItemDTO, error) {
+func GetItems(db *sqlx.DB) ([]Item, error) {
 
-	objects := []ItemDTO{}
+	objects := []Item{}
 
-	err := db.Select(&objects, "SELECT i.id, i.item, i.description, i.stock_code, i.barcode, c.code AS category_code, c.description AS category_description FROM items i LEFT JOIN categories c ON i.category_id = c.id")
+	err := db.Select(&objects, "SELECT * FROM items")
 
 	if err != nil {
 		return nil, err
