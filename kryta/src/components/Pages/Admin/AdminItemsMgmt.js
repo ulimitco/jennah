@@ -132,7 +132,8 @@ class AdminItemsMgmt extends React.Component {
     const columns = [
       {
         title: 'Category',
-        dataIndex: 'category_code',
+        dataIndex: 'code',
+        width: 110,
       },
       {
         title: 'Stock Code',
@@ -140,13 +141,22 @@ class AdminItemsMgmt extends React.Component {
         width: 100,
       },
       {
-        title: 'Barcode',
-        dataIndex: 'barcode',
-        width: 100,
-      },
-      {
         title: 'Item',
         dataIndex: 'item',
+        render: (text, record) => (
+          <span>{record.item}</span>
+        )
+      },
+      {
+        title: 'Units/Pkg',
+        dataIndex: 'uom',
+        render: (text, record) => {
+          if(record.packaging === record.uom){
+            return <span>{record.package_qty}{record.uom}</span>
+          } else {
+            return <span>{record.package_qty}{record.uom}/{record.packaging}</span>
+          }
+        }
       },
       {
         title: 'Description',
@@ -156,14 +166,14 @@ class AdminItemsMgmt extends React.Component {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
-          <span>
+          <div>
             <Button size={'small'} onClick={() => this.onEdit(record)}>
               <Icon type="edit" />
             </Button>
             <Button size={'small'} type={'danger'} style={{ marginLeft: 3 }} onClick={() => this.onDelete(record.id)}>
               <Icon type="delete" />
             </Button>
-          </span>
+          </div>
         ),
       },
     ]
