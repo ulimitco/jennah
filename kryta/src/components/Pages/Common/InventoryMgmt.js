@@ -23,8 +23,6 @@ class InventoryMgmt extends React.Component {
 
   componentDidMount() {
     this.fetchInventories()
-    this.fetchBranches()
-    this.fetchItems()
   }
 
   fetchInventories = () => {
@@ -52,6 +50,10 @@ class InventoryMgmt extends React.Component {
   }
 
   showModal = () => {
+
+    this.fetchBranches()
+    this.fetchItems()
+
     this.setState({
       visible: true,
     })
@@ -167,9 +169,15 @@ class InventoryMgmt extends React.Component {
         dataIndex: 'item',
       },
       {
-        title: 'UOM',
+        title: 'Units/Pkg',
         dataIndex: 'uom',
-        width: 100,
+        render: (text, record) => {
+          if(record.packaging === record.uom){
+            return <span>{record.package_qty}{record.uom}</span>
+          } else {
+            return <span>{record.package_qty}{record.uom}/{record.packaging}</span>
+          }
+        }
       },
       {
         title: 'IN',
@@ -284,7 +292,7 @@ class InventoryMgmt extends React.Component {
                   <JInput
                     gfd={getFieldDecorator}
                     message={'Enter item name'}
-                    name={'data.' + item.id}
+                    name={'data.' + item.item_id}
                     placeholder={'Quantity'}
                   />
                   </Col>

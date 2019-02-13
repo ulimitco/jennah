@@ -21,6 +21,7 @@ func main() {
 
 	//Unrestricted access
 	e.POST("/login", ctl.Authenticate(db))
+	e.GET("/sayhello", ctl.SayHello())
 
 	//Restricted access
 	r := e.Group("/api/v1")
