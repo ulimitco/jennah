@@ -6,19 +6,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-// type Inventory struct {
-// 	ID            int         `json:"id" db:"id"`
-// 	InventoryType null.String `json:"inventory_type" db:"inventory_type"`
-// 	QtyIN         null.Int    `json:"qty_in" db:"qty_in"`
-// 	QtyOUT        null.Int    `json:"qty_out" db:"qty_out"`
-// 	UnitCost      null.Float  `json:"unit_cost" db:"unit_cost"`
-// 	SRP           null.Float  `json:"srp" db:"srp"`
-// 	ItemID        null.Int    `json:"item_id" db:"item_id"`
-// 	BranchID      null.Int    `json:"branch_id" db:"branch_id"`
-// 	PodelID       null.Int    `json:"podel_id" db:"podel_id"`
-// 	TransferID    null.Int    `json:"transfer_id" db:"transfer_id"`
-// }
-
 type Inventory struct {
 	ID            int     `json:"id" db:"id"`
 	InventoryType string  `json:"inventory_type" db:"inventory_type"`
@@ -79,32 +66,41 @@ func GetInventory(db *sqlx.DB, id int) (Inventory, error) {
 //StoreInventories create new item
 func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 
-	//id, err := StoreTransfer(db, binv.BranchFrom)
+	id, err := StoreTransfer(db, binv.BranchFrom)
 
 	// if err != nil {
 	// 	return 404, err
 	// }
 
-	for _, val := range binv.Data {
-		item, err := GetItem(db, val.ID)
+	if err != nil {
+		return 404, err
+	}
 
-		if err != nil {
-			return 404, err
+	for _, val := range binv.Data {
+		item, err2 := GetItem(db, val.ID)
+
+		if err2 != nil {
+			return 404, err2
 		}
 
-		qtyIn, err := strconv.Atoi(val.Value)
+		qtyIn, err3 := strconv.Atoi(val.Value)
 
+		if err3 != nil {
+			return 404, err3
+		}
 		inventory := Inventory{
 			InventoryType: "PRODUCTION",
 			QtyIN:         int64(qtyIn),
 			QtyOUT:        0,
-			UnitCost:      item.DefaultUnitCost.ValueOrZero(),
-			SRP:           item.DefaultSRP.ValueOrZero(),
-			ItemID:        item.ID.ValueOrZero(),
-			BranchID:      binv.BranchFrom.ValueOrZero(),
-			PodelID:       nil,
-			TransferID:    nil,
+			UnitCost:      item.DefaultUnitCost,
+			SRP:           item.DefaultSRP,
+			ItemID:        int64(item.ID),
+			BranchID:      int64(binv.BranchFrom),
+			PodelID:       0,
+			TransferID:    id,
 		}
+
+		StoreInventory(db, &inventory)
 	}
 
 	// _, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID)
