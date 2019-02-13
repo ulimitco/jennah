@@ -134,7 +134,7 @@ class InventoryMgmt extends React.Component {
         icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
       })
 
-      this.fetchItems()
+      this.fetchInventories()
     }
   }
 
@@ -153,7 +153,7 @@ class InventoryMgmt extends React.Component {
         icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
       })
 
-      this.fetchItems()
+      this.fetchInventories()
     }
   }
 
@@ -207,7 +207,7 @@ class InventoryMgmt extends React.Component {
             <Button size={'small'} onClick={() => this.onEdit(record)}>
               <Icon type="edit" />
             </Button>
-            <Button size={'small'} type={'danger'} style={{ marginLeft: 3 }} onClick={() => this.onDelete(record.id)}>
+            <Button size={'small'} type={'danger'} style={{ marginLeft: 3 }} onClick={() => this.onDelete(record.inv_id)}>
               <Icon type="delete" />
             </Button>
           </span>

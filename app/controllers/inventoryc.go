@@ -59,13 +59,13 @@ func CreateInventoriesFunc(db *sqlx.DB) echo.HandlerFunc {
 			return c.JSON(http.StatusCreated, R{"response": err.Error()})
 		}
 
-		_, err2 := model.StoreInventories(db, inventory)
+		id, err2 := model.StoreInventories(db, inventory)
 
 		if err2 != nil {
 			return c.JSON(http.StatusCreated, R{"response": err2.Error()})
 		}
 
-		return c.JSON(http.StatusCreated, R{"response": 1})
+		return c.JSON(http.StatusCreated, R{"response": id})
 	}
 }
 

@@ -15,7 +15,6 @@ type Inventory struct {
 	SRP           float64 `json:"srp" db:"srp"`
 	ItemID        int64   `json:"item_id" db:"item_id"`
 	BranchID      int64   `json:"branch_id" db:"branch_id"`
-	PodelID       int64   `json:"podel_id" db:"podel_id"`
 	TransferID    int64   `json:"transfer_id" db:"transfer_id"`
 }
 
@@ -31,7 +30,7 @@ type BatchItem struct {
 }
 
 type InventoryDTO struct {
-	ID int `json:"id" db:"id"`
+	ID int `json:"inv_id" db:"inv_id"`
 	Inventory
 	Item
 }
@@ -41,7 +40,7 @@ func GetInventories(db *sqlx.DB) ([]InventoryDTO, error) {
 
 	objects := []InventoryDTO{}
 
-	err := db.Select(&objects, "SELECT *, inv.id AS id FROM inventories inv, items i WHERE inv.item_id = i.id")
+	err := db.Select(&objects, "SELECT *, inv.id AS inv_id FROM inventories inv, items i WHERE inv.item_id = i.id")
 
 	if err != nil {
 		return nil, err
@@ -68,10 +67,6 @@ func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 
 	id, err := StoreTransfer(db, binv.BranchFrom)
 
-	// if err != nil {
-	// 	return 404, err
-	// }
-
 	if err != nil {
 		return 404, err
 	}
@@ -88,6 +83,7 @@ func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 		if err3 != nil {
 			return 404, err3
 		}
+
 		inventory := Inventory{
 			InventoryType: "PRODUCTION",
 			QtyIN:         int64(qtyIn),
@@ -95,19 +91,12 @@ func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 			UnitCost:      item.DefaultUnitCost,
 			SRP:           item.DefaultSRP,
 			ItemID:        int64(item.ID),
-			BranchID:      int64(binv.BranchFrom),
-			PodelID:       0,
+			BranchID:      int64(binv.BranchTo),
 			TransferID:    id,
 		}
 
 		StoreInventory(db, &inventory)
 	}
-
-	// _, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID)
-
-	// if err != nil {
-	// 	return 404, err
-	// }
 
 	return 200, nil
 }
@@ -117,17 +106,14 @@ func StoreInventory(db *sqlx.DB, inventory *Inventory) (int64, error) {
 
 	insertInventory := `INSERT INTO inventories (
 		inventory_type, 
-		uom, 
-		qty_pmeasure, 
 		qty_in, 
 		qty_out,
 		unit_cost,
 		srp,
 		item_id,
 		branch_id,
-		podel_id,
 		transfer_id
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id`
+		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
 
 	_, err := db.Exec(insertInventory,
 		inventory.InventoryType,
@@ -137,7 +123,6 @@ func StoreInventory(db *sqlx.DB, inventory *Inventory) (int64, error) {
 		inventory.SRP,
 		inventory.ItemID,
 		inventory.BranchID,
-		inventory.PodelID,
 		inventory.TransferID,
 	)
 

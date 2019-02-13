@@ -25,13 +25,6 @@ func GetCategoriesFunc(db *sqlx.DB) echo.HandlerFunc {
 	}
 }
 
-// func SayHello() echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		fmt.Println("Oh my, I got clicked")
-// 		return c.JSON(http.StatusOK, 1)
-// 	}
-// }
-
 func GetCategoryFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
