@@ -6,6 +6,7 @@ import { _getItems } from '../../../rest/items.api'
 
 import { JInput } from 'components'
 import _ from 'lodash'
+import numeral from 'numeral'
 
 const confirm = Modal.confirm
 
@@ -192,11 +193,17 @@ class InventoryMgmt extends React.Component {
       {
         title: 'Cost',
         dataIndex: 'unit_cost',
+        render: (text, record) => {
+          return numeral(record.unit_cost).format('0.00')
+        },
         width: 110,
       },
       {
         title: 'SRP',
         dataIndex: 'srp',
+        render: (text, record) => {
+          return numeral(record.srp).format('0.00')
+        },
         width: 110,
       },
       {

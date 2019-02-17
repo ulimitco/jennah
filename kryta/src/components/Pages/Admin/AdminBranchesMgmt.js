@@ -73,16 +73,13 @@ class AdminBranchesMgmt extends React.Component {
   }
 
   onEdit = record => {
-
     this.props.form.setFieldsValue({
       code: record.code,
       name: record.name,
     })
 
-    setTimeout(() => {
-      this.setState({ visible: true })
-    }, 1000)
-    
+    console.log(this.props.form)
+    this.setState({ visible: true })
   }
 
   deleteSuccess = data => {
