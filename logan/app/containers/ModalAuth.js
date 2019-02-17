@@ -7,7 +7,7 @@ import { NavigationActions } from '../utils'
 @connect(({ app }) => ({ ...app }))
 class ModalAuth extends Component {
   state = {
-    isLogged: false
+    isLogged: true
   }
 
   componentWillMount(){

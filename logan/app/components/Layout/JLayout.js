@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { Overlay } from 'react-native-elements'
 
 class JLayout extends Component {
@@ -14,9 +14,9 @@ class JLayout extends Component {
       </Overlay>
     } else {
 
-      return <View style={[{ backgroundColor: '#fff', flex: 1 }, centrify ]}>
+      return <ScrollView style={[{ backgroundColor: '#fff', flex: 1, padding: 20 }, centrify ]}>
         {this.props.children}
-      </View>
+      </ScrollView>
     }
   }
 }

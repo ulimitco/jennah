@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Text } from 'react-native'
+
 class JText extends Component {
   render() {
     return (

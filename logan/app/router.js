@@ -11,17 +11,22 @@ import {
   createNavigationReducer,
 } from 'react-navigation-redux-helpers'
 import { connect } from 'react-redux'
-
+import { JHeader } from './components'
 import MainPage from './containers/Main'
 import ModalAuth from './containers/ModalAuth'
 
 const AppNavigator = createStackNavigator(
   {
     Auth: { screen: ModalAuth },
-    Main: { screen: MainPage },
+    Main: { 
+      screen: MainPage,
+      navigationOptions: {
+				header: <JHeader title={'Home'} />,
+				gesturesEnabled: false,
+			},
+    },
   },
   {
-    headerMode: 'none',
     mode: 'screen',
     navigationOptions: {
       gesturesEnabled: false,
@@ -97,7 +102,7 @@ class Router extends PureComponent {
 
   render() {
     const { app, dispatch, router } = this.props
-    if (app.loading) return <Loading />
+    //if (app.loading) return <Loading />
 
     return <App dispatch={dispatch} state={router} />
   }
