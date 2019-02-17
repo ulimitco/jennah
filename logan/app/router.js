@@ -12,15 +12,13 @@ import {
 } from 'react-navigation-redux-helpers'
 import { connect } from 'react-redux'
 
-import Loading from './containers/Loading'
-import Login from './containers/Login'
-import Home from './containers/Home'
-import Account from './containers/Account'
-import Detail from './containers/Detail'
+import MainPage from './containers/Main'
+import ModalAuth from './containers/ModalAuth'
 
 const AppNavigator = createStackNavigator(
   {
-    Main: { screen: Home },
+    Auth: { screen: ModalAuth },
+    Main: { screen: MainPage },
   },
   {
     headerMode: 'none',
