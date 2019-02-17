@@ -18,37 +18,13 @@ import Home from './containers/Home'
 import Account from './containers/Account'
 import Detail from './containers/Detail'
 
-const HomeNavigator = createBottomTabNavigator({
-  Home: { screen: Home },
-  Account: { screen: Account },
-})
-
-HomeNavigator.navigationOptions = ({ navigation }) => {
-  const { routeName } = navigation.state.routes[navigation.state.index]
-
-  return {
-    headerTitle: routeName,
-  }
-}
-
-const MainNavigator = createStackNavigator(
-  {
-    HomeNavigator: { screen: HomeNavigator },
-    Detail: { screen: Detail },
-  },
-  {
-    headerMode: 'float',
-  }
-)
-
 const AppNavigator = createStackNavigator(
   {
-    Login: { screen: Login },
-    Main: { screen: MainNavigator },
+    Main: { screen: Home },
   },
   {
     headerMode: 'none',
-    mode: 'modal',
+    mode: 'screen',
     navigationOptions: {
       gesturesEnabled: false,
     },
