@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 
 class JButton extends Component {
   render() {
@@ -9,6 +9,14 @@ class JButton extends Component {
         containerStyle={{ width: '100%' }}
         buttonStyle={{ marginTop: 30, marginRight: 30, marginLeft: 30 }}
         {...this.props}
+        icon={
+          <Icon
+            name={this.props.iconTitle}
+            size={15}
+            color={'black'}
+            type={'feather'}
+          />
+        }
       />
     )
   }

@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import { JHeader } from './components'
 import MainPage from './containers/Main'
 import ModalAuth from './containers/ModalAuth'
+import OrderView from './containers/OrderView'
 
 const AppNavigator = createStackNavigator(
   {
@@ -21,9 +22,14 @@ const AppNavigator = createStackNavigator(
     Main: { 
       screen: MainPage,
       navigationOptions: {
-				header: <JHeader title={'Home'} />,
-				gesturesEnabled: false,
+				header: <JHeader title={'Today'} />,
 			},
+    },
+    OrderView: { 
+      screen: OrderView,
+      navigationOptions: ({ navigation }) => ({
+				header: <JHeader title={'Order View'} back navigation={navigation} />,
+			}),
     },
   },
   {

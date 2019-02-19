@@ -12,7 +12,12 @@ class JLayout extends Component {
       return <Overlay isVisible={visible}>
         <View style={[{ flex: 1 }, centrify]}>{this.props.children}</View>
       </Overlay>
-    } else {
+    } else if (this.props.noScroll) {
+      return <View style={[{ backgroundColor: '#fff', flex: 1, padding: 20 }, centrify ]}>
+        {this.props.children}
+      </View>
+    }
+    else {
 
       return <ScrollView style={[{ backgroundColor: '#fff', flex: 1, padding: 20 }, centrify ]}>
         {this.props.children}
