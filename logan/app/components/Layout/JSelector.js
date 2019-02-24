@@ -11,7 +11,7 @@ export default class JSelector extends Component {
 
     render() {
       return (
-        <JLayout unpad modal visible={this.props.visible}> 
+        <JLayout unpad modal visible={this.props.visible} dismissable={this.props.dismissable}> 
           {
             _.map(this.props.data, (item, i) => (
               <ListItem

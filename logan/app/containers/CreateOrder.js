@@ -16,8 +16,10 @@ class CreateOrder extends Component {
     
     itemsList: [],
     modifiersList: [],
+    branchList: [],
     
     selectedItem: '',
+    selectedBranch: '',
     showSelector: false,
 
     selectorItems: [],
@@ -36,6 +38,13 @@ class CreateOrder extends Component {
       { id: 14, item: 'Vanilla Cake' },
       { id: 15, item: 'Red Velvet' },
       { id: 16, item: 'Hershey Cake' },
+    ]
+
+    let branchesList = [
+      { id: 17, branch: 'Burgos' },
+      { id: 18, branch: 'Cogon' },
+      { id: 19, branch: 'J.A. Clarin' },
+      { id: 20, branch: 'C.P.G.' },
     ]
 
     let sidesList = [
@@ -66,7 +75,11 @@ class CreateOrder extends Component {
       return item
     })
 
-    this.setState({ modifiersList, itemsList })
+    let branchList = _.map(branchesList, item => {
+      return item
+    })
+
+    this.setState({ modifiersList, itemsList, branchList })
 
   }
 
@@ -90,6 +103,19 @@ class CreateOrder extends Component {
     })
 
     this.setState({ itemsList, selectedItem: item.item, showSelector: false })
+  }
+
+  branchSelect = () => {
+    this.setState({ 
+      selectorItems: this.state.branchList, 
+      selectorFieldname: 'branch', 
+      onItemPress: this.onBranchSelect,
+      showSelector: true 
+    })
+  }
+
+  onBranchSelect = (item) => {
+    this.setState({ selectedBranch: item.branch, showSelector: false })
   }
 
   modifierSelect = (item) => {
@@ -171,21 +197,12 @@ class CreateOrder extends Component {
         />
         <Divider />
 
+        {/* ------ customer group */}
         <ListItem
-          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Customer Information</Text>}
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Customer Details</Text>}
           containerStyle={{ backgroundColor: '#e8f2ff' }}
         />
 
-        {/* ------ datetime group group */}
-        <ListItem
-          key={'pickup_date'}
-          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Date/Time</Text>}
-          rightElement={<Text style={{ fontSize: 18 }}>{moment(this.state.date).format('MMM DD, YYYY hh:mm A') || ''}</Text>}
-          onPress={() => this.showDatePicker()}
-          bottomDivider
-        />
-
-        {/* ------ customer name group */}
         <ListItem
           key={'customer_name'}
           leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Customer Name</Text>}
@@ -198,7 +215,6 @@ class CreateOrder extends Component {
         />
         <Divider />
 
-        {/* ------ customer contact group */}
         <ListItem
           key={'contact'}
           leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Contact No</Text>}
@@ -211,13 +227,35 @@ class CreateOrder extends Component {
         />
         <Divider />
 
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Pickup Details</Text>}
+          containerStyle={{ backgroundColor: '#e8f2ff' }}
+        />
+
+        {/* ------ datetime group group */}
+        <ListItem
+          key={'pickup_date'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Date/Time</Text>}
+          rightElement={<Text style={{ fontSize: 18 }}>{moment(this.state.date).format('MMM DD, YYYY hh:mm A') || ''}</Text>}
+          onPress={() => this.showDatePicker()}
+          bottomDivider
+        />
+
+        <ListItem
+          key={'branch'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Branch</Text>}
+          rightElement={<Text style={{ fontSize: 18 }}>{this.state.selectedBranch || ''}</Text>}
+          onPress={() => this.branchSelect()}
+          bottomDivider
+          chevron
+        />
 
         <JSelector 
           parentID={this.state.selectorParentID}
           visible={this.state.showSelector} 
           data={this.state.selectorItems} 
           fieldname={this.state.selectorFieldname} 
-          onItemPress={this.state.onItemPress}  
+          onItemPress={this.state.onItemPress}
         />
 
         <JDateTimePicker

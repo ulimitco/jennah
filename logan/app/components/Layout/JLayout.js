@@ -3,6 +3,10 @@ import { View, ScrollView } from 'react-native'
 import { Overlay } from 'react-native-elements'
 
 class JLayout extends Component {
+  state = {
+    visibility: false
+  }
+
   render() {
 
     let centrify = this.props.centered ? { justifyContent: 'center', alignItems: 'center' } : null
