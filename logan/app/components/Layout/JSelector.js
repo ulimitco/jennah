@@ -17,7 +17,7 @@ export default class JSelector extends Component {
               <ListItem
                 key={i}
                 title={item[this.props.fieldname]}
-                onPress={() => this.props.onItemPress(item, this.props.parentID)}
+                onPress={() => this.props.onItemPress(item, this.props.parentID || null)}
               />
             ))
           }

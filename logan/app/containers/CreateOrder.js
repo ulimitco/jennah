@@ -8,26 +8,38 @@ import { JText, JLayout, JButton, JSelector, JInput } from '../components'
 import { NavigationActions } from '../utils'
 import _ from 'lodash'
 
+
 @connect(({ app }) => ({ ...app }))
 class CreateOrder extends Component {
   state = {
-    showSelectItem: false,
-    search: '',
-    itemSelect: false,
-    itemValue: '',
+    
+    itemsList: [],
     modifiersList: [],
+    
+    selectedItem: '',
     showSelector: false,
+
     selectorItems: [],
     selectorFieldname: '',
-    selectorParentID: ''
+    selectorParentID: '',
+
+    onItemPress: ''
   }
 
   componentDidMount () {
+
+    let productList = [
+      { id: 13, item: 'Chocolate Cake' },
+      { id: 14, item: 'Vanilla Cake' },
+      { id: 15, item: 'Red Velvet' },
+      { id: 16, item: 'Hershey Cake' },
+    ]
+
     let sidesList = [
-      { id: 1, modifier: 'Flavor', modifierItems: [
-        { id: 2, modifier_item_name: 'Chocolate' },
-        { id: 3, modifier_item_name: 'Vanilla' },
-        { id: 4, modifier_item_name: 'Banana' }
+      { id: 1, modifier: 'Size', modifierItems: [
+        { id: 2, modifier_item_name: '6"' },
+        { id: 3, modifier_item_name: '7"' },
+        { id: 4, modifier_item_name: '9"' }
       ]},
       { id: 5, modifier: 'Recipe', modifierItems: [
         { id: 6, modifier_item_name: '.5' },
@@ -46,12 +58,45 @@ class CreateOrder extends Component {
       return item
     })
 
-    this.setState({ modifiersList })
+    let itemsList = _.map(productList, item => {
+      item.selected = false
+      return item
+    })
+
+    this.setState({ modifiersList, itemsList })
 
   }
 
+  itemSelect = () => {
+    this.setState({ 
+      selectorItems: this.state.itemsList, 
+      selectorFieldname: 'item', 
+      onItemPress: this.onItemSelect,
+      showSelector: true 
+    })
+  }
+
+  onItemSelect = (item) => {
+
+    let itemsList = _.map(this.state.itemsList, record => {
+
+      if(record.id === item.id)
+        item.selected = true
+        
+      return record
+    })
+
+    this.setState({ itemsList, selectedItem: item.item, showSelector: false })
+  }
+
   modifierSelect = (item) => {
-    this.setState({ selectorParentID: item.id, selectorItems: item.modifierItems, selectorFieldname: 'modifier_item_name', showSelector: true })
+    this.setState({ 
+      selectorParentID: item.id, 
+      selectorItems: item.modifierItems, 
+      selectorFieldname: 'modifier_item_name', 
+      showSelector: true,
+      onItemPress: this.onModifierSelect
+    })
   }
 
   onModifierSelect = (subitem, parentID = null) => {
@@ -65,10 +110,6 @@ class CreateOrder extends Component {
     this.setState({ modifiersList, showSelector: false })
   }
 
-  showItems = (val) => {
-    this.setState({ showSelectItem: val })
-  }
-
   render() {
 
     const { params } = this.props.navigation.state
@@ -78,8 +119,8 @@ class CreateOrder extends Component {
         <ListItem
           key={'item'}
           leftElement={<Text style={{ fontSize: 18 }}>Item</Text>}
-          rightElement={<Text style={{ fontSize: 18 }}>Item</Text>}
-          onPress={() => console.log('Test')}
+          rightElement={<Text style={{ fontSize: 18 }}>{this.state.selectedItem || ''}</Text>}
+          onPress={() => this.itemSelect()}
           bottomDivider
           chevron
         />
@@ -117,8 +158,9 @@ class CreateOrder extends Component {
           visible={this.state.showSelector} 
           data={this.state.selectorItems} 
           fieldname={this.state.selectorFieldname} 
-          onItemPress={this.onModifierSelect}  
+          onItemPress={this.state.onItemPress}  
         />
+
       </JLayout>
     )
   }
