@@ -16,15 +16,15 @@ class JLayout extends Component {
 
     if(this.props.modal) {
       return <Overlay isVisible={visible} height='auto'>
-        <KeyboardAvoidingView keyboardVerticalOffset={-500} behavior="padding" enabled style={[centrify, this.props.style]}>{this.props.children}</KeyboardAvoidingView>
+        <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[centrify, this.props.style]}>{this.props.children}</KeyboardAvoidingView>
       </Overlay>
     } else if (this.props.noScroll) {
-      return <KeyboardAvoidingView keyboardVerticalOffset={-500} behavior="padding" enabled style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
+      return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[{ backgroundColor: '#e6ecf0', flex: 1, padding: pad }, centrify, this.props.style ]}>
         {this.props.children}
       </KeyboardAvoidingView>
     }
     else {
-      return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT + 64} behavior="padding" enabled style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
+      return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[{ backgroundColor: '#e6ecf0', flex: 1, padding: pad }, centrify, this.props.style ]}>
           <ScrollView>
             {this.props.children}
           </ScrollView> 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StatusBar } from 'react-native'
+import { View, Text, StatusBar, StyleSheet } from 'react-native'
 import { Icon } from 'react-native-elements'
 
 export default class JHeader extends Component {
@@ -17,38 +17,32 @@ export default class JHeader extends Component {
       let statusBar = this.props.whiteout ? 'light-content' : 'dark-content'
 
       return (
-        <View 				
-          style={{
-            backgroundColor: bColor,
-            alignItems: 'flex-start',
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 50,
-            paddingBottom: 15
-				  }}>
-          <StatusBar backgroundColor="blue" barStyle={statusBar} />
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ paddingRight: 15 }}>
+        <View style={{ paddingTop: 35, backgroundColor: '#fff', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(0,0,0,0.3)' }}>
+          <StatusBar barStyle={'dark-content'} />
+
+          <View style={{ flexDirection: 'row', paddingBottom: 10 }}>
+            <View style={{ flex: 0.1, justifyContent: 'flex-start' }}>
               {
                 this.props.back ? <Icon
                   name='arrow-left'
                   type='feather'
-                  color={color}
-                  size={30}
+                  size={23}
+                  iconStyle={{ paddingTop: 2 }}
                   onPress={this.goBack} /> : null
               }
             </View>
-            <View>
+            <View style={{ flex: 0.8, justifyContent: 'center' }}>
+                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 22, alignSelf: 'center' }}>{this.props.title}</Text>
+            </View>
+            <View style={{ flex: 0.1, justifyContent: 'flex-end' }}>
               {
-                this.props.removeData ? null :
-                <View>
-                  <Text style={{ color }}>FEBRUARY 17, 2019</Text>
-                </View>
+                this.props.back ? <Icon
+                  name='arrow-right'
+                  type='feather'
+                  size={23}
+                  iconStyle={{ paddingTop: 2 }}
+                  onPress={this.goBack} /> : null
               }
-
-              <View>
-                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 30, color }}>{this.props.title}</Text>
-              </View>
             </View>
           </View>
 

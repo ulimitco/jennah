@@ -159,7 +159,7 @@ class CreateOrder extends Component {
       <JLayout unpad>
         <ListItem
           leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Order Information</Text>}
-          containerStyle={{ backgroundColor: '#e8f2ff' }}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
         />
         <ListItem
           key={'item'}
@@ -194,13 +194,14 @@ class CreateOrder extends Component {
           multiline
           inputStyle={{ borderBottomWidth: 0 }}
           inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
         />
         <Divider />
 
         {/* ------ customer group */}
         <ListItem
           leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Customer Details</Text>}
-          containerStyle={{ backgroundColor: '#e8f2ff' }}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
         />
 
         <ListItem
@@ -211,7 +212,8 @@ class CreateOrder extends Component {
           key={'customer_name_input'}
           placeholder='Enter customer name'
           inputStyle={{ borderBottomWidth: 0 }}
-          inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
         />
         <Divider />
 
@@ -222,14 +224,15 @@ class CreateOrder extends Component {
         <Input
           key={'contact_input'}
           placeholder='Enter contact number'
-          inputStyle={{ borderBottomWidth: 0 }}
-          inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+          inputStyle={{ borderBottomWidth: 0, backgroundColor: '#fff' }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
         />
         <Divider />
 
         <ListItem
           leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Pickup Details</Text>}
-          containerStyle={{ backgroundColor: '#e8f2ff' }}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
         />
 
         {/* ------ datetime group group */}

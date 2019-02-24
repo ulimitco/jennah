@@ -36,7 +36,7 @@ class Main extends Component {
     ]
 
     return (
-      <JLayout>
+      <JLayout unpad>
 
         <TouchableOpacity onPress={() => this.goTo('CreateOrder')}>
           <View style={{ backgroundColor: 'rgba(229, 0, 76, 0.7)', padding: 15, borderWidth: 1, borderColor: '#fff', borderRadius: 5, flexDirection: 'row' }}>
