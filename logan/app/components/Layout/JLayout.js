@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { Overlay } from 'react-native-elements'
+import { Header } from 'react-navigation'
 
 class JLayout extends Component {
   state = {
@@ -15,18 +16,19 @@ class JLayout extends Component {
 
     if(this.props.modal) {
       return <Overlay isVisible={visible} height='auto'>
-        <View style={[centrify, this.props.style]}>{this.props.children}</View>
+        <KeyboardAvoidingView keyboardVerticalOffset={-500} behavior="padding" enabled style={[centrify, this.props.style]}>{this.props.children}</KeyboardAvoidingView>
       </Overlay>
     } else if (this.props.noScroll) {
-      return <View style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
+      return <KeyboardAvoidingView keyboardVerticalOffset={-500} behavior="padding" enabled style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
         {this.props.children}
-      </View>
+      </KeyboardAvoidingView>
     }
     else {
-
-      return <ScrollView style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
-        {this.props.children}
-      </ScrollView>
+      return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT + 64} behavior="padding" enabled style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
+          <ScrollView>
+            {this.props.children}
+          </ScrollView> 
+      </KeyboardAvoidingView>
     }
   }
 }
