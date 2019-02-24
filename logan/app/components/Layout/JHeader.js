@@ -39,9 +39,13 @@ export default class JHeader extends Component {
               }
             </View>
             <View>
-              <View>
-                <Text style={{ color }}>FEBRUARY 17, 2019</Text>
-              </View>
+              {
+                this.props.removeData ? null :
+                <View>
+                  <Text style={{ color }}>FEBRUARY 17, 2019</Text>
+                </View>
+              }
+
               <View>
                 <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 30, color }}>{this.props.title}</Text>
               </View>

@@ -3,10 +3,11 @@ import { Text, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-nati
 import { connect } from 'react-redux'
 import { Input, Icon, ListItem, Badge, Button, Divider } from 'react-native-elements'
 
-import { JText, JLayout, JButton, JSelector, JInput } from '../components'
+import { JText, JLayout, JButton, JSelector, JInput, JDateTimePicker } from '../components'
 
 import { NavigationActions } from '../utils'
 import _ from 'lodash'
+import moment from 'moment'
 
 
 @connect(({ app }) => ({ ...app }))
@@ -23,7 +24,9 @@ class CreateOrder extends Component {
     selectorFieldname: '',
     selectorParentID: '',
 
-    onItemPress: ''
+    onItemPress: '',
+
+    date: new Date()
   }
 
   componentDidMount () {
@@ -110,15 +113,31 @@ class CreateOrder extends Component {
     this.setState({ modifiersList, showSelector: false })
   }
 
+  showDatePicker = () => {
+    this.setState({ showDatePicker: true })
+  }
+
+  onDateChange = (newDate) => {
+    this.setState({ date: newDate })
+  }
+
+  onCloseDatePicker = () => {
+    this.setState({ showDatePicker: false })
+  }
+
   render() {
 
     const { params } = this.props.navigation.state
 
     return (
-      <JLayout noScroll unpad>
+      <JLayout unpad>
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Order Information</Text>}
+          containerStyle={{ backgroundColor: '#e8f2ff' }}
+        />
         <ListItem
           key={'item'}
-          leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>Item</Text>}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Select Item</Text>}
           rightElement={<Text style={{ fontSize: 18 }}>{this.state.selectedItem || ''}</Text>}
           onPress={() => this.itemSelect()}
           bottomDivider
@@ -129,7 +148,7 @@ class CreateOrder extends Component {
           _.map(this.state.modifiersList, item => {
             return <ListItem
               key={item.id}
-              leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>{item.modifier}</Text>}
+              leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>{item.modifier}</Text>}
               rightElement={<Text style={{ fontSize: 18 }}>{item.selectedValue}</Text>}
               onPress={() => this.modifierSelect(item)}
               bottomDivider
@@ -138,11 +157,11 @@ class CreateOrder extends Component {
           })
         }
 
+        {/* ------ details group */}
         <ListItem
           key={'details'}
-          leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>Order Details</Text>}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Order Details</Text>}
         />
-
         <Input
           key={'details_input'}
           placeholder='Type order details here'
@@ -150,8 +169,48 @@ class CreateOrder extends Component {
           inputStyle={{ borderBottomWidth: 0 }}
           inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
         />
-
         <Divider />
+
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Customer Information</Text>}
+          containerStyle={{ backgroundColor: '#e8f2ff' }}
+        />
+
+        {/* ------ datetime group group */}
+        <ListItem
+          key={'pickup_date'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Date/Time</Text>}
+          rightElement={<Text style={{ fontSize: 18 }}>{moment(this.state.date).format('MMM DD, YYYY hh:mm A') || ''}</Text>}
+          onPress={() => this.showDatePicker()}
+          bottomDivider
+        />
+
+        {/* ------ customer name group */}
+        <ListItem
+          key={'customer_name'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Customer Name</Text>}
+        />
+        <Input
+          key={'customer_name_input'}
+          placeholder='Enter customer name'
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+        />
+        <Divider />
+
+        {/* ------ customer contact group */}
+        <ListItem
+          key={'contact'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Contact No</Text>}
+        />
+        <Input
+          key={'contact_input'}
+          placeholder='Enter contact number'
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+        />
+        <Divider />
+
 
         <JSelector 
           parentID={this.state.selectorParentID}
@@ -159,6 +218,13 @@ class CreateOrder extends Component {
           data={this.state.selectorItems} 
           fieldname={this.state.selectorFieldname} 
           onItemPress={this.state.onItemPress}  
+        />
+
+        <JDateTimePicker
+          visible={this.state.showDatePicker}
+          onDateChange={this.onDateChange}
+          date={this.state.date}
+          onClose={this.onCloseDatePicker}
         />
 
       </JLayout>

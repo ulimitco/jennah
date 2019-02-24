@@ -35,7 +35,7 @@ const AppNavigator = createStackNavigator(
     CreateOrder: { 
       screen: CreateOrder,
       navigationOptions: ({ navigation }) => ({
-				header: <JHeader title={'Create Order'} back navigation={navigation} whiteout />,
+				header: <JHeader title={'Create Order'} back navigation={navigation} whiteout removeData />,
 			}),
     },
   },

@@ -21,7 +21,7 @@ class ModalAuth extends Component {
         <JText style={{ fontFamily: 'Pacifico', fontSize: 40, color: '#2d2d2d' }}>Estrella Cakes</JText>
         <JInput placeholder={'Enter username'} iconName={'user'} />
         <JInput placeholder={'Enter password'} iconName={'lock'} secureTextEntry />
-        <JButton title={'Login'} />
+        <JButton title={'Login'} buttonStyle={{ marginTop: 30, marginRight: 30, marginLeft: 30 }} />
       </JLayout>
     )
   }
