@@ -7,19 +7,20 @@ class JLayout extends Component {
 
     let centrify = this.props.centered ? { justifyContent: 'center', alignItems: 'center' } : null
     let visible = this.props.visible && this.props.modal ? true : false
+    let pad = this.props.unpad ? 0 : 20
 
     if(this.props.modal) {
       return <Overlay isVisible={visible}>
-        <View style={[{ flex: 1 }, centrify]}>{this.props.children}</View>
+        <View style={[{ flex: 1 }, centrify, this.props.style]}>{this.props.children}</View>
       </Overlay>
     } else if (this.props.noScroll) {
-      return <View style={[{ backgroundColor: '#fff', flex: 1, padding: 20 }, centrify ]}>
+      return <View style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
         {this.props.children}
       </View>
     }
     else {
 
-      return <ScrollView style={[{ backgroundColor: '#fff', flex: 1, padding: 20 }, centrify ]}>
+      return <ScrollView style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
         {this.props.children}
       </ScrollView>
     }

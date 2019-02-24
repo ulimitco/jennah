@@ -18,23 +18,27 @@ class Main extends Component {
     this.setState({ search });
   }
 
-  viewItem = () => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: 'OrderView' }))
+  goTo = (routeName, params = null) => {
+    this.props.dispatch(NavigationActions.navigate({ routeName, params }))
+  }
+
+  viewItem = (item) => {
+    this.goTo('OrderView', item)
   }
 
   render() {
 
     var ordersList = [
-      { id: 1, order: '6" Chocolate Cake', pickupTime: '12:30PM', addon: 'Addon details', status: 'done', pickupLoc: 'Burgos' },
-      { id: 2, order: '2" Vanilla Cake', pickupTime: '2:30PM', addon: 'Addon details', status: 'pending', pickupLoc: 'Estrella' },
-      { id: 3, order: '3" Red Velvet', pickupTime: '8:00AM', addon: 'Addon details', status: 'pending', pickupLoc: 'Cogon' },
-      { id: 4, order: '6" Chocolate Cake', pickupTime: '4:30PM', addon: 'Addon details', status: 'pending', pickupLoc: 'Estrella' },
+      { id: 1, order: '6" Chocolate Cake', pickupTime: '12:30PM', addon: 'Addon details', status: 'done', paymentStatus: 'partial', pickupLoc: 'Burgos', customer: 'Ace Jordan Lumaad', customerContact: '+639255055519' },
+      { id: 2, order: '2" Vanilla Cake', pickupTime: '2:30PM', addon: 'Addon details', status: 'pending', paymentStatus: 'full', pickupLoc: 'Estrella', customer: 'Gwen Lumaad', customerContact: '+639255055519' },
+      { id: 3, order: '3" Red Velvet', pickupTime: '8:00AM', addon: 'Addon details', status: 'processing', paymentStatus: 'partial', pickupLoc: 'Cogon', customer: 'Micah Lumaad', customerContact: '+639255055519' },
+      { id: 4, order: '6" Chocolate Cake', pickupTime: '4:30PM', addon: 'Addon details', status: 'pending', paymentStatus: 'nothing', pickupLoc: 'Estrella', customer: 'Caye Britanni Lumaad', customerContact: '+639255055519'  },
     ]
 
     return (
       <JLayout>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.goTo('CreateOrder')}>
           <View style={{ backgroundColor: 'rgba(229, 0, 76, 0.7)', padding: 15, borderWidth: 1, borderColor: '#fff', borderRadius: 5, flexDirection: 'row' }}>
             <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 30, color: 'white' }}>New Order</Text>
             <Icon name='arrow-right' type='feather' color='#fff' size={30} iconStyle={{ marginTop: 3, alignSelf: 'flex-end' }} />

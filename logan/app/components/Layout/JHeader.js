@@ -11,33 +11,39 @@ export default class JHeader extends Component {
       this.props.navigation.goBack()
     }
     render() {
+
+      let color = this.props.whiteout ? 'white' : '#2d2d2d'
+      let bColor = this.props.whiteout ? 'rgba(229, 0, 76, 0.7)' : 'white'
+      let statusBar = this.props.whiteout ? 'light-content' : 'dark-content'
+
       return (
         <View 				
           style={{
-            backgroundColor: 'white',
+            backgroundColor: bColor,
             alignItems: 'flex-start',
             paddingLeft: 20,
             paddingRight: 20,
-            paddingTop: 50
+            paddingTop: 50,
+            paddingBottom: 15
 				  }}>
-          <StatusBar backgroundColor="blue" barStyle="dark-content" />
+          <StatusBar backgroundColor="blue" barStyle={statusBar} />
           <View style={{ flexDirection: 'row' }}>
             <View style={{ paddingRight: 15 }}>
               {
                 this.props.back ? <Icon
                   name='arrow-left'
                   type='feather'
-                  color='#000'
+                  color={color}
                   size={30}
                   onPress={this.goBack} /> : null
               }
             </View>
             <View>
               <View>
-                <Text style={{ color: 'gray' }}>FEBRUARY 17, 2019</Text>
+                <Text style={{ color }}>FEBRUARY 17, 2019</Text>
               </View>
               <View>
-                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 30 }}>{this.props.title}</Text>
+                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 30, color }}>{this.props.title}</Text>
               </View>
             </View>
           </View>
