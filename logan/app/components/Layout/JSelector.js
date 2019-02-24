@@ -18,6 +18,8 @@ export default class JSelector extends Component {
                 key={i}
                 title={item[this.props.fieldname]}
                 onPress={() => this.props.onItemPress(item, this.props.parentID || null)}
+                bottomDivider
+                pad={0}
               />
             ))
           }

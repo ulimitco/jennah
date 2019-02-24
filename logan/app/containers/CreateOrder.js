@@ -118,7 +118,7 @@ class CreateOrder extends Component {
       <JLayout noScroll unpad>
         <ListItem
           key={'item'}
-          leftElement={<Text style={{ fontSize: 18 }}>Item</Text>}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>Item</Text>}
           rightElement={<Text style={{ fontSize: 18 }}>{this.state.selectedItem || ''}</Text>}
           onPress={() => this.itemSelect()}
           bottomDivider
@@ -129,7 +129,7 @@ class CreateOrder extends Component {
           _.map(this.state.modifiersList, item => {
             return <ListItem
               key={item.id}
-              leftElement={<Text style={{ fontSize: 18 }}>{item.modifier}</Text>}
+              leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>{item.modifier}</Text>}
               rightElement={<Text style={{ fontSize: 18 }}>{item.selectedValue}</Text>}
               onPress={() => this.modifierSelect(item)}
               bottomDivider
@@ -140,7 +140,7 @@ class CreateOrder extends Component {
 
         <ListItem
           key={'details'}
-          leftElement={<Text style={{ fontSize: 18 }}>Order Details</Text>}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656' }}>Order Details</Text>}
         />
 
         <Input

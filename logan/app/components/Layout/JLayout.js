@@ -10,8 +10,8 @@ class JLayout extends Component {
     let pad = this.props.unpad ? 0 : 20
 
     if(this.props.modal) {
-      return <Overlay isVisible={visible}>
-        <View style={[{ flex: 1 }, centrify, this.props.style]}>{this.props.children}</View>
+      return <Overlay isVisible={visible} height='auto'>
+        <View style={[centrify, this.props.style]}>{this.props.children}</View>
       </Overlay>
     } else if (this.props.noScroll) {
       return <View style={[{ backgroundColor: '#fff', flex: 1, padding: pad }, centrify, this.props.style ]}>
