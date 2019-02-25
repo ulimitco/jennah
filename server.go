@@ -58,6 +58,16 @@ func main() {
 	r.POST("/inventories", ctl.CreateInventoriesFunc(db))
 	r.DELETE("/inventory/:id", ctl.DeleteInventoryFunc(db))
 
+	r.GET("/modifiers", ctl.GetModifiersFunc(db))
+	r.GET("/modifier/:id", ctl.GetModifierFunc(db))
+	r.POST("/modifier", ctl.CreateModifierFunc(db))
+	r.DELETE("/modifier/:id", ctl.DeleteModifierFunc(db))
+
+	r.GET("/customers", ctl.GetCustomersFunc(db))
+	r.GET("/customer/:id", ctl.GetCustomerFunc(db))
+	r.POST("/customer", ctl.CreateCustomerFunc(db))
+	r.DELETE("/customer/:id", ctl.DeleteCustomerFunc(db))
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
 

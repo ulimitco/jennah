@@ -238,7 +238,7 @@ class CreateOrder extends Component {
         {/* ------ datetime group group */}
         <ListItem
           key={'pickup_date'}
-          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Date/Time</Text>}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Date/Time</Text>}
           rightElement={<Text style={{ fontSize: 18 }}>{moment(this.state.date).format('MMM DD, YYYY hh:mm A') || ''}</Text>}
           onPress={() => this.showDatePicker()}
           bottomDivider
