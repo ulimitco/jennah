@@ -230,12 +230,14 @@ class CreateOrder extends Component {
         />
         <Divider />
 
+        {/* ------ datetime group group */}
+
         <ListItem
           leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Pickup Details</Text>}
           containerStyle={{ backgroundColor: '#f5f8fa' }}
         />
 
-        {/* ------ datetime group group */}
+
         <ListItem
           key={'pickup_date'}
           leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Date/Time</Text>}
@@ -251,6 +253,26 @@ class CreateOrder extends Component {
           onPress={() => this.branchSelect()}
           bottomDivider
           chevron
+        />
+
+        {/* ------ customer group */}
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Payment Details</Text>}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
+        />
+
+        <ListItem
+          key={'initial_payment'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Initial Payment</Text>}
+        />
+
+        <Input
+          key={'initial_payment_input'}
+          placeholder='Enter initial payment'
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          keyboardType={'numeric'}
         />
 
         <JSelector 
