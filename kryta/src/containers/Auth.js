@@ -44,23 +44,6 @@ class Auth extends React.Component {
                   RouteTo(this.props, '/branch')
                 }
               }, 500)
-
-              // _.delay(() => {
-              //   switch (parseInt(response.data.rx)) {
-              //     case 1:
-              //       RouteTo(this.props, '/admin/branches')
-              //       break
-              //     case 2:
-              //       RouteTo(this.props, '/admin/branches')
-              //       break
-              //     case 3:
-              //       RouteTo(this.props, '/branch/dashboard')
-              //       break
-              //     default:
-              //       RouteTo(this.props, '/branch/dashboard')
-              //       break
-              //   }
-              // }, 500)
             } else {
               this.setState({ wrongPassword: true })
             }

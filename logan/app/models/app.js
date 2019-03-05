@@ -1,5 +1,8 @@
-import { createAction, NavigationActions, Storage } from '../utils'
+import { createAction, NavigationActions } from '../utils'
 import * as authService from '../services/auth'
+import * as rest from '../utils/rest'
+import storage from '../utils/storage';
+
 
 export default {
   namespace: 'app',
@@ -15,17 +18,28 @@ export default {
   },
   effects: {
     *loadStorage(action, { call, put }) {
-      const login = yield call(Storage.get, 'login', false)
-      yield put(createAction('updateState')({ login, loading: false }))
+      //const login = yield call(Storage.get, 'login', false)
+      //yield put(createAction('updateState')({ login, loading: false }))
     },
-    *login({ payload }, { call, put }) {
+    *login({ payload, callback = null }, { call, put }) {
+
       yield put(createAction('updateState')({ fetching: true }))
-      const login = yield call(authService.login, payload)
-      if (login) {
-        yield put(NavigationActions.back())
-      }
-      yield put(createAction('updateState')({ login, fetching: false }))
-      Storage.set('login', login)
+
+      rest.login('/login?username=' + payload.username + '&password=' + payload.password).then(response => {
+        if (response.data.response.status === 200) {
+          storage.set('login', true)
+          createAction('updateState')({ login: true, fetching: false })
+          if(callback)
+            callback()
+        } else {
+          this.setState({ wrongPassword: true })
+          if(callback)
+            callback()
+        }
+      }).catch(e => {
+        console.log('Error: ', e)
+      })
+      
     },
     *logout(action, { call, put }) {
       yield call(Storage.set, 'login', false)

@@ -299,17 +299,8 @@ class AdminItemsMgmt extends React.Component {
               name={'package_qty'}
               placeholder={'Enter quantity per package'}
               initVal={record.package_qty}
+              type={'number'}
               label={'Package Quantity'}
-            />
-
-            <JInput
-              gfd={getFieldDecorator}
-              required
-              message={'Enter item name'}
-              name={'item'}
-              placeholder={'Enter item name'}
-              initVal={record.code}
-              label={'Item Name'}
             />
 
           </Form>

@@ -8,6 +8,7 @@ class JButton extends Component {
         title={this.props.title}
         containerStyle={{ width: '100%' }}
         buttonStyle={this.props.buttonStyle}
+        onPress={this.props.onPress}
         {...this.props}
         icon={
           <Icon

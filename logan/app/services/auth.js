@@ -1,6 +1,7 @@
-import { delay } from '../utils'
+import * as rest from '../utils/rest'
 
-export const login = async () => {
-  await delay(2000)
-  return true
+export const login = (payload) => {
+
+
+
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Select, Icon, Input, Row, Col } from 'antd'
+import { Form, Select, Icon, Input, InputNumber, Row, Col } from 'antd'
 import _ from 'lodash'
 
 const FormItem = Form.Item
@@ -37,7 +37,31 @@ class JInput extends React.Component {
         </Row>
       )
     }
-
+    else if (this.props.type === 'number'){
+      return (
+        <Row>
+          <Col span={6} style={{ paddingTop: 6 }}>
+            <span>{this.props.label}</span>
+          </Col>
+          <Col span={18}>
+            <FormItem style={{ marginBottom: 5 }}>
+              {this.props.gfd(this.props.name, {
+                rules: [
+                  { type: 'number', required: this.props.required, message: this.props.message }
+                ],
+                initialValue: this.props.initVal
+              })(
+                <InputNumber 
+                  prefix={<Icon type="edit" style={{ fontSize: 13 }} />}
+                  min={1} max={10000000}
+                  placeholder={this.props.placeholder}
+                />
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+      )
+    }
     return (
       <Row>
         <Col span={6} style={{ paddingTop: 6 }}>
@@ -50,7 +74,7 @@ class JInput extends React.Component {
                 { required: this.props.required, message: this.props.message },
                 { validator: this.props.validator },
               ],
-              initialValue: this.props.initVal,
+              initialValue: this.props.initVal
             })(
               <Input
                 type={this.props.type}
