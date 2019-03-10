@@ -3,7 +3,10 @@ import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { JLayout, JText, JInput, JButton } from '../components'
 import { NavigationActions } from '../utils'
-import storage from '../utils/storage'
+import Realm from '../datastore'
+import _ from 'lodash'
+
+let authObject = Realm.objects('Auth')
 
 @connect(({ app }) => ({ ...app }))
 class ModalAuth extends Component {
@@ -12,14 +15,14 @@ class ModalAuth extends Component {
   }
 
   componentWillMount(){
-    if(storage.get('login')){
+    if(!_.isEmpty(authObject)){
       this.setState({ isLogged: true })
       this.props.dispatch(NavigationActions.navigate({ routeName: 'Main' }))
     }
   }
 
   tryLogin = () => {
-    if(storage.get('login')){
+    if(!_.isEmpty(authObject)){
       this.setState({ isLogged: true }, () => this.props.dispatch(NavigationActions.navigate({ routeName: 'Main' })))
     }
     else {

@@ -33,12 +33,7 @@ class CreateOrder extends Component {
 
   componentDidMount () {
 
-    let productList = [
-      { id: 13, item: 'Chocolate Cake' },
-      { id: 14, item: 'Vanilla Cake' },
-      { id: 15, item: 'Red Velvet' },
-      { id: 16, item: 'Hershey Cake' },
-    ]
+    this.getItemsList()
 
     let branchesList = [
       { id: 17, branch: 'Burgos' },
@@ -70,17 +65,26 @@ class CreateOrder extends Component {
       return item
     })
 
-    let itemsList = _.map(productList, item => {
-      item.selected = false
-      return item
-    })
-
     let branchList = _.map(branchesList, item => {
       return item
     })
 
-    this.setState({ modifiersList, itemsList, branchList })
+    this.setState({ modifiersList, branchList })
 
+  }
+
+  getItemsList = () => {
+    this.props.dispatch({
+      type: 'sales/getItems',
+      callback: (productList) => {
+        let itemsList = _.map(productList, item => {
+          item.selected = false
+          return item
+        })
+
+        this.setState({ itemsList })
+      }
+    })
   }
 
   itemSelect = () => {

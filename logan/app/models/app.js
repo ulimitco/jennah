@@ -2,7 +2,8 @@ import { createAction, NavigationActions } from '../utils'
 import * as authService from '../services/auth'
 import * as rest from '../utils/rest'
 import storage from '../utils/storage';
-
+import Realm from '../datastore'
+import uuid from 'uuid/v1'
 
 export default {
   namespace: 'app',
@@ -27,8 +28,16 @@ export default {
 
       rest.login('/login?username=' + payload.username + '&password=' + payload.password).then(response => {
         if (response.data.response.status === 200) {
-          storage.set('login', true)
+          
+          let authObjects = Realm.objects('Auth')
+  
+          Realm.create('Auth', {
+            id: uuid(),
+            access_token: response.data.response.access_token
+          });
+
           createAction('updateState')({ login: true, fetching: false })
+
           if(callback)
             callback()
         } else {

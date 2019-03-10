@@ -17,7 +17,9 @@
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^2.5.1",
     "react-navigation-redux-helpers": "^2.0.2",
-    "react-redux": "^5.0.7"
+    "react-redux": "^5.0.7",
+    "realm": "^2.24.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.3.0",
