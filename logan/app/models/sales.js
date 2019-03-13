@@ -20,16 +20,7 @@ export default {
       
     },
     *getItems({ payload, callback = null }, { call, put }) {
-      
-      let productList = [
-        { id: 13, item: 'Chocolate Cake' },
-        { id: 14, item: 'Vanilla Cake' },
-        { id: 15, item: 'Red Velvet' },
-        { id: 16, item: 'Hershey Cake' },
-      ]
-
       rest.get('/api/v1/items').then(response => {
-
         if(!_.isEmpty(response.data)){
           if(callback)
             callback(response.data)
@@ -40,12 +31,23 @@ export default {
       }).catch(e => {
         console.log('Error: ', e)
       })
-
     },
-  },
-  subscriptions: {
-    setup({ dispatch }) {
-      dispatch({ type: 'loadStorage' })
+    *getModifiers({ payload, callback = null }, { call, put }) {
+      rest.get('/api/v1/modifiers').then(response => {
+        if(!_.isEmpty(response.data)){
+          if(callback)
+            callback(response.data)
+        } else {
+          this.setState({ wrongPassword: true })
+        }
+      }).catch(e => {
+        console.log('Error: ', e)
+      })
     },
-  },
+    subscriptions: {
+      setup({ dispatch }) {
+        dispatch({ type: 'loadStorage' })
+      },
+    },
+  }
 }

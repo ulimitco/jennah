@@ -33,6 +33,7 @@ class CreateOrder extends Component {
 
   componentDidMount () {
 
+    this.getModifiersList()
     this.getItemsList()
 
     let branchesList = [
@@ -42,35 +43,11 @@ class CreateOrder extends Component {
       { id: 20, branch: 'C.P.G.' },
     ]
 
-    let sidesList = [
-      { id: 1, modifier: 'Size', modifierItems: [
-        { id: 2, modifier_item_name: '6"' },
-        { id: 3, modifier_item_name: '7"' },
-        { id: 4, modifier_item_name: '9"' }
-      ]},
-      { id: 5, modifier: 'Recipe', modifierItems: [
-        { id: 6, modifier_item_name: '.5' },
-        { id: 7, modifier_item_name: '.75' },
-        { id: 8, modifier_item_name: '1' }
-      ]},
-      { id: 9, modifier: 'Add-On', modifierItems: [
-        { id: 10, modifier_item_name: 'Edible Decor' },
-        { id: 11, modifier_item_name: 'Acrylic Topper' },
-        { id: 12, modifier_item_name: 'Paper Topper' }
-      ]}
-    ]
-
-    let modifiersList = _.map(sidesList, item => {
-      item.selectedValue = ''
-      return item
-    })
-
     let branchList = _.map(branchesList, item => {
       return item
     })
 
-    this.setState({ modifiersList, branchList })
-
+    this.setState({ branchList })
   }
 
   getItemsList = () => {
@@ -83,6 +60,21 @@ class CreateOrder extends Component {
         })
 
         this.setState({ itemsList })
+      }
+    })
+  }
+
+  getModifiersList = () => {
+    this.props.dispatch({
+      type: 'sales/getModifiers',
+      payload: {},
+      callback: (sidesList) => {
+        let modifiersList = _.map(sidesList, item => {
+          item.selected = false
+          return item
+        })
+
+        this.setState({ modifiersList })
       }
     })
   }
@@ -125,8 +117,8 @@ class CreateOrder extends Component {
   modifierSelect = (item) => {
     this.setState({ 
       selectorParentID: item.id, 
-      selectorItems: item.modifierItems, 
-      selectorFieldname: 'modifier_item_name', 
+      selectorItems: JSON.parse(item.modifier_items), 
+      selectorFieldname: 'value', 
       showSelector: true,
       onItemPress: this.onModifierSelect
     })
@@ -135,7 +127,7 @@ class CreateOrder extends Component {
   onModifierSelect = (subitem, parentID = null) => {
     let modifiersList = _.map(this.state.modifiersList, item => {
       if(item.id === parentID)
-        item.selectedValue = subitem.modifier_item_name
+        item.selectedValue = subitem.value
         
       return item
     })
@@ -178,7 +170,7 @@ class CreateOrder extends Component {
           _.map(this.state.modifiersList, item => {
             return <ListItem
               key={item.id}
-              leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>{item.modifier}</Text>}
+              leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>{item.modifier_title}</Text>}
               rightElement={<Text style={{ fontSize: 18 }}>{item.selectedValue}</Text>}
               onPress={() => this.modifierSelect(item)}
               bottomDivider
