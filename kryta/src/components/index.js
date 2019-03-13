@@ -3,6 +3,7 @@ export { default as AdminUsersMgmt } from './Pages/Admin/AdminUsersMgmt'
 export { default as AdminCategoriesMgmt } from './Pages/Admin/AdminCategoriesMgmt'
 export { default as AdminItemsMgmt } from './Pages/Admin/AdminItemsMgmt'
 export { default as AdminSuppliersMgmt } from './Pages/Admin/AdminSuppliersMgmt'
+export { default as AdminModifierMgmt } from './Pages/Admin/AdminModifierMgmt'
 export { default as AdminSettings } from './Pages/Admin/AdminSettings'
 export { default as AdminBranchesMgmt } from './Pages/Admin/AdminBranchesMgmt'
 

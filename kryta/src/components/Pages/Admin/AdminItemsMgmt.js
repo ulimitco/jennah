@@ -182,7 +182,7 @@ class AdminItemsMgmt extends React.Component {
             <Button size={'small'} onClick={() => this.onEdit(record)}>
               <Icon type="edit" />
             </Button>
-            <Button size={'small'} type={'danger'} style={{ marginLeft: 3 }} onClick={() => this.onDelete(record.id)}>
+            <Button size={'small'} type={'danger'} style={{ marginLeft: 3 }} onClick={() => this.onDelete(record.item_id)}>
               <Icon type="delete" />
             </Button>
           </div>

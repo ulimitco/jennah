@@ -1,5 +1,4 @@
 import React from 'react'
-import { Layout } from 'antd'
 import {
   MainLayout,
   AdminDashboard,
@@ -9,10 +8,11 @@ import {
   AdminSuppliersMgmt,
   AdminSettings,
   AdminBranchesMgmt,
+  AdminModifierMgmt,
   InventoryMgmt,
 } from 'components'
-import { RouteTo } from 'components/Utils/RouterAction'
-import { Route, Redirect } from 'react-router-dom'
+
+import { Route } from 'react-router-dom'
 
 export default class AdminContainer extends React.Component {
   render() {
@@ -25,6 +25,7 @@ export default class AdminContainer extends React.Component {
         <Route path={'/admin/items'} exact render={() => <AdminItemsMgmt {...this.props} />} />
         <Route path={'/admin/suppliers'} exact render={() => <AdminSuppliersMgmt {...this.props} />} />
         <Route path={'/admin/inventories'} exact render={() => <InventoryMgmt {...this.props} />} />
+        <Route path={'/admin/modifiers'} exact render={() => <AdminModifierMgmt {...this.props} />} />
         <Route path={'/admin/settings'} exact render={() => <AdminSettings {...this.props} />} />
       </MainLayout>
     )

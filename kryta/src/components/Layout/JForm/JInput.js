@@ -7,6 +7,9 @@ const Option = Select.Option
 
 class JInput extends React.Component {
   render() {
+    
+    let contentWidth = this.props.label ? 18 : 24
+
     if (this.props.type === 'select') {
       let formOptions = _.map(this.props.options, item => {
         return (
@@ -23,10 +26,14 @@ class JInput extends React.Component {
 
       return (
         <Row>
-          <Col span={6} style={{ paddingTop: 6, textAlign: labelAlign }}>
-            <span>{this.props.label}</span>
-          </Col>
-          <Col span={18}>
+          {
+            this.props.label ? 
+            <Col span={6} style={{ paddingTop: 6, textAlign: labelAlign }}>
+              <span>{this.props.label}</span>
+            </Col> : null
+          }
+
+          <Col span={contentWidth}>
             <FormItem style={{ marginBottom: 5 }}>
               {this.props.gfd(this.props.name, {
                 rules: [{ required: this.props.required, message: this.props.message }],
@@ -40,10 +47,14 @@ class JInput extends React.Component {
     else if (this.props.type === 'number'){
       return (
         <Row>
-          <Col span={6} style={{ paddingTop: 6 }}>
-            <span>{this.props.label}</span>
-          </Col>
-          <Col span={18}>
+          {
+            this.props.label ? 
+            <Col span={6} style={{ paddingTop: 6 }}>
+              <span>{this.props.label}</span>
+            </Col> : null
+          }
+
+          <Col span={contentWidth}>
             <FormItem style={{ marginBottom: 5 }}>
               {this.props.gfd(this.props.name, {
                 rules: [
@@ -64,10 +75,13 @@ class JInput extends React.Component {
     }
     return (
       <Row>
-        <Col span={6} style={{ paddingTop: 6 }}>
-          <span>{this.props.label}</span>
-        </Col>
-        <Col span={18}>
+        {
+          this.props.label ? 
+          <Col span={6} style={{ paddingTop: 6 }}>
+            <span>{this.props.label}</span>
+          </Col> : null
+        }
+        <Col span={contentWidth}>
           <FormItem style={{ marginBottom: 5 }}>
             {this.props.gfd(this.props.name, {
               rules: [

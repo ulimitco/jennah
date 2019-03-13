@@ -1,13 +1,15 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/jmoiron/sqlx"
 )
 
 type Modifier struct {
 	ID            int    `json:"id"`
-	ModifierTitle string `json:"modifier_title"`
-	ModifierItems string `json:"modifier_items"`
+	ModifierTitle string `json:"modifier_title" db:"modifier_title"`
+	ModifierItems string `json:"modifier_items" db:"modifier_items"`
 }
 
 //GetModifiers get all modifiers
@@ -42,6 +44,8 @@ func StoreModifier(db *sqlx.DB, modifier *Modifier) (int64, error) {
 
 	insertModifier := `INSERT INTO modifiers (modifier_title, modifier_items) VALUES ($1, $2) RETURNING id`
 	_, err := db.Exec(insertModifier, modifier.ModifierTitle, modifier.ModifierItems)
+
+	fmt.Println(modifier.ModifierItems)
 
 	if err != nil {
 		return 404, err
