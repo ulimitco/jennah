@@ -3,6 +3,7 @@ import * as rest from '../utils/rest'
 import storage from '../utils/storage';
 import Realm from '../datastore'
 import uuid from 'uuid/v1'
+import _ from 'lodash'
 
 export default {
   namespace: 'sales',
@@ -27,13 +28,14 @@ export default {
         { id: 16, item: 'Hershey Cake' },
       ]
 
-      rest.get('/items').then(response => {
-        if (response.data.response.status === 200) {
-          
+      rest.get('/api/v1/items').then(response => {
+
+        if(!_.isEmpty(response.data)){
+          if(callback)
+            callback(response.data)
         } else {
           this.setState({ wrongPassword: true })
-          if(callback)
-            callback()
+
         }
       }).catch(e => {
         console.log('Error: ', e)

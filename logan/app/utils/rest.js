@@ -14,9 +14,9 @@ export const login = (path, params) => {
   return instance.post(path, params)
 }
 
-export const get = (path, params, config) => {
+export const get = (path, params) => {
   instance.defaults.headers.common['Authorization'] = 'Bearer ' + authObject[0].access_token
-  return instance.get(path, params, config)
+  return instance.get(path, params)
 }
 
 export const post = (path, body, config) => {

@@ -29,12 +29,12 @@ export default {
       rest.login('/login?username=' + payload.username + '&password=' + payload.password).then(response => {
         if (response.data.response.status === 200) {
           
-          let authObjects = Realm.objects('Auth')
-  
-          Realm.create('Auth', {
-            id: uuid(),
-            access_token: response.data.response.access_token
-          });
+          Realm.write(() => {
+            Realm.create('Auth', {
+              id: uuid(),
+              access_token: response.data.response.access_token
+            })
+          })
 
           createAction('updateState')({ login: true, fetching: false })
 
