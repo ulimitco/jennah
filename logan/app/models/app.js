@@ -10,7 +10,7 @@ export default {
   state: {
     login: false,
     loading: true,
-    fetching: false,
+    fetching: false
   },
   reducers: {
     updateState(state, { payload }) {
@@ -18,10 +18,6 @@ export default {
     },
   },
   effects: {
-    *loadStorage(action, { call, put }) {
-      //const login = yield call(Storage.get, 'login', false)
-      //yield put(createAction('updateState')({ login, loading: false }))
-    },
     *login({ payload, callback = null }, { call, put }) {
 
       yield put(createAction('updateState')({ fetching: true }))
@@ -36,12 +32,10 @@ export default {
             })
           })
 
-          createAction('updateState')({ login: true, fetching: false })
-
           if(callback)
             callback()
+
         } else {
-          this.setState({ wrongPassword: true })
           if(callback)
             callback()
         }
@@ -50,9 +44,13 @@ export default {
       })
       
     },
-    *logout(action, { call, put }) {
-      yield call(Storage.set, 'login', false)
-      yield put(createAction('updateState')({ login: false }))
+    *logout({ call, put }) {
+      Realm.write(() => {
+        let authObject = Realm.objects('Auth')
+        Realm.delete(authObject)
+      })
+
+      createAction('updateState')({ isLogged: false })
     },
   },
   subscriptions: {

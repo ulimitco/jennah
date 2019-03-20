@@ -44,6 +44,18 @@ export default {
         console.log('Error: ', e)
       })
     },
+    *saveOrder({ payload, callback = null }, { call, put }) {
+      rest.post('/api/v1/post_order').then(response => {
+        if(!_.isEmpty(response.data)){
+          if(callback)
+            callback(response.data)
+        } else {
+          this.setState({ wrongPassword: true })
+        }
+      }).catch(e => {
+        console.log('Error: ', e)
+      })
+    },
     subscriptions: {
       setup({ dispatch }) {
         dispatch({ type: 'loadStorage' })

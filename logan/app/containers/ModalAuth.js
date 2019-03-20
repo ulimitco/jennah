@@ -10,23 +10,19 @@ let authObject = Realm.objects('Auth')
 
 @connect(({ app }) => ({ ...app }))
 class ModalAuth extends Component {
+  
   state = {
     isLogged: false
   }
 
-  componentWillMount(){
+  tryLogin = () => {
     if(!_.isEmpty(authObject)){
       this.setState({ isLogged: true })
       this.props.dispatch(NavigationActions.navigate({ routeName: 'Main' }))
     }
-  }
-
-  tryLogin = () => {
-    if(!_.isEmpty(authObject)){
-      this.setState({ isLogged: true }, () => this.props.dispatch(NavigationActions.navigate({ routeName: 'Main' })))
-    }
     else {
-      alert("Error")
+      this.setState({ isLogged: false })
+      alert("Invalid Credentials")
     }
   }
 
@@ -46,9 +42,7 @@ class ModalAuth extends Component {
   }
 
   render() {
-
-    let { getFieldDecorator } = this.props
-
+    
     return (
       <JLayout visible={!this.state.isLogged} modal centered>
         <JText style={{ fontFamily: 'Pacifico', fontSize: 40, color: '#2d2d2d' }}>Test App</JText>

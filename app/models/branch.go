@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+//Branch - Branch struct
 type Branch struct {
 	ID   int    `json:"id"`
 	Code string `json:"code"`

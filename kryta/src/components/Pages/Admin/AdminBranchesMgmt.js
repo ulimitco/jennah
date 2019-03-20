@@ -14,6 +14,7 @@ class AdminBranchesMgmt extends React.Component {
     record: {},
     error: false,
     errorMessage: '',
+    mode: 'add'
   }
 
   componentDidMount() {
@@ -73,13 +74,15 @@ class AdminBranchesMgmt extends React.Component {
   }
 
   onEdit = record => {
-    this.props.form.setFieldsValue({
-      code: record.code,
-      name: record.name,
-    })
+    setTimeout(() => {
+      this.props.form.setFieldsValue({
+        code: record.code,
+        name: record.name,
+      })
+    }, 500)
 
-    console.log(this.props.form)
-    this.setState({ visible: true })
+
+    this.setState({ visible: true, mode: 'edit' })
   }
 
   deleteSuccess = data => {
@@ -186,6 +189,7 @@ class AdminBranchesMgmt extends React.Component {
               initVal={record.name}
               label={'name'}
             />
+
           </Form>
         </Modal>
       </div>

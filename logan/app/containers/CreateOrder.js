@@ -147,6 +147,38 @@ class CreateOrder extends Component {
     this.setState({ showDatePicker: false })
   }
 
+  // saveOrder = () => {
+  //   this.props.dispatch({
+  //     type: 'sales/saveOrder',
+  //     callback: (productList) => {
+  //       let itemsList = _.map(productList, item => {
+  //         item.selected = false
+  //         return item
+  //       })
+
+  //       this.setState({ itemsList })
+  //     }
+  //   })
+  // }
+
+  updateField = (field, value) => {
+    this.setState({ [field]: value })
+  }
+
+  onSubmit = () => {
+    let payload = {}
+
+    payload.order_details = this.state.order_detailsasdf
+    payload.initial_payment = this.state.initial_payment
+    payload.pickup_datetime = this.state.date
+    payload.pickup_location = this.state.selectedBranch
+    payload.customer_name = this.state.customer_name
+    payload.customer_contact = this.state.customer_contact
+
+    console.log(payload)
+    
+  }
+
   render() {
 
     const { params } = this.props.navigation.state
@@ -191,6 +223,7 @@ class CreateOrder extends Component {
           inputStyle={{ borderBottomWidth: 0 }}
           inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
           containerStyle={{ backgroundColor: '#fff' }}
+          onChange={text => this.updateField('order_details', text)}
         />
         <Divider />
 
@@ -210,6 +243,7 @@ class CreateOrder extends Component {
           inputStyle={{ borderBottomWidth: 0 }}
           inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
           containerStyle={{ backgroundColor: '#fff' }}
+          onChange={text => this.updateField('customer_name', text)}
         />
         <Divider />
 
@@ -223,6 +257,7 @@ class CreateOrder extends Component {
           inputStyle={{ borderBottomWidth: 0, backgroundColor: '#fff' }}
           inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
           containerStyle={{ backgroundColor: '#fff' }}
+          onChange={text => this.updateField('customer_contact', text)}
         />
         <Divider />
 
@@ -269,7 +304,10 @@ class CreateOrder extends Component {
           inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
           containerStyle={{ backgroundColor: '#fff' }}
           keyboardType={'numeric'}
+          onChange={text => this.updateField('initial_payment', text)}
         />
+
+        <JButton title={"Save Order"} onPress={() => this.onSubmit()} />
 
         <JSelector 
           parentID={this.state.selectorParentID}
