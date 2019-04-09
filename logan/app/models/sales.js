@@ -45,7 +45,8 @@ export default {
       })
     },
     *saveOrder({ payload, callback = null }, { call, put }) {
-      rest.post('/api/v1/post_order').then(response => {
+      rest.post('/api/v1/sale', payload).then(response => {
+
         if(!_.isEmpty(response.data)){
           if(callback)
             callback(response.data)

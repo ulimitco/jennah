@@ -40,16 +40,19 @@ func GetCustomer(db *sqlx.DB, id int) (Customer, error) {
 }
 
 //StoreCustomer create new customer
-func StoreCustomer(db *sqlx.DB, customer *Customer) (int64, error) {
+func StoreCustomer(db *sqlx.DB, customer *Customer) (int, error) {
 
 	insertCustomer := `INSERT INTO customers (customer_name, customer_number, customer_email, customer_address) VALUES ($1, $2, $3, $4) RETURNING id`
-	_, err := db.Exec(insertCustomer, customer.CustomerName, customer.CustomerNumber, customer.CustomerEmail, customer.CustomerAddress)
+
+	var customerID int
+
+	err := db.QueryRowx(insertCustomer, customer.CustomerName, customer.CustomerNumber, customer.CustomerEmail, customer.CustomerAddress).Scan(&customerID)
 
 	if err != nil {
 		return 404, err
 	}
 
-	return 200, nil
+	return customerID, nil
 }
 
 //DestroyCustomer delete customer by id

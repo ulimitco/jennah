@@ -5,6 +5,7 @@ import (
 	"fmt"
 	model "jennah/app/models"
 	. "jennah/app/tools"
+	"math/rand"
 	"net/http"
 	"strconv"
 
@@ -52,14 +53,40 @@ func GetSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		sale := &model.Sale{}
-		err := c.Bind(sale)
+		m := echo.Map{}
+		errMap := c.Bind(&m)
+
+		if errMap != nil {
+			return c.JSON(http.StatusNotFound, R{"response": errMap.Error()})
+		}
+
+		customer := &model.Customer{CustomerName: c.Param("customer_name"),
+			CustomerNumber:  m["customer_contact"].(string),
+			CustomerEmail:   "n/a",
+			CustomerAddress: "n/a"}
+
+		customerID, err := model.StoreCustomer(db, customer)
 
 		if err != nil {
 			return c.JSON(http.StatusCreated, R{"response": err.Error()})
 		}
 
-		id, err := model.StoreSale(db, sale)
+		random := strconv.Itoa(rand.Int())
+
+		sale := &model.Sale{
+			SaleDateTime:         m["sale_datetime"].(string),
+			SaleDispenseLocation: m["pickup_location"].(string),
+			SaleDispenseDateTime: m["pickup_datetime"].(string),
+			SaleNo:               random,
+			SaleDetails:          m["order_details"].(string),
+			SaleStatus:           "ORDER",
+			CustomerID:           strconv.Itoa(customerID)}
+
+		id, errSale := model.StoreSale(db, sale)
+
+		if errSale != nil {
+			return c.JSON(http.StatusNotFound, R{"response": errSale.Error()})
+		}
 
 		return c.JSON(http.StatusCreated, R{"response": id})
 	}

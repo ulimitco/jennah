@@ -68,6 +68,11 @@ func main() {
 	r.POST("/customer", ctl.CreateCustomerFunc(db))
 	r.DELETE("/customer/:id", ctl.DeleteCustomerFunc(db))
 
+	r.GET("/sales", ctl.GetSalesFunc(db))
+	r.GET("/sale/:id", ctl.GetSaleFunc(db))
+	r.POST("/sale", ctl.CreateSaleFunc(db))
+	r.DELETE("/sale/:id", ctl.DeleteSaleFunc(db))
+
 	e.Logger.Fatal(e.Start(":8080"))
 }
 

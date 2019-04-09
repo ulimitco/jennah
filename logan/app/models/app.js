@@ -24,8 +24,12 @@ export default {
 
       rest.login('/login?username=' + payload.username + '&password=' + payload.password).then(response => {
         if (response.data.response.status === 200) {
-          
+
           Realm.write(() => {
+
+            let authObject = Realm.objects('Auth')
+            Realm.delete(authObject)
+            
             Realm.create('Auth', {
               id: uuid(),
               access_token: response.data.response.access_token

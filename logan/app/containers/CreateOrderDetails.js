@@ -11,7 +11,7 @@ import moment from 'moment'
 
 
 @connect(({ app }) => ({ ...app }))
-class CreateOrder extends Component {
+class CreateOrderDetails extends Component {
   state = {
     
     itemsList: [],
@@ -190,65 +190,121 @@ class CreateOrder extends Component {
 
     return (
       <JLayout unpad>
-        <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
-          <View>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <View style={{ flex: 0.5 }}>
-                <Text style={{ color: 'white' }}>April 9, 2019 6:30PM</Text>
-              </View>
-              <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                <Text style={{ color: 'white' }}>Jojie's Burgos</Text>
-              </View>
-            </View>
-            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Ace Jordan</Text>
-            <Text style={{ color: 'white', fontSize: 15 }}>(+63)925 505 5519</Text>
-          </View>
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Order Information</Text>}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
+        />
 
-          <View style={{ marginTop: 5 }}>
-            <Text style={{ color: 'white' }}>The quick little brown fox jumps over the back of the lazy dog.</Text>
-          </View>
+        <Input
+          key={'details_input'}
+          placeholder='Type order details here'
+          multiline
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, marginLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          onChangeText={text => this.updateField('order_details', text)}
+        />
+        <Divider />
 
-          <View style={{ flex: 1, flexDirection: 'row', marginTop: 5 }}>
-            <View style={{ flex: 0.5 }}>
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>PAID</Text>
-              </View>
-              <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>P 2,000.00</Text>
-              </View>
-          </View>
-        </View>
+        {/* ------ customer group */}
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Customer Details</Text>}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
+        />
+
+        <ListItem
+          key={'customer_name'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Customer Name</Text>}
+        />
+        <Input
+          key={'customer_name_input'}
+          placeholder='Enter customer name'
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          onChangeText={text => this.updateField('customer_name', text)}
+        />
+
+        <Divider />
+
+        <ListItem
+          key={'contact'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Contact No</Text>}
+        />
+        <Input
+          key={'contact_input'}
+          placeholder='Enter contact number'
+          inputStyle={{ borderBottomWidth: 0, backgroundColor: '#fff' }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          onChangeText={text => this.updateField('customer_contact', text)}
+        />
         
-        <View>
-          <View style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-            <Text style={{ color: 'white', fontSize: 18 }}>2 Fruit Cake</Text>
-            <Text style={{ color: 'white', fontSize: 15 }}>Red Color, Mint Flavor, and Etc</Text>
-          </View>
-          <View style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-            <Text style={{ color: 'white', fontSize: 18 }}>1 Chocolate Cake</Text>
-            <Text style={{ color: 'white', fontSize: 15 }}>Red Color, Mint Flavor, and Etc</Text>
-          </View>
-          <View style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-            <Text style={{ color: 'white', fontSize: 18 }}>3 Red Velvet Cake</Text>
-            <Text style={{ color: 'white', fontSize: 15 }}>Red Color, Mint Flavor, and Etc</Text>
-          </View>
+        <Divider />
 
-          <View style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-            <View style={{ flex: 0.5 }}>
-              <Text style={{ color: 'white', fontSize: 18 }}>Add Order</Text>
-            </View>
-            <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>
-                <Icon
-                    name='package'
-                    type='feather'
-                    color='white'
-                    size={25} />
-                </Text>
-            </View>
-          </View>
+        {/* ------ datetime group group */}
+
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Pickup Details</Text>}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
+        />
 
 
-        </View>
+        <ListItem
+          key={'pickup_date'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Date/Time</Text>}
+          rightElement={<Text style={{ fontSize: 18 }}>{moment(this.state.date).format('MMM DD, YYYY hh:mm A') || ''}</Text>}
+          onPress={() => this.showDatePicker()}
+          bottomDivider
+        />
+
+        <ListItem
+          key={'branch'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Pickup Branch</Text>}
+          rightElement={<Text style={{ fontSize: 18 }}>{this.state.selectedBranch || ''}</Text>}
+          onPress={() => this.branchSelect()}
+          bottomDivider
+          chevron
+        />
+
+        {/* ------ customer group */}
+        <ListItem
+          leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Payment Details</Text>}
+          containerStyle={{ backgroundColor: '#f5f8fa' }}
+        />
+
+        <ListItem
+          key={'initial_payment'}
+          leftElement={<Text style={{ fontSize: 18, color: '#565656', fontWeight: 'bold' }}>Initial Payment</Text>}
+        />
+
+        <Input
+          key={'initial_payment_input'}
+          placeholder='Enter initial payment'
+          inputStyle={{ borderBottomWidth: 0 }}
+          inputContainerStyle={{ borderBottomWidth: 0, paddingLeft: 5, paddingBottom: 5 }}
+          containerStyle={{ backgroundColor: '#fff' }}
+          keyboardType={'numeric'}
+          onChangeText={text => this.updateField('initial_payment', text)}
+        />
+
+        <JButton title={"Save Order"} onPress={() => this.onSubmit()} />
+
+        <JSelector 
+          parentID={this.state.selectorParentID}
+          visible={this.state.showSelector} 
+          data={this.state.selectorItems} 
+          fieldname={this.state.selectorFieldname} 
+          onItemPress={this.state.onItemPress}
+        />
+
+        <JDateTimePicker
+          visible={this.state.showDatePicker}
+          onDateChange={this.onDateChange}
+          date={this.state.date}
+          onClose={this.onCloseDatePicker}
+        />
+
       </JLayout>
     )
   }

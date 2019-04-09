@@ -12,7 +12,9 @@ let authObject = Realm.objects('Auth')
 class ModalAuth extends Component {
   
   state = {
-    isLogged: false
+    isLogged: false,
+    username: 'admin',
+    password: 'password'
   }
 
   tryLogin = () => {
@@ -50,6 +52,7 @@ class ModalAuth extends Component {
         <JInput 
           placeholder={'Enter username'} 
           iconName={'user'}
+          value={'admin'}
           onChangeText={text => this.handleChange('username', text)}
           autoCapitalize={'none'}
         />
@@ -57,6 +60,7 @@ class ModalAuth extends Component {
         <JInput 
           placeholder={'Enter password'} 
           iconName={'lock'}
+          value={'password'}
           onChangeText={text => this.handleChange('password', text)}
           secureTextEntry 
         />
