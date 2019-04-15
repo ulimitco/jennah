@@ -25,7 +25,7 @@ class JLayout extends Component {
     }
     else {
       return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[{ backgroundColor: '#e6ecf0', flex: 1, padding: pad }, centrify, this.props.style ]}>
-          <ScrollView>
+          <ScrollView contentContainerStyle={{ flex: 1 }}>
             {this.props.children}
           </ScrollView> 
       </KeyboardAvoidingView>

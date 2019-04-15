@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import { Input, Icon, ListItem, Badge, Button, Divider } from 'react-native-elements'
 
-import { JText, JLayout, JButton, JSelector, JInput, JDateTimePicker } from '../components'
+import { JLayout } from '../components'
 
 import { NavigationActions } from '../utils'
 import _ from 'lodash'
@@ -183,6 +182,11 @@ class CreateOrder extends Component {
   
    render() {
       let data = {
+         orderDetails: {},
+         items: []
+      }
+
+      let data2 = {
          orderDetails: {
             pickup_datetime: 'April 9, 2019 6:30PM',
             pickup_location: 'Jojie\'s Burgos',
@@ -202,11 +206,11 @@ class CreateOrder extends Component {
       const { params } = this.props.navigation.state
     
       return (
-         <JLayout unpad>
-            <View style={{ marginTop: 5, marginLeft: 5, marginRight: 5, backgroundColor: '#1d6bc4', padding: 10 }}>
+         <JLayout unpad noScroll>
+            <ScrollView>
                {
                   !_.isEmpty(data.orderDetails) ? (
-                     <View>
+                     <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
                         <View>
                            <View style={{ flex: 1, flexDirection: 'row' }}>
                               <View style={{ flex: 0.5 }}>
@@ -233,36 +237,56 @@ class CreateOrder extends Component {
                            </View>
                         </View>
                      </View>
-                  ) : null
+                  ) : (
+                     <TouchableOpacity>
+                        <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
+                           <View style={{ flex: 0.5 }}>
+                              <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Details</Text>
+                           </View>
+                        </View>
+                     </TouchableOpacity>
+                  )
                }
-            </View>
 
-            <TouchableOpacity>
-               <View style={{ margin: 5, backgroundColor: '#124784', padding: 5, marginTop: 0 }}>
-                  <View style={{ flex: 1, alignItems: 'center' }}>
-                     <Text style={{ color: 'white', fontSize: 13 }}>Edit Details</Text>
-                  </View>
+               <View>
+                  {
+                     _.map(data.items, record => {
+                        return <View key={record.id} style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3 }}>
+                           <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
+                           <Text style={{ color: 'white', fontSize: 15 }}>{record.item_details}</Text>
+                        </View>
+                     })
+                  }
+
+                  <TouchableOpacity>
+                     <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                        <View style={{ flex: 0.5 }}>
+                           <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Items</Text>
+                        </View>
+                     </View>
+                  </TouchableOpacity>
                </View>
-            </TouchableOpacity>
+            </ScrollView>
 
-            <View>
-               {
-                  _.map(data.items, record => {
-                     return <View key={record.id} style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                        <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
-                        <Text style={{ color: 'white', fontSize: 15 }}>{record.item_details}</Text>
+            <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
+               <View style={{ flex: 0.5, marginLeft: 5, marginRight: 2.5 }}>
+                  <TouchableOpacity>
+                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                        <View style={{ flex: 0.5 }}>
+                           <Text style={{ color: 'white', fontSize: 18 }}>Hold Order</Text>
+                        </View>
                      </View>
-                  })
-               }
-
-               <TouchableOpacity>
-                  <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                     <View style={{ flex: 0.5 }}>
-                        <Text style={{ color: 'white', fontSize: 18 }}>Add Order</Text>
+                  </TouchableOpacity>
+               </View>
+               <View style={{ flex: 0.5, marginRight: 5, marginLeft: 2.5 }}>
+                  <TouchableOpacity>
+                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                        <View style={{ flex: 0.5 }}>
+                           <Text style={{ color: 'white', fontSize: 18 }}>Close Order</Text>
+                        </View>
                      </View>
-                  </View>
-               </TouchableOpacity>
-
+                  </TouchableOpacity>
+               </View>
             </View>
          </JLayout>
       )
