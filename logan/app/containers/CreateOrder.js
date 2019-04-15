@@ -262,7 +262,7 @@ class CreateOrder extends Component {
                      })
                   }
 
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => this.goTo('CreateOrderItems')}>
                      <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Items</Text>
