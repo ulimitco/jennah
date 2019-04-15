@@ -16,6 +16,8 @@ import MainPage from './containers/Main'
 import ModalAuth from './containers/ModalAuth'
 import OrderView from './containers/OrderView'
 import CreateOrder from './containers/CreateOrder'
+import CreateOrderDetails from './containers/CreateOrderDetails'
+import CreateOrderItems from './containers/CreateOrderItems'
 
 const AppNavigator = createStackNavigator(
   {
@@ -36,6 +38,18 @@ const AppNavigator = createStackNavigator(
       screen: CreateOrder,
       navigationOptions: ({ navigation }) => ({
 				header: <JHeader title={'Create Order'} back navigation={navigation} whiteout removeData />,
+			}),
+    },
+    CreateOrderDetails: { 
+      screen: CreateOrderDetails,
+      navigationOptions: ({ navigation }) => ({
+				header: <JHeader title={'Order Details'} back navigation={navigation} whiteout removeData />,
+			}),
+    },
+    CreateOrderItems: { 
+      screen: CreateOrderItems,
+      navigationOptions: ({ navigation }) => ({
+				header: <JHeader title={'Order Items'} back navigation={navigation} whiteout removeData />,
 			}),
     },
   },

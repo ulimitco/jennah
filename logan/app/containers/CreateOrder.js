@@ -156,7 +156,11 @@ class CreateOrder extends Component {
   //     }
   //   })
   // }
-  
+   
+   goTo = (routeName, params = null) => {
+      this.props.dispatch(NavigationActions.navigate({ routeName, params }))
+   }
+
    updateField = (field, value) => {
       this.setState({ [field]: value })
    }
@@ -238,7 +242,7 @@ class CreateOrder extends Component {
                         </View>
                      </View>
                   ) : (
-                     <TouchableOpacity>
+                     <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails')}>
                         <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
                            <View style={{ flex: 0.5 }}>
                               <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Details</Text>

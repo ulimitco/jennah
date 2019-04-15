@@ -189,7 +189,7 @@ class CreateOrderDetails extends Component {
     const { params } = this.props.navigation.state
 
     return (
-      <JLayout unpad>
+      <JLayout unpad style={{ paddingBottom: 100 }}>
         <ListItem
           leftElement={<Text style={{ fontSize: 20, color: '#526884', fontWeight: 'bold' }}>Order Information</Text>}
           containerStyle={{ backgroundColor: '#f5f8fa' }}
@@ -310,4 +310,4 @@ class CreateOrderDetails extends Component {
   }
 }
 
-export default CreateOrder
+export default CreateOrderDetails
