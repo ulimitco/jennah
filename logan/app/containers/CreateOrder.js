@@ -203,7 +203,7 @@ class CreateOrder extends Component {
     
       return (
          <JLayout unpad>
-            <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
+            <View style={{ marginTop: 5, marginLeft: 5, marginRight: 5, backgroundColor: '#1d6bc4', padding: 10 }}>
                {
                   !_.isEmpty(data.orderDetails) ? (
                      <View>
@@ -237,6 +237,14 @@ class CreateOrder extends Component {
                }
             </View>
 
+            <TouchableOpacity>
+               <View style={{ margin: 5, backgroundColor: '#124784', padding: 5, marginTop: 0 }}>
+                  <View style={{ flex: 1, alignItems: 'center' }}>
+                     <Text style={{ color: 'white', fontSize: 13 }}>Edit Details</Text>
+                  </View>
+               </View>
+            </TouchableOpacity>
+
             <View>
                {
                   _.map(data.items, record => {
@@ -246,15 +254,15 @@ class CreateOrder extends Component {
                      </View>
                   })
                }
-         
-               <View style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                  <View style={{ flex: 0.5 }}>
-                     <Text style={{ color: 'white', fontSize: 18 }}>Add Order</Text>
+
+               <TouchableOpacity>
+                  <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                     <View style={{ flex: 0.5 }}>
+                        <Text style={{ color: 'white', fontSize: 18 }}>Add Order</Text>
+                     </View>
                   </View>
-                  <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                     <Text style={{ color: 'white', fontWeight: 'bold' }}></Text>
-                  </View>
-               </View>
+               </TouchableOpacity>
+
             </View>
          </JLayout>
       )
