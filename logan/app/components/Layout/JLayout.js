@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { Overlay } from 'react-native-elements'
 import { Header } from 'react-navigation'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class JLayout extends Component {
   state = {
@@ -24,11 +25,9 @@ class JLayout extends Component {
       </KeyboardAvoidingView>
     }
     else {
-      return <KeyboardAvoidingView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[{ backgroundColor: '#e6ecf0', flex: 1, padding: pad }, centrify, this.props.style ]}>
-          <ScrollView contentContainerStyle={{ flex: 1 }}>
-            {this.props.children}
-          </ScrollView> 
-      </KeyboardAvoidingView>
+      return <KeyboardAwareScrollView keyboardVerticalOffset={Header.HEIGHT} behavior="padding" enabled style={[{ backgroundColor: '#e6ecf0', flex: 1, padding: pad }, centrify, this.props.style ]}>
+        {this.props.children}
+      </KeyboardAwareScrollView>
     }
   }
 }
