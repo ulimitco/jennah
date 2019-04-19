@@ -7,7 +7,8 @@ import { JLayout } from '../components'
 import { NavigationActions } from '../utils'
 import _ from 'lodash'
 import moment from 'moment'
-
+import Realm from '../datastore'
+import uuidv1 from 'uuid/v1'
 
 @connect(({ app }) => ({ ...app }))
 class CreateOrder extends Component {
@@ -27,26 +28,34 @@ class CreateOrder extends Component {
       
       onItemPress: '',
       
-      date: new Date()
+      date: new Date(),
+      order: {}
    }
   
    componentDidMount () {
+      this.refreshOrder()
+   }
+
+   refreshOrder = () => {
+      let orders = Realm.objects('Order')
+      let order = _.head(orders)
+
+      if(!_.isEmpty(order)){
+         this.setState({ order })
+      }
+   }
+
+   holdOrder = () => {
       
-      this.getModifiersList()
-      this.getItemsList()
-      
-      let branchesList = [
-         { id: 17, branch: 'Burgos' },
-         { id: 18, branch: 'Cogon' },
-         { id: 19, branch: 'J.A. Clarin' },
-         { id: 20, branch: 'C.P.G.' },
-      ]
-      
-      let branchList = _.map(branchesList, item => {
-         return item
+      let categories = Realm.objects('Category')
+      let head = _.head(categories)
+      //let cid = Realm.objectForPrimaryKey('Category', head.id);
+
+      let cat = head.items
+
+      Realm.write(() => {
+         cat.push({ id: uuidv1(), item: 'Item' + uuidv1() });
       })
-      
-      this.setState({ branchList })
    }
   
    getItemsList = () => {
@@ -180,67 +189,51 @@ class CreateOrder extends Component {
       this.props.dispatch({
          type: 'sales/saveOrder',
          payload,
-         callback: () => console.log('Called')
+         callback: this.onSubmitSuccess
       })
+   }
+
+   onSubmitSuccess = responseData => {
+      
    }
   
    render() {
-      let data = {
-         orderDetails: {},
-         items: []
-      }
-
-      let data2 = {
-         orderDetails: {
-            pickup_datetime: 'April 9, 2019 6:30PM',
-            pickup_location: 'Jojie\'s Burgos',
-            customer_name: 'Ace Jordan',
-            customer_contact: '(+63)925 505 5519',
-            order_details: 'The quick little brown fox jumps over the back of the lazy dog.',
-            payment_status: 'PAID',
-            payment_amount: 'P 2,000.00'
-         },
-         items: [
-            { id: 1, qty: 1, item: 'Fruit Cake', item_details: 'Red Color, Mint Flavor, and Etc' },
-            { id: 2, qty: 3, item: 'Red Velvet Cake', item_details: 'Red Color, Mint Flavor, and Etc' },
-            { id: 3, qty: 2, item: 'Chocolate Cake', item_details: 'Red Color, Mint Flavor, and Etc' },
-         ]
-      }
 
       const { params } = this.props.navigation.state
-    
+      
+      console.log('The order ', this.state.order)
       return (
          <JLayout unpad noScroll>
             <ScrollView>
                {
-                  !_.isEmpty(data.orderDetails) ? (
-                     <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
+                  !_.isEmpty(this.state.order) ? (
+                     <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails', this.state.order.id)} style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
                         <View>
                            <View style={{ flex: 1, flexDirection: 'row' }}>
                               <View style={{ flex: 0.5 }}>
-                                 <Text style={{ color: 'white' }}>{data.orderDetails.pickup_datetime}</Text>
+                                 <Text style={{ color: 'white' }}>{moment(this.state.order.pickup_datetime).format("MM/DD/YYYY")}</Text>
                               </View>
                               <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                                 <Text style={{ color: 'white' }}>{data.orderDetails.pickup_location}</Text>
+                                 <Text style={{ color: 'white' }}>{this.state.order.pickup_location}</Text>
                               </View>
                            </View>
-                           <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{data.orderDetails.customer_name}</Text>
-                           <Text style={{ color: 'white', fontSize: 15 }}>{data.orderDetails.customer_contact}</Text>
+                           <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{this.state.order.customer_name}</Text>
+                           <Text style={{ color: 'white', fontSize: 15 }}>{this.state.order.customer_contact}</Text>
                         </View>
                      
                         <View style={{ marginTop: 5 }}>
-                              <Text style={{ color: 'white' }}>{data.orderDetails.order_details}</Text>
+                              <Text style={{ color: 'white' }}>{this.state.order.order_details}</Text>
                         </View>
                         
                         <View style={{ flex: 1, flexDirection: 'row', marginTop: 5 }}>
                            <View style={{ flex: 0.5 }}>
-                              <Text style={{ color: 'white', fontWeight: 'bold' }}>{data.orderDetails.payment_status}</Text>
+                              <Text style={{ color: 'white', fontWeight: 'bold' }}>{this.state.order.status}</Text>
                            </View>
                            <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                              <Text style={{ color: 'white', fontWeight: 'bold' }}>{data.orderDetails.payment_amount}</Text>
+                              <Text style={{ color: 'white', fontWeight: 'bold' }}>{this.state.order.initial_payment}</Text>
                            </View>
                         </View>
-                     </View>
+                     </TouchableOpacity>
                   ) : (
                      <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails')}>
                         <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
@@ -252,15 +245,15 @@ class CreateOrder extends Component {
                   )
                }
 
-               <View>
-                  {
+                <View>
+                  {/*{
                      _.map(data.items, record => {
                         return <View key={record.id} style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3 }}>
                            <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
                            <Text style={{ color: 'white', fontSize: 15 }}>{record.item_details}</Text>
                         </View>
                      })
-                  }
+                  }*/}
 
                   <TouchableOpacity onPress={() => this.goTo('CreateOrderItems')}>
                      <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
@@ -269,12 +262,12 @@ class CreateOrder extends Component {
                         </View>
                      </View>
                   </TouchableOpacity>
-               </View>
+               </View> 
             </ScrollView>
 
             <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
                <View style={{ flex: 0.5, marginLeft: 5, marginRight: 2.5 }}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={this.holdOrder}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
                            <Text style={{ color: 'white', fontSize: 18 }}>Hold Order</Text>

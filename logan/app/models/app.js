@@ -26,7 +26,6 @@ export default {
         if (response.data.response.status === 200) {
 
           Realm.write(() => {
-
             let authObject = Realm.objects('Auth')
             Realm.delete(authObject)
             
