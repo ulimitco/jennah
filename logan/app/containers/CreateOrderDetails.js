@@ -50,7 +50,7 @@ class CreateOrderDetails extends Component {
 
       this.setState({ branchList })
 
-      this.retrieveOrder(this.props.navigation.state.params)
+      this.retrieveOrder(this.props.navigation.state.params.id)
 
    }
 
@@ -203,6 +203,9 @@ class CreateOrderDetails extends Component {
                order_items: []
             }, true)
       })
+
+      this.props.navigation.state.params.callback()
+      this.props.navigation.goBack()
    }
 
    render() {

@@ -166,8 +166,11 @@ class CreateOrder extends Component {
   //   })
   // }
    
-   goTo = (routeName, params = null) => {
-      this.props.dispatch(NavigationActions.navigate({ routeName, params }))
+   goTo = (routeName, param = null) => {
+      this.props.dispatch(NavigationActions.navigate({ routeName, params: {
+         id: param,
+         callback: this.refreshOrder
+      } }))
    }
 
    updateField = (field, value) => {
@@ -196,12 +199,12 @@ class CreateOrder extends Component {
    onSubmitSuccess = responseData => {
       
    }
-  
+
+
    render() {
 
       const { params } = this.props.navigation.state
       
-      console.log('The order ', this.state.order)
       return (
          <JLayout unpad noScroll>
             <ScrollView>
@@ -246,14 +249,18 @@ class CreateOrder extends Component {
                }
 
                 <View>
-                  {/*{
-                     _.map(data.items, record => {
-                        return <View key={record.id} style={{ margin: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3 }}>
+                  {
+                     _.map(this.state.order.order_items, record => {
+                        return <View key={record.id} style={{ marginBottom: 5, marginLeft: 5, marginRight: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3 }}>
                            <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
-                           <Text style={{ color: 'white', fontSize: 15 }}>{record.item_details}</Text>
+                           <Text style={{ color: 'white', fontSize: 15 }}>{
+                              _.map(JSON.parse(record.item_details), item => {
+                                 return item.item + ' ' + item.value + ', '
+                              })
+                           }</Text>
                         </View>
                      })
-                  }*/}
+                  }
 
                   <TouchableOpacity onPress={() => this.goTo('CreateOrderItems')}>
                      <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
@@ -265,25 +272,14 @@ class CreateOrder extends Component {
                </View> 
             </ScrollView>
 
-            <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
-               <View style={{ flex: 0.5, marginLeft: 5, marginRight: 2.5 }}>
-                  <TouchableOpacity onPress={this.holdOrder}>
-                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                        <View style={{ flex: 0.5 }}>
-                           <Text style={{ color: 'white', fontSize: 18 }}>Hold Order</Text>
-                        </View>
+            <View style={{ position: 'absolute', bottom: 5 }}>
+               <TouchableOpacity style={{ width: '100%', marginLeft: 5, marginRight: 5 }}>
+                  <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                     <View style={{ flex: 0.5 }}>
+                        <Text style={{ color: 'white', fontSize: 18 }}>Close Order</Text>
                      </View>
-                  </TouchableOpacity>
-               </View>
-               <View style={{ flex: 0.5, marginRight: 5, marginLeft: 2.5 }}>
-                  <TouchableOpacity>
-                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                        <View style={{ flex: 0.5 }}>
-                           <Text style={{ color: 'white', fontSize: 18 }}>Close Order</Text>
-                        </View>
-                     </View>
-                  </TouchableOpacity>
-               </View>
+                  </View>
+               </TouchableOpacity>
             </View>
          </JLayout>
       )
