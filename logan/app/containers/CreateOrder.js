@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import { JLayout } from '../components'
@@ -169,7 +170,7 @@ class CreateOrder extends Component {
    goTo = (routeName, param = null) => {
       this.props.dispatch(NavigationActions.navigate({ routeName, params: {
          id: param,
-         callback: () => this.refreshOrder
+         callback: this.refreshOrder
       } }))
    }
 
@@ -200,6 +201,37 @@ class CreateOrder extends Component {
       
    }
 
+   deleteOrderItem = record => {
+      Alert.alert(
+         'Confirmation',
+         'Are you sure you want to delete?',
+         [
+            {
+               text: 'Cancel',
+               onPress: () => console.log('Cancel Pressed'),
+               style: 'cancel',
+            },
+            {text: 'Delete', onPress: () => console.log('OK Pressed')},
+         ],
+         {cancelable: false},
+      )
+   }
+
+   voidOrder = () => {
+      Alert.alert(
+         'Confirmation',
+         'Are you sure you want to void this order?',
+         [
+            {
+               text: 'Cancel',
+               onPress: () => console.log('Cancel Pressed'),
+               style: 'cancel',
+            },
+            {text: 'Void', onPress: () => console.log('OK Pressed')},
+         ],
+         {cancelable: false},
+      )
+   }
 
    render() {
 
@@ -210,25 +242,25 @@ class CreateOrder extends Component {
             <ScrollView>
                {
                   !_.isEmpty(this.state.order) ? (
-                     <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails', this.state.order.id)} style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
+                     <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails', this.state.order.id)} style={{ margin: 3, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
                         <View>
                            <View style={{ flex: 1, flexDirection: 'row' }}>
                               <View style={{ flex: 0.5 }}>
-                                 <Text style={{ color: 'white' }}>{moment(this.state.order.pickup_datetime).format("MM/DD/YYYY")}</Text>
+                                 <Text style={{ color: 'white' }}>{moment(this.state.order.pickup_datetime).format("MM/DD/YYYY")} @ </Text><Text style={{ color: 'white' }}>{this.state.order.pickup_location}</Text>
                               </View>
                               <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                                 <Text style={{ color: 'white' }}>{this.state.order.pickup_location}</Text>
+                                 
                               </View>
                            </View>
                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{this.state.order.customer_name}</Text>
                            <Text style={{ color: 'white', fontSize: 15 }}>{this.state.order.customer_contact}</Text>
                         </View>
                      
-                        <View style={{ marginTop: 5 }}>
+                        <View style={{ marginTop: 3 }}>
                               <Text style={{ color: 'white' }}>{this.state.order.order_details}</Text>
                         </View>
                         
-                        <View style={{ flex: 1, flexDirection: 'row', marginTop: 5 }}>
+                        <View style={{ flex: 1, flexDirection: 'row', marginTop: 3 }}>
                            <View style={{ flex: 0.5 }}>
                               <Text style={{ color: 'white', fontWeight: 'bold' }}>{this.state.order.status}</Text>
                            </View>
@@ -239,7 +271,7 @@ class CreateOrder extends Component {
                      </TouchableOpacity>
                   ) : (
                      <TouchableOpacity onPress={() => this.goTo('CreateOrderDetails')}>
-                        <View style={{ margin: 5, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
+                        <View style={{ margin: 3, backgroundColor: '#1d6bc4', padding: 10, borderRadius: 3 }}>
                            <View style={{ flex: 0.5 }}>
                               <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Details</Text>
                            </View>
@@ -251,9 +283,7 @@ class CreateOrder extends Component {
                 <View>
                   {
                      _.map(this.state.order.order_items, (record, idx) => {
-
-                        return <View key={idx} style={{ flex: 1, flexDirection: 'row', marginBottom: 5, marginLeft: 5, marginRight: 5 }}>
-                           <View style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3  }}>
+                        return <TouchableOpacity onLongPress={() => this.deleteOrderItem(record)} key={idx} style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3  }}>
                               <View key={record.id}>
                                  <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
                                  <Text style={{ color: 'white', fontSize: 15 }}>{
@@ -262,23 +292,12 @@ class CreateOrder extends Component {
                                     })
                                  }</Text>
                               </View>
-                           </View>
-                           <View style={{ flex: 0.1, marginLeft: 5 }}>
-                              <TouchableOpacity>
-                                 <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0, height: 70 }}>
-                                    <View style={{ flex: 0.5 }}>
-                                       <Text style={{ color: 'white', fontSize: 18 }}>C</Text>
-                                    </View>
-                                 </View>
-                              </TouchableOpacity>
-                           </View>
-                        </View>
-
+                           </TouchableOpacity>
                      })
                   }
 
                   <TouchableOpacity onPress={() => this.goTo('CreateOrderItems')}>
-                     <View style={{ margin: 5, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                     <View style={{ margin: 3, backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>Add Order Items</Text>
                         </View>
@@ -288,7 +307,7 @@ class CreateOrder extends Component {
             </ScrollView>
 
             <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
-               <View style={{ flex: 0.7, marginLeft: 5, marginRight: 2.5 }}>
+               <View style={{ flex: 0.7, marginLeft: 3, marginRight: 2.5 }}>
                   <TouchableOpacity onPress={this.holdOrder}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
@@ -297,11 +316,11 @@ class CreateOrder extends Component {
                      </View>
                   </TouchableOpacity>
                </View>
-               <View style={{ flex: 0.3, marginRight: 5, marginLeft: 2.5 }}>
-                  <TouchableOpacity>
+               <View style={{ flex: 0.3, marginRight: 3, marginLeft: 2.5 }}>
+                  <TouchableOpacity onPress={this.voidOrder}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
-                           <Text style={{ color: 'white', fontSize: 18 }}>Cancel</Text>
+                           <Text style={{ color: 'white', fontSize: 18 }}>Void</Text>
                         </View>
                      </View>
                   </TouchableOpacity>
