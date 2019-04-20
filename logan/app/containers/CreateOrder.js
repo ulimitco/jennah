@@ -184,10 +184,19 @@ class CreateOrder extends Component {
                onPress: () => console.log('Cancel Pressed'),
                style: 'cancel',
             },
-            {text: 'Delete', onPress: () => console.log('OK Pressed')},
+            {text: 'Delete', onPress: () => this.onDeleteOrderItem(record)},
          ],
          {cancelable: false},
       )
+   }
+
+   onDeleteOrderItem = record => {
+      Realm.write(() => {
+         let itemObj = Realm.objects('OrderItems').filtered(`id = '${record.id}'`)
+         Realm.delete(itemObj)
+
+         this.refreshOrder()
+      })
    }
 
    voidOrder = () => {
@@ -215,11 +224,22 @@ class CreateOrder extends Component {
          Realm.delete(orders)
          Realm.delete(orderItems)
 
-         alert("Orders", "Successfully voided", [
-            {
-               text: "OK", onPress: () => this.setState({ order: [] }, () => this.refreshOrder())
-            }
-         ])
+         Alert.alert(
+            'Confirmation',
+            'Order successfully voided',
+            [
+               {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+               },
+               {text: 'Ok, Thanks', onPress: () => this.setState({ order: {}}, () => {
+                  this.refreshOrder()
+                  this.props.navigation.goBack()
+               })},
+            ],
+            {cancelable: false},
+         )
       })
    }
 
@@ -293,7 +313,7 @@ class CreateOrder extends Component {
                         </View>
                      </View>
                   </TouchableOpacity>
-               </View> 
+               </View>
             </ScrollView>
 
             <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 3 }}>
