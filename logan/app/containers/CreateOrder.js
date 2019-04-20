@@ -168,6 +168,11 @@ class CreateOrder extends Component {
       //get all orders including items
       //delete the current order on realm
       //alert success
+
+      let order = Realm.objects('Order')
+      let order_items = Realm.objects('OrderItem')
+
+      
    }
 
    onSubmitSuccess = responseData => {
@@ -293,12 +298,15 @@ class CreateOrder extends Component {
                 <View>
                   {
                      _.map(this.state.order.order_items, (record, idx) => {
+
+                        let dataObj = JSON.parse(record.item)
+                        
                         return <TouchableOpacity onLongPress={() => this.deleteOrderItem(record)} key={idx} style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginLeft: 3, marginRight: 3, marginBottom: 3  }}>
                               <View key={record.id}>
-                                 <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
+                                 <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {dataObj.item}</Text>
                                  <Text style={{ color: 'white', fontSize: 15 }}>{
                                     _.map(JSON.parse(record.item_details), item => {
-                                       return item.item + ' ' + item.value + ', '
+                                       return item.modifier.modifier_title + ' ' + item.value.value + ', '
                                     })
                                  }</Text>
                               </View>

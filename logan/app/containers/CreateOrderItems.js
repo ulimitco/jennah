@@ -23,6 +23,7 @@ class CreateOrderItems extends Component {
       selectedItem: '',
       selectedBranch: '',
       showSelector: false,
+      selectedItemObj: {},
 
       selectorItems: [],
       selectorFieldname: '',
@@ -85,7 +86,7 @@ class CreateOrderItems extends Component {
    itemSelect = () => {
       this.setState({ 
          selectorItems: this.state.itemsList, 
-         selectorFieldname: 'item', 
+         selectorFieldname: 'item',
          onItemPress: this.onItemSelect,
          showSelector: true 
       })
@@ -96,12 +97,12 @@ class CreateOrderItems extends Component {
       let itemsList = _.map(this.state.itemsList, record => {
 
          if(record.id === item.id)
-         item.selected = true
+            item.selected = true
          
          return record
       })
 
-      this.setState({ itemsList, selectedItem: item.item, showSelector: false })
+      this.setState({ itemsList, selectedItem: item.item, showSelector: false, selectedItemObj: item })
    }
 
    branchSelect = () => {
@@ -133,7 +134,12 @@ class CreateOrderItems extends Component {
          if(item.id === parentID){
 
             let modifiers = this.state.modifiers
-            modifiers.push({ item: item.modifier_title, value: subitem.value })
+
+
+            modifiers.push({ modifier: {
+               modifier_id: item.id,
+               modifier_title: item.modifier_title
+            }, value: subitem })
 
             this.setState({ modifiers })
 
@@ -143,9 +149,7 @@ class CreateOrderItems extends Component {
          return item
       })
 
-
-
-      this.setState({ modifiersList, showSelector: false }, () => console.log(this.state.modifiers))
+      this.setState({ modifiersList, showSelector: false })
    }
 
    showDatePicker = () => {
@@ -160,41 +164,8 @@ class CreateOrderItems extends Component {
       this.setState({ showDatePicker: false })
    }
 
-   // saveOrder = () => {
-   //   this.props.dispatch({
-   //     type: 'sales/saveOrder',
-   //     callback: (productList) => {
-   //       let itemsList = _.map(productList, item => {
-   //         item.selected = false
-   //         return item
-   //       })
-
-   //       this.setState({ itemsList })
-   //     }
-   //   })
-   // }
-
    updateField = (field, value) => {
       this.setState({ [field]: value })
-   }
-
-   onSubmit2 = () => {
-
-      let payload = {}
-
-      payload.order_details = this.state.order_details
-      payload.initial_payment = this.state.initial_payment
-      payload.pickup_datetime = moment(this.state.date).format('MM/DD/YYYY hh:mm:ss')
-      payload.sale_datetime = moment().format("MM/DD/YYYY hh:mm:ss")
-      payload.pickup_location = this.state.selectedBranch
-      payload.customer_name = this.state.customer_name
-      payload.customer_contact = this.state.customer_contact
-
-      this.props.dispatch({
-         type: 'sales/saveOrder',
-         payload,
-         callback: () => console.log('Called')
-      })
    }
 
    onSubmit = () => {
@@ -206,7 +177,7 @@ class CreateOrderItems extends Component {
          order.order_items.push({
             id: uuidv1(),
             qty: parseInt(this.state.qty),
-            item: this.state.selectedItem,
+            item: JSON.stringify(this.state.selectedItemObj),
             item_details: JSON.stringify(this.state.modifiers)
          })
       })
