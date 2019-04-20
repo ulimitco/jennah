@@ -152,20 +152,6 @@ class CreateOrder extends Component {
    onCloseDatePicker = () => {
       this.setState({ showDatePicker: false })
    }
-  
-  // saveOrder = () => {
-  //   this.props.dispatch({
-  //     type: 'sales/saveOrder',
-  //     callback: (productList) => {
-  //       let itemsList = _.map(productList, item => {
-  //         item.selected = false
-  //         return item
-  //       })
-  
-  //       this.setState({ itemsList })
-  //     }
-  //   })
-  // }
    
    goTo = (routeName, param = null) => {
       this.props.dispatch(NavigationActions.navigate({ routeName, params: {
@@ -179,22 +165,9 @@ class CreateOrder extends Component {
    }
 
    onSubmit = () => {
-      
-      let payload = {}
-      
-      payload.order_details = this.state.order_details
-      payload.initial_payment = this.state.initial_payment
-      payload.pickup_datetime = moment(this.state.date).format('MM/DD/YYYY hh:mm:ss')
-      payload.sale_datetime = moment().format("MM/DD/YYYY hh:mm:ss")
-      payload.pickup_location = this.state.selectedBranch
-      payload.customer_name = this.state.customer_name
-      payload.customer_contact = this.state.customer_contact
-      
-      this.props.dispatch({
-         type: 'sales/saveOrder',
-         payload,
-         callback: this.onSubmitSuccess
-      })
+      //get all orders including items
+      //delete the current order on realm
+      //alert success
    }
 
    onSubmitSuccess = responseData => {
@@ -227,10 +200,27 @@ class CreateOrder extends Component {
                onPress: () => console.log('Cancel Pressed'),
                style: 'cancel',
             },
-            {text: 'Void', onPress: () => console.log('OK Pressed')},
+            {text: 'Void', onPress: this.onVoidOrder},
          ],
          {cancelable: false},
       )
+   }
+
+   onVoidOrder = () => {
+
+      Realm.write(() => {
+         let orders = Realm.objects('Order')
+         let orderItems = Realm.objects('OrderItems')
+
+         Realm.delete(orders)
+         Realm.delete(orderItems)
+
+         alert("Orders", "Successfully voided", [
+            {
+               text: "OK", onPress: () => this.setState({ order: [] }, () => this.refreshOrder())
+            }
+         ])
+      })
    }
 
    render() {
@@ -246,10 +236,10 @@ class CreateOrder extends Component {
                         <View>
                            <View style={{ flex: 1, flexDirection: 'row' }}>
                               <View style={{ flex: 0.5 }}>
-                                 <Text style={{ color: 'white' }}>{moment(this.state.order.pickup_datetime).format("MM/DD/YYYY")} @ </Text><Text style={{ color: 'white' }}>{this.state.order.pickup_location}</Text>
+                                 <Text style={{ color: 'white' }}>{moment(this.state.order.pickup_datetime).format("MM/DD/YYYY")}</Text>
                               </View>
                               <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                                 
+                                 <Text style={{ color: 'white' }}>{this.state.order.pickup_location}</Text>
                               </View>
                            </View>
                            <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>{this.state.order.customer_name}</Text>
@@ -283,7 +273,7 @@ class CreateOrder extends Component {
                 <View>
                   {
                      _.map(this.state.order.order_items, (record, idx) => {
-                        return <TouchableOpacity onLongPress={() => this.deleteOrderItem(record)} key={idx} style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3  }}>
+                        return <TouchableOpacity onLongPress={() => this.deleteOrderItem(record)} key={idx} style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3, marginLeft: 3, marginRight: 3, marginBottom: 3  }}>
                               <View key={record.id}>
                                  <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
                                  <Text style={{ color: 'white', fontSize: 15 }}>{
@@ -306,8 +296,8 @@ class CreateOrder extends Component {
                </View> 
             </ScrollView>
 
-            <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
-               <View style={{ flex: 0.7, marginLeft: 3, marginRight: 2.5 }}>
+            <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 3 }}>
+               <View style={{ flex: 0.7, marginLeft: 3 }}>
                   <TouchableOpacity onPress={this.holdOrder}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
@@ -316,7 +306,7 @@ class CreateOrder extends Component {
                      </View>
                   </TouchableOpacity>
                </View>
-               <View style={{ flex: 0.3, marginRight: 3, marginLeft: 2.5 }}>
+               <View style={{ flex: 0.3, marginRight: 3, marginLeft: 3 }}>
                   <TouchableOpacity onPress={this.voidOrder}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
