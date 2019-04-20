@@ -45,19 +45,6 @@ class CreateOrder extends Component {
          this.setState({ order })
       }
    }
-
-   holdOrder = () => {
-      
-      let categories = Realm.objects('Category')
-      let head = _.head(categories)
-      //let cid = Realm.objectForPrimaryKey('Category', head.id);
-
-      let cat = head.items
-
-      Realm.write(() => {
-         cat.push({ id: uuidv1(), item: 'Item' + uuidv1() });
-      })
-   }
   
    getItemsList = () => {
       this.props.dispatch({
@@ -169,10 +156,10 @@ class CreateOrder extends Component {
       //delete the current order on realm
       //alert success
 
-      let order = Realm.objects('Order')
-      let order_items = Realm.objects('OrderItem')
+      let orders = Realm.objects('Order')
+      let order = _.head(orders)
 
-      
+      console.log(order)
    }
 
    onSubmitSuccess = responseData => {
@@ -238,7 +225,7 @@ class CreateOrder extends Component {
                   onPress: () => console.log('Cancel Pressed'),
                   style: 'cancel',
                },
-               {text: 'Ok, Thanks', onPress: () => this.setState({ order: {}}, () => {
+               {text: 'OK, Thanks', onPress: () => this.setState({ order: {}}, () => {
                   this.refreshOrder()
                   this.props.navigation.goBack()
                })},
@@ -326,7 +313,7 @@ class CreateOrder extends Component {
 
             <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 3 }}>
                <View style={{ flex: 0.7, marginLeft: 3 }}>
-                  <TouchableOpacity onPress={this.holdOrder}>
+                  <TouchableOpacity onPress={this.onSubmit}>
                      <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
                         <View style={{ flex: 0.5 }}>
                            <Text style={{ color: 'white', fontSize: 18 }}>Submit Orders</Text>
