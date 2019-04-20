@@ -169,7 +169,7 @@ class CreateOrder extends Component {
    goTo = (routeName, param = null) => {
       this.props.dispatch(NavigationActions.navigate({ routeName, params: {
          id: param,
-         callback: this.refreshOrder
+         callback: () => this.refreshOrder
       } }))
    }
 
@@ -204,7 +204,7 @@ class CreateOrder extends Component {
    render() {
 
       const { params } = this.props.navigation.state
-      
+
       return (
          <JLayout unpad noScroll>
             <ScrollView>
@@ -250,15 +250,30 @@ class CreateOrder extends Component {
 
                 <View>
                   {
-                     _.map(this.state.order.order_items, record => {
-                        return <View key={record.id} style={{ marginBottom: 5, marginLeft: 5, marginRight: 5, backgroundColor: '#ff911c', padding: 10, borderRadius: 3 }}>
-                           <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
-                           <Text style={{ color: 'white', fontSize: 15 }}>{
-                              _.map(JSON.parse(record.item_details), item => {
-                                 return item.item + ' ' + item.value + ', '
-                              })
-                           }</Text>
+                     _.map(this.state.order.order_items, (record, idx) => {
+
+                        return <View key={idx} style={{ flex: 1, flexDirection: 'row', marginBottom: 5, marginLeft: 5, marginRight: 5 }}>
+                           <View style={{ flex: 0.9, backgroundColor: '#ff911c', padding: 10, borderRadius: 3  }}>
+                              <View key={record.id}>
+                                 <Text style={{ color: 'white', fontSize: 18 }}>{record.qty} {record.item}</Text>
+                                 <Text style={{ color: 'white', fontSize: 15 }}>{
+                                    _.map(JSON.parse(record.item_details), item => {
+                                       return item.item + ' ' + item.value + ', '
+                                    })
+                                 }</Text>
+                              </View>
+                           </View>
+                           <View style={{ flex: 0.1, marginLeft: 5 }}>
+                              <TouchableOpacity>
+                                 <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0, height: 70 }}>
+                                    <View style={{ flex: 0.5 }}>
+                                       <Text style={{ color: 'white', fontSize: 18 }}>C</Text>
+                                    </View>
+                                 </View>
+                              </TouchableOpacity>
+                           </View>
                         </View>
+
                      })
                   }
 
@@ -272,14 +287,25 @@ class CreateOrder extends Component {
                </View> 
             </ScrollView>
 
-            <View style={{ position: 'absolute', bottom: 5 }}>
-               <TouchableOpacity style={{ width: '100%', marginLeft: 5, marginRight: 5 }}>
-                  <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
-                     <View style={{ flex: 0.5 }}>
-                        <Text style={{ color: 'white', fontSize: 18 }}>Close Order</Text>
+            <View style={{ flex: 1, flexDirection: 'row', position: 'absolute', bottom: 5 }}>
+               <View style={{ flex: 0.7, marginLeft: 5, marginRight: 2.5 }}>
+                  <TouchableOpacity onPress={this.holdOrder}>
+                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                        <View style={{ flex: 0.5 }}>
+                           <Text style={{ color: 'white', fontSize: 18 }}>Submit Orders</Text>
+                        </View>
                      </View>
-                  </View>
-               </TouchableOpacity>
+                  </TouchableOpacity>
+               </View>
+               <View style={{ flex: 0.3, marginRight: 5, marginLeft: 2.5 }}>
+                  <TouchableOpacity>
+                     <View style={{ backgroundColor: '#d3740e', padding: 10, borderRadius: 3, marginTop: 0 }}>
+                        <View style={{ flex: 0.5 }}>
+                           <Text style={{ color: 'white', fontSize: 18 }}>Cancel</Text>
+                        </View>
+                     </View>
+                  </TouchableOpacity>
+               </View>
             </View>
          </JLayout>
       )
