@@ -25,31 +25,31 @@ const AppNavigator = createStackNavigator(
     Main: { 
       screen: MainPage,
       navigationOptions: {
-				header: <JHeader title={'Today'} />,
+				header: <JHeader title={'Today'} logout/>,
 			},
     },
     OrderView: { 
       screen: OrderView,
       navigationOptions: ({ navigation }) => ({
-				header: <JHeader title={'Order View'} back navigation={navigation} whiteout />,
+				header: <JHeader title={'Order View'} back navigation={navigation} whiteout logout />,
 			}),
     },
     CreateOrder: { 
       screen: CreateOrder,
       navigationOptions: ({ navigation }) => ({
-				header: <JHeader title={'Create Order'} back navigation={navigation} whiteout removeData />,
+				header: <JHeader title={'Create Order'} back navigation={navigation} whiteout removeData logout />,
 			}),
     },
     CreateOrderDetails: { 
       screen: CreateOrderDetails,
       navigationOptions: ({ navigation }) => ({
-				header: <JHeader title={'Order Details'} back navigation={navigation} whiteout removeData />,
+				header: <JHeader title={'Order Details'} back navigation={navigation} whiteout removeData logout />,
 			}),
     },
     CreateOrderItems: { 
       screen: CreateOrderItems,
       navigationOptions: ({ navigation }) => ({
-				header: <JHeader title={'Order Items'} back navigation={navigation} whiteout removeData />,
+				header: <JHeader title={'Order Items'} back navigation={navigation} whiteout removeData logout />,
 			}),
     },
   },

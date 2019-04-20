@@ -66,8 +66,8 @@ export default class JHeader extends Component {
             </View>
             <View style={{ flex: 0.1, justifyContent: 'flex-end' }}>
               {
-                this.props.back ? <Icon
-                  name='arrow-right'
+                this.props.logout ? <Icon
+                  name='log-out'
                   type='feather'
                   size={23}
                   iconStyle={{ paddingTop: 2 }}

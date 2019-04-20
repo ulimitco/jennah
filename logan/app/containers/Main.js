@@ -38,7 +38,7 @@ class Main extends Component {
     return (
       <JLayout unpad>
 
-        <TouchableOpacity onPress={() => this.goTo('CreateOrder')}>
+        <TouchableOpacity onPress={() => this.goTo('CreateOrder')} style={{ margin: 3 }}>
           <View style={{ backgroundColor: 'rgba(229, 0, 76, 0.7)', padding: 15, borderWidth: 1, borderColor: '#fff', borderRadius: 5, flexDirection: 'row' }}>
             <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 30, color: 'white' }}>New Order</Text>
             <Icon name='arrow-right' type='feather' color='#fff' size={30} iconStyle={{ marginTop: 3, alignSelf: 'flex-end' }} />
@@ -47,7 +47,7 @@ class Main extends Component {
         
         <ScrollView>
 
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
+        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
           <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 20 }}>Today's Pickup</Text>
         </View>
 
@@ -88,7 +88,7 @@ class Main extends Component {
           }
 
 
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
+        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
           <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 20 }}>Standing Orders</Text>
         </View>
 
