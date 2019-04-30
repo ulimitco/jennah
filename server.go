@@ -71,6 +71,7 @@ func main() {
 	r.GET("/sales", ctl.GetSalesFunc(db))
 	r.GET("/sale/:id", ctl.GetSaleFunc(db))
 	r.POST("/sale", ctl.CreateSaleFunc(db))
+	r.POST("/test/submit", ctl.TestSumbit(db))
 	r.DELETE("/sale/:id", ctl.DeleteSaleFunc(db))
 
 	e.Logger.Fatal(e.Start(":8080"))

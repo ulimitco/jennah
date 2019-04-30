@@ -50,18 +50,32 @@ func GetSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 	}
 }
 
+type Orders struct {
+	ItemID int    `json:"item_id"`
+	Item   string `json:"item"`
+}
+
+func TestSumbit(db *sqlx.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		m := echo.Map{}
+		_ = c.Bind(&m)
+
+		return c.JSON(http.StatusCreated, R{"response": 1})
+	}
+}
+
 func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		m := echo.Map{}
-		errMap := c.Bind(&m)
+		_ = c.Bind(&m)
 
-		if errMap != nil {
-			return c.JSON(http.StatusNotFound, R{"response": errMap.Error()})
-		}
+		random := strconv.Itoa(rand.Int())
 
-		customer := &model.Customer{CustomerName: c.Param("customer_name"),
-			CustomerNumber:  m["customer_contact"].(string),
+		order := m["order"].(map[string]interface{})
+
+		customer := &model.Customer{CustomerName: order["customer_name"].(string),
+			CustomerNumber:  order["customer_contact"].(string),
 			CustomerEmail:   "n/a",
 			CustomerAddress: "n/a"}
 
@@ -71,15 +85,13 @@ func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 			return c.JSON(http.StatusCreated, R{"response": err.Error()})
 		}
 
-		random := strconv.Itoa(rand.Int())
-
 		sale := &model.Sale{
-			SaleDateTime:         m["sale_datetime"].(string),
-			SaleDispenseLocation: m["pickup_location"].(string),
-			SaleDispenseDateTime: m["pickup_datetime"].(string),
+			SaleDateTime:         order["sale_datetime"].(string),
+			SaleDispenseLocation: order["pickup_location"].(string),
+			SaleDispenseDateTime: order["pickup_datetime"].(string),
 			SaleNo:               random,
-			SaleDetails:          m["order_details"].(string),
-			SaleStatus:           "ORDER",
+			SaleDetails:          order["order_details"].(string),
+			SaleStatus:           order["status"].(string),
 			CustomerID:           strconv.Itoa(customerID)}
 
 		id, errSale := model.StoreSale(db, sale)

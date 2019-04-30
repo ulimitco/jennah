@@ -26,7 +26,6 @@ import Realm from 'realm';
          customer_name: {type: 'string', default: ''},
          customer_contact: {type: 'string', default: ''},
          status: {type: 'string', default: ''},
-         order_items: {type: 'list', objectType: 'OrderItem'},
       }  
    }
 

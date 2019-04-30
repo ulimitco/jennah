@@ -30,7 +30,8 @@ class CreateOrder extends Component {
       onItemPress: '',
       
       date: new Date(),
-      order: {}
+      order: {},
+      orderItems: []
    }
   
    componentDidMount () {
@@ -41,8 +42,10 @@ class CreateOrder extends Component {
       let orders = Realm.objects('Order')
       let order = _.head(orders)
 
+      let orderItems = Realm.objects('OrderItem')
+
       if(!_.isEmpty(order)){
-         this.setState({ order })
+         this.setState({ order, orderItems })
       }
    }
   
@@ -155,11 +158,21 @@ class CreateOrder extends Component {
       //get all orders including items
       //delete the current order on realm
       //alert success
-
       let orders = Realm.objects('Order')
       let order = _.head(orders)
 
-      console.log(order)
+      let orderItems = Realm.objects('OrderItem')
+
+      let payload = {
+         order,
+         orderItems
+      }
+
+      this.props.dispatch({
+         type: 'sales/saveOrder',
+         payload,
+         callback: () => console.log('Updates')
+      })
    }
 
    onSubmitSuccess = responseData => {
@@ -184,7 +197,7 @@ class CreateOrder extends Component {
 
    onDeleteOrderItem = record => {
       Realm.write(() => {
-         let itemObj = Realm.objects('OrderItems').filtered(`id = '${record.id}'`)
+         let itemObj = Realm.objects('OrderItem').filtered(`id = '${record.id}'`)
          Realm.delete(itemObj)
 
          this.refreshOrder()
@@ -284,7 +297,7 @@ class CreateOrder extends Component {
 
                 <View>
                   {
-                     _.map(this.state.order.order_items, (record, idx) => {
+                     _.map(this.state.orderItems, (record, idx) => {
 
                         let dataObj = JSON.parse(record.item)
                         

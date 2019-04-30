@@ -170,11 +170,8 @@ class CreateOrderItems extends Component {
 
    onSubmit = () => {
 
-      let orders = Realm.objects('Order')
-      let order = _.head(orders)
-
       Realm.write(() => {
-         order.order_items.push({
+         Realm.create('OrderItem', {
             id: uuidv1(),
             qty: parseInt(this.state.qty),
             item: JSON.stringify(this.state.selectedItemObj),

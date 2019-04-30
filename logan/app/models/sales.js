@@ -48,10 +48,7 @@ export default {
       rest.post('/api/v1/sale', payload).then(response => {
 
         if(!_.isEmpty(response.data)){
-          Realm.create('Auth', {
-            id: uuid(),
-            access_token: response.data.response.access_token
-          })
+
         } else {
           this.setState({ wrongPassword: true })
         }
