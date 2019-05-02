@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -44,8 +43,6 @@ func GetSaleItem(db *sqlx.DB, id int) (SaleItem, error) {
 
 //StoreSaleItem create new SaleItem
 func StoreSaleItem(db *sqlx.DB, saleItem *SaleItem) (int64, error) {
-
-	fmt.Println(saleItem.ItemID, saleItem.SaleID)
 
 	insertSaleItem := `INSERT INTO sale_items (
 		qty, 

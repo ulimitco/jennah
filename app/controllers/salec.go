@@ -131,8 +131,6 @@ func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 
 		for _, v := range data {
 
-			fmt.Println(v.ItemID)
-
 			saleItem := &model.SaleItem{
 				SRP:    v.SellPrice,
 				Qty:    v.Qty,
