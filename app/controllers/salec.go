@@ -106,44 +106,46 @@ func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 		saleID, errSale := model.StoreSale(db, sale)
 
 		if errSale != nil {
+			return c.JSON(http.StatusNotFound, R{"response": errSale.Error()})
+		}
 
-			myOrders, orderErr := json.Marshal(m["orderItems"])
+		myOrders, orderErr := json.Marshal(m["orderItems"])
 
-			if orderErr != nil {
-				return c.JSON(http.StatusNotFound, R{"response": orderErr.Error()})
+		if orderErr != nil {
+			return c.JSON(http.StatusNotFound, R{"response": orderErr.Error()})
+		}
+
+		type OrderItem struct {
+			ItemDetails string  `json:"item_details" db:"item_details"`
+			Status      string  `json:"status" db:"status"`
+			ItemID      string  `json:"item_id" db:"item_id"`
+			Item        string  `json:"item" db:"item"`
+			SellPrice   float32 `json:"sell_price" db:"sell_price"`
+			Qty         int     `json:"qty" db:"qty"`
+			ID          string  `json:"id" db:"id"`
+		}
+
+		var data map[string]OrderItem
+
+		_ = json.Unmarshal(myOrders, &data)
+
+		for _, v := range data {
+
+			fmt.Println(v.ItemID)
+
+			saleItem := &model.SaleItem{
+				SRP:    v.SellPrice,
+				Qty:    v.Qty,
+				Status: v.Status,
+				Item:   v.Item,
+				ItemID: v.ItemID,
+				SaleID: strconv.Itoa(saleID),
 			}
 
-			type OrderItem struct {
-				ItemDetails string  `json:"item_details" db:"item_details"`
-				Status      string  `json:"status" db:"status"`
-				ItemID      int     `json:"item_id" db:"item_id"`
-				Item        string  `json:"item" db:"item"`
-				SellPrice   float32 `json:"sell_price" db:"sell_price"`
-				Qty         int     `json:"qty" db:"qty"`
-				ID          string  `json:"id" db:"id"`
-			}
+			_, itemErr := model.StoreSaleItem(db, saleItem)
 
-			var data map[string]OrderItem
-
-			_ = json.Unmarshal(myOrders, &data)
-
-			for _, v := range data {
-
-				saleItem := &model.SaleItem{
-					SRP:    v.SellPrice,
-					Qty:    v.Qty,
-					Status: v.Status,
-					Item:   v.Item,
-					ItemID: strconv.Itoa(v.ItemID),
-					SaleID: strconv.Itoa(saleID),
-				}
-
-				_, itemErr := model.StoreSaleItem(db, saleItem)
-
-				if itemErr != nil {
-					return c.JSON(http.StatusNotFound, R{"response": itemErr.Error()})
-				}
-
+			if itemErr != nil {
+				return c.JSON(http.StatusNotFound, R{"response": itemErr.Error()})
 			}
 
 		}
