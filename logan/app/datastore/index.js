@@ -2,7 +2,7 @@
 
 import Realm from 'realm';
 
-   const AuthSchemaObject = {
+const AuthSchemaObject = {
    name: 'Auth',
    primaryKey: 'id',
    properties: {
@@ -11,9 +11,9 @@ import Realm from 'realm';
       bx: {type: 'string', default: ''},
       rx: {type: 'string', default: ''},
    }
-   }
+}
 
-   const OrderSchemaObject = {
+const OrderSchemaObject = {
    name: 'Order',
    primaryKey: 'id',
       properties: {
@@ -27,19 +27,21 @@ import Realm from 'realm';
          customer_contact: {type: 'string', default: ''},
          status: {type: 'string', default: ''},
       }  
-   }
+}
 
-   const OrderItemSchemaObject = {
+const OrderItemSchemaObject = {
    name: 'OrderItem',
    primaryKey: 'id',
       properties: {
          id: {type: 'string', default: ''},
          qty: {type: 'int', default: 0},
          item: {type: 'string', default: ''},
+         item_id: {type: 'string', default: ''},
+         sell_price: {type: 'double', default: 0.00 },
          item_details: {type: 'string', default: ''},
          status: {type: 'string', default: ''},
       }
-   }
+}
 
 class AuthSchema extends Realm.Object {}
 AuthSchema.schema = AuthSchemaObject

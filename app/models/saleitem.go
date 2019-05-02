@@ -5,12 +5,13 @@ import (
 )
 
 type SaleItem struct {
-	ID     int    `json:"id"`
-	SRP    string `json:"srp" db:"srp"`
-	Qty    string `json:"qty" db:"qty"`
-	Status string `json:"status" db:"status"`
-	ItemID string `json:"item_id" db:"item_id"`
-	SaleID string `json:"sale_id" db:"sale_id"`
+	ID     int     `json:"id"`
+	SRP    float32 `json:"srp" db:"srp"`
+	Qty    int     `json:"qty" db:"qty"`
+	Status string  `json:"status" db:"status"`
+	Item   string  `json:"item" db:"item"`
+	ItemID string  `json:"item_id" db:"item_id"`
+	SaleID string  `json:"sale_id" db:"sale_id"`
 }
 
 //GetSaleItems get all SaleItems

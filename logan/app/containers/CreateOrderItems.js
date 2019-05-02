@@ -135,13 +135,10 @@ class CreateOrderItems extends Component {
 
             let modifiers = this.state.modifiers
 
-
-            modifiers.push({ modifier: {
-               modifier_id: item.id,
-               modifier_title: item.modifier_title
-            }, value: subitem })
-
-            this.setState({ modifiers })
+            if(!_.isEmpty(this.state.modifiers))
+               this.setState({ modifiers: modifiers + `,${item.modifier_title} ${subitem.value}` })
+            else
+               this.setState({ modifiers: `${item.modifier_title} ${subitem.value}` })
 
             item.selectedValue = subitem.value
          }
@@ -170,12 +167,17 @@ class CreateOrderItems extends Component {
 
    onSubmit = () => {
 
+      console.log(this.state.selectedItemObj)
+
+
       Realm.write(() => {
          Realm.create('OrderItem', {
             id: uuidv1(),
             qty: parseInt(this.state.qty),
-            item: JSON.stringify(this.state.selectedItemObj),
-            item_details: JSON.stringify(this.state.modifiers)
+            item: this.state.selectedItemObj.item,
+            item_id: this.state.selectedItemObj.item_id.toString(),
+            sell_price: parseFloat(this.state.selectedItemObj.default_srp),
+            item_details: this.state.modifiers
          })
       })
 

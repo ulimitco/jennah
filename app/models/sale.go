@@ -43,7 +43,9 @@ func GetSale(db *sqlx.DB, id int) (Sale, error) {
 }
 
 //StoreSale create new sale
-func StoreSale(db *sqlx.DB, sale *Sale) (int64, error) {
+func StoreSale(db *sqlx.DB, sale *Sale) (int, error) {
+
+	var SaleID int
 
 	insertSale := `INSERT INTO sales (
 		sale_datetime, 
@@ -53,20 +55,20 @@ func StoreSale(db *sqlx.DB, sale *Sale) (int64, error) {
 		sale_details,
 		sale_status,
 		customer_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
-	_, err := db.Exec(insertSale,
+	err := db.QueryRowx(insertSale,
 		sale.SaleDateTime,
 		sale.SaleDispenseLocation,
 		sale.SaleDispenseDateTime,
 		sale.SaleNo,
 		sale.SaleDetails,
 		sale.SaleStatus,
-		sale.CustomerID)
+		sale.CustomerID).Scan(&SaleID)
 
 	if err != nil {
 		return 404, err
 	}
 
-	return 200, nil
+	return SaleID, nil
 }
 
 //DestroySale delete sale by id
