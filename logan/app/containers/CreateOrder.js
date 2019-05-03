@@ -171,12 +171,23 @@ class CreateOrder extends Component {
       this.props.dispatch({
          type: 'sales/saveOrder',
          payload,
-         callback: () => console.log('Updates')
+         callback: this.onSubmitSuccess
       })
    }
 
    onSubmitSuccess = responseData => {
-      
+      if(responseData.response === 200){
+			Realm.write(() => {
+				let order = Realm.objects('Order')
+				let orders = Realm.objects('OrderItem')
+
+				Realm.delete(order)
+				Realm.delete(orders)
+
+				this.refreshOrder()
+				this.props.navigation.goBack()
+			})
+      }
    }
 
    deleteOrderItem = record => {
@@ -344,4 +355,3 @@ class CreateOrder extends Component {
 }
     
 export default CreateOrder
-    

@@ -49,6 +49,9 @@ export default {
 
         if(!_.isEmpty(response.data)){
 
+            if(callback)
+              callback(response.data)
+
         } else {
           this.setState({ wrongPassword: true })
         }
