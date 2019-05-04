@@ -185,6 +185,8 @@ class CreateOrder extends Component {
 				Realm.delete(orders)
 
 				this.refreshOrder()
+
+				this.props.navigation.state.params.callback()
 				this.props.navigation.goBack()
 			})
       }

@@ -1,137 +1,127 @@
-import React, { Component } from 'react'
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { Icon, ListItem, Badge, Button } from 'react-native-elements'
+import React, {Component} from 'react'
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import {connect} from 'react-redux'
+import {Badge, Icon, ListItem} from 'react-native-elements'
 
-import { JText, JLayout, JButton } from '../components'
+import {JLayout} from '../components'
 
-import { NavigationActions } from '../utils'
+import {NavigationActions} from '../utils'
 import _ from 'lodash'
+import moment from 'moment'
 
-@connect(({ app }) => ({ ...app }))
+@connect(({app}) => ({...app}))
 class Main extends Component {
-  state = {
-    search: ''
-  }
+	state = {
+		search: '',
+		orders: []
+	}
 
-  updateSearch = search => {
-    this.setState({ search });
-  }
+	componentDidMount() {
+		this.fetchData()
+	}
 
-  goTo = (routeName, params = null) => {
-    this.props.dispatch(NavigationActions.navigate({ routeName, params }))
-  }
+	updateSearch = search => {
+		this.setState({search});
+	}
 
-  viewItem = (item) => {
-    this.goTo('OrderView', item)
-  }
+	fetchData = () => {
+		this.props.dispatch({
+			type: 'sales/getSales',
+			callback: (salesList) => {
 
-  render() {
+				this.setState({ orders: salesList })
+			}
+		})
+	}
 
-    var ordersList = [
-      { id: 1, order: '6" Chocolate Cake', pickupTime: '12:30PM', addon: 'Addon details', status: 'done', paymentStatus: 'partial', pickupLoc: 'Burgos', customer: 'Ace Jordan Lumaad', customerContact: '+639255055519' },
-      { id: 2, order: '2" Vanilla Cake', pickupTime: '2:30PM', addon: 'Addon details', status: 'pending', paymentStatus: 'full', pickupLoc: 'Estrella', customer: 'Gwen Lumaad', customerContact: '+639255055519' },
-      { id: 3, order: '3" Red Velvet', pickupTime: '8:00AM', addon: 'Addon details', status: 'processing', paymentStatus: 'partial', pickupLoc: 'Cogon', customer: 'Micah Lumaad', customerContact: '+639255055519' },
-      { id: 4, order: '6" Chocolate Cake', pickupTime: '4:30PM', addon: 'Addon details', status: 'pending', paymentStatus: 'nothing', pickupLoc: 'Estrella', customer: 'Caye Britanni Lumaad', customerContact: '+639255055519'  },
-    ]
+	goTo = (routeName, params = null) => {
+		this.props.dispatch(NavigationActions.navigate({routeName, params: {
+			callback: this.fetchData
+		}}))
+	}
 
-    return (
-      <JLayout unpad>
+	viewItem = (item) => {
+		this.goTo('OrderView', item)
+	}
 
-        <TouchableOpacity onPress={() => this.goTo('CreateOrder')} style={{ margin: 3 }}>
-          <View style={{ backgroundColor: 'rgba(229, 0, 76, 0.7)', padding: 15, borderWidth: 1, borderColor: '#fff', borderRadius: 5, flexDirection: 'row' }}>
-            <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 30, color: 'white' }}>New Order</Text>
-            <Icon name='arrow-right' type='feather' color='#fff' size={30} iconStyle={{ marginTop: 3, alignSelf: 'flex-end' }} />
-          </View>
-        </TouchableOpacity>
-        
-        <ScrollView>
+	render() {
 
-        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
-          <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 20 }}>Today's Pickup</Text>
-        </View>
+		return (
+			<JLayout unpad>
 
+				<TouchableOpacity onPress={() => this.goTo('CreateOrder')} style={{margin: 3}}>
+					<View style={{
+						backgroundColor: 'rgba(229, 0, 76, 0.7)',
+						padding: 15,
+						borderWidth: 1,
+						borderColor: '#fff',
+						borderRadius: 5,
+						flexDirection: 'row'
+					}}>
+						<Text style={{fontFamily: 'OpenSans-Semibold', fontSize: 30, color: 'white'}}>New Order</Text>
+						<Icon name='arrow-right' type='feather' color='#fff' size={30}
+								iconStyle={{marginTop: 3, alignSelf: 'flex-end'}}/>
+					</View>
+				</TouchableOpacity>
 
-          {
-            _.map(ordersList, (item, i) => {
-              return <ListItem
-                key={i}
-                onPress={() => this.viewItem(item)}
-                title={<Text style={{ fontWeight: 'bold', color: '#2d2d2d', fontSize: 18 }}>{item.order}</Text>}
-                subtitle={<View>
-                  <View>
-                    <Text style={{ fontSize: 16 }}>{item.addon}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ fontSize: 16 }}>Pickup {item.pickupTime} at {item.pickupLoc}</Text>
-                  </View>                      
-                </View>}
-                bottomDivider
-                leftElement={
-                  <View style={{ alignItems: 'center' }}>
-                    <View style={{ justifyContent: 'flex-start' }}><Text style={{ fontWeight: 'bold', color: 'red'}}>JUL</Text></View>
-                    <View><Text>15</Text></View>
-                  </View>
-                }
-                rightElement={() => {
-                  let type = 'success'
-                  
-                  switch(item.status){
-                    case 'pending': type = 'warning'; break
-                    default: type = 'success'
-                  }
-                  
-                  return <Badge value={item.status} status={type} />
-                }}
-              />
-            })
-          }
+				<ScrollView>
+
+					<View style={{marginTop: 20, marginBottom: 20, marginLeft: 20}}>
+						<Text style={{fontFamily: 'OpenSans-Semibold', fontSize: 20}}>Today's Pickup</Text>
+					</View>
 
 
-        <View style={{ marginTop: 20, marginBottom: 20, marginLeft: 20 }}>
-          <Text style={{ fontFamily: 'OpenSans-Semibold', fontSize: 20 }}>Standing Orders</Text>
-        </View>
+					{
+						_.map(this.state.orders, (item, i) => {
+							return <ListItem
+								key={i}
+								onPress={() => this.viewItem(item)}
+								title={<Text style={{fontWeight: 'bold', color: '#2d2d2d', fontSize: 18}}>{
+									_.map(item.Items, (itemR, idx) => {
+										if(idx === 0)
+											return itemR.qty + " " + itemR.item
+										else
+											return "," + itemR.qty + " " + itemR.item
+									})
+								}</Text>}
+								subtitle={<View>
+									<View>
+										<Text style={{fontSize: 16}}>{item.Order.sale_details}</Text>
+									</View>
+									<View>
+										<Text style={{fontSize: 16}}>Pickup {moment(item.Order.sale_dispense_datetime).format("HH:mmA")} at {item.sale_dispense_location}</Text>
+									</View>
+								</View>}
+								bottomDivider
+								leftElement={
+									<View style={{alignItems: 'center'}}>
+										<View style={{justifyContent: 'flex-start'}}><Text
+											style={{fontWeight: 'bold', color: 'red'}}>{moment(item.Order.sale_dispense_datetime).format("MMM")}</Text></View>
+										<View><Text>{moment(item.Order.sale_dispense_datetime).format("DD")}</Text></View>
+									</View>
+								}
+								rightElement={() => {
+									let type = 'success'
 
+									switch (item.status) {
+										case 'pending':
+											type = 'warning';
+											break
+										default:
+											type = 'success'
+									}
 
-        {
-            _.map(ordersList, (item, i) => {
-              return <ListItem
-                key={i}
-                onPress={() => this.viewItem(item)}
-                title={<Text style={{ fontWeight: 'bold', color: '#2d2d2d', fontSize: 18 }}>{item.order}</Text>}
-                subtitle={<View>
-                  <View>
-                    <Text style={{ fontSize: 16 }}>{item.addon}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ fontSize: 16 }}>Pickup {item.pickupTime} at {item.pickupLoc}</Text>
-                  </View>                      
-                </View>}
-                bottomDivider
-                leftElement={
-                  <View style={{ alignItems: 'center' }}>
-                    <View style={{ justifyContent: 'flex-start' }}><Text style={{ fontWeight: 'bold', color: 'red'}}>JUL</Text></View>
-                    <View><Text>15</Text></View>
-                  </View>
-                }
-                rightElement={() => {
-                  let type = 'success'
-                  
-                  switch(item.status){
-                    case 'pending': type = 'warning'; break
-                    default: type = 'success'
-                  }
-                  
-                  return <Badge value={item.status} status={type} />
-                }}
-              />
-            })
-          }
-        </ScrollView>
+									return <Badge value={item.status} status={type}/>
+								}}
+							/>
+						})
+					}
 
-      </JLayout>
-    )
-  }
+				</ScrollView>
+
+			</JLayout>
+		)
+	}
 }
 
 export default Main

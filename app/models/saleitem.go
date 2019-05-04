@@ -28,6 +28,20 @@ func GetSaleItems(db *sqlx.DB) ([]SaleItem, error) {
 	return objects, nil
 }
 
+//GetSaleItems get all SaleItems
+func GetSaleItemsBySaleID(db *sqlx.DB, id int) ([]SaleItem, error) {
+
+	objects := []SaleItem{}
+
+	err := db.Select(&objects, `SELECT * FROM sale_items where sale_id = $1`, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return objects, nil
+}
+
 //GetSaleItem get one SaleItem
 func GetSaleItem(db *sqlx.DB, id int) (SaleItem, error) {
 	var saleItem SaleItem
@@ -47,15 +61,17 @@ func StoreSaleItem(db *sqlx.DB, saleItem *SaleItem) (int64, error) {
 	insertSaleItem := `INSERT INTO sale_items (
 		qty, 
 		status, 
-		srp, 
+		srp,
 		item_id,
-		sale_id) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+		sale_id, 
+		item) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
 	_, err := db.Exec(insertSaleItem,
 		saleItem.Qty,
 		saleItem.Status,
 		saleItem.SRP,
 		saleItem.ItemID,
-		saleItem.SaleID)
+		saleItem.SaleID,
+		saleItem.Item)
 
 	if err != nil {
 		return 404, err

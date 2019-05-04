@@ -34,7 +34,7 @@ const OrderItemSchemaObject = {
    primaryKey: 'id',
       properties: {
          id: {type: 'string', default: ''},
-         qty: {type: 'int', default: 0},
+         qty: {type: 'string', default: '' },
          item: {type: 'string', default: ''},
          item_id: {type: 'string', default: ''},
          sell_price: {type: 'double', default: 0.00 },

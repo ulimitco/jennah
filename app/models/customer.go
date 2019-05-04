@@ -5,11 +5,11 @@ import (
 )
 
 type Customer struct {
-	ID              int    `json:"id"`
-	CustomerName    string `json:"customer_name"`
-	CustomerNumber  string `json:"customer_number"`
-	CustomerEmail   string `json:"customer_email"`
-	CustomerAddress string `json:"customer_address"`
+	ID              int    `json:"id" db:"id"`
+	CustomerName    string `json:"customer_name" db:"customer_name"`
+	CustomerNumber  string `json:"customer_number" db:"customer_number"`
+	CustomerEmail   string `json:"customer_email" db:"customer_email"`
+	CustomerAddress string `json:"customer_address" db:"customer_address"`
 }
 
 //GetCustomers get all customers

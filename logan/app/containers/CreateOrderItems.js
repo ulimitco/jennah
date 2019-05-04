@@ -32,7 +32,8 @@ class CreateOrderItems extends Component {
 
       onItemPress: '',
 
-      date: new Date()
+      date: new Date(),
+		qty: 0
    }
 
    componentDidMount () {
@@ -166,20 +167,23 @@ class CreateOrderItems extends Component {
    }
 
    onSubmit = () => {
+		let orderObj = {
+			id: uuidv1(),
+			qty: this.state.qty.toString(),
+			item: this.state.selectedItemObj.item,
+			item_id: this.state.selectedItemObj.item_id.toString(),
+			sell_price: parseFloat(this.state.selectedItemObj.default_srp),
+			item_details: this.state.modifiers
+		}
 
-      console.log(this.state.selectedItemObj)
+		try {
+			Realm.write(() => {
+				Realm.create('OrderItem', orderObj)
+			})
+		} catch(error) {
+			console.log("Error ", error)
+		}
 
-
-      Realm.write(() => {
-         Realm.create('OrderItem', {
-            id: uuidv1(),
-            qty: parseInt(this.state.qty),
-            item: this.state.selectedItemObj.item,
-            item_id: this.state.selectedItemObj.item_id.toString(),
-            sell_price: parseFloat(this.state.selectedItemObj.default_srp),
-            item_details: this.state.modifiers
-         })
-      })
 
       this.props.navigation.state.params.callback()
       this.props.navigation.goBack()
@@ -204,7 +208,7 @@ class CreateOrderItems extends Component {
             containerStyle={{ backgroundColor: '#fff' }}
             keyboardType={'numeric'}
             value={this.state.qty}
-            onChangeText={text => this.updateField('qty', text)}
+            onChangeText={text => this.updateField('qty',text)}
          />
 
          <ListItem

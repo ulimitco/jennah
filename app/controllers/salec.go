@@ -17,13 +17,48 @@ import (
 //GetSalesFunc - function that gets all sales
 func GetSalesFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
+
+		type OrderDTO struct {
+			Customer model.Customer
+			Order    model.Sale
+			Items    []model.SaleItem
+		}
+
 		sales, err := model.GetSales(db)
+
+		var OrdersDTO []OrderDTO
+		for _, sale := range sales {
+
+			//CustomerGet
+			customerID, _ := strconv.Atoi(sale.CustomerID)
+			customer, custErr := model.GetCustomer(db, customerID)
+
+			if custErr != nil {
+				fmt.Println(custErr.Error())
+			}
+
+			saleItems, itemErr := model.GetSaleItemsBySaleID(db, sale.ID)
+
+			if itemErr != nil {
+				fmt.Println(itemErr.Error())
+			}
+
+			orderObj := OrderDTO{
+				Customer: customer,
+				Order:    sale,
+				Items:    saleItems,
+			}
+
+			fmt.Println(orderObj)
+
+			OrdersDTO = append(OrdersDTO, orderObj)
+		}
 
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 
-		return c.JSON(http.StatusOK, sales)
+		return c.JSON(http.StatusOK, OrdersDTO)
 	}
 }
 
@@ -121,7 +156,7 @@ func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 			ItemID      string  `json:"item_id" db:"item_id"`
 			Item        string  `json:"item" db:"item"`
 			SellPrice   float32 `json:"sell_price" db:"sell_price"`
-			Qty         int     `json:"qty" db:"qty"`
+			Qty         string  `json:"qty" db:"qty"`
 			ID          string  `json:"id" db:"id"`
 		}
 
@@ -131,9 +166,11 @@ func CreateSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 
 		for _, v := range data {
 
+			qty, _ := strconv.Atoi(v.Qty)
+
 			saleItem := &model.SaleItem{
 				SRP:    v.SellPrice,
-				Qty:    v.Qty,
+				Qty:    qty,
 				Status: v.Status,
 				Item:   v.Item,
 				ItemID: v.ItemID,
