@@ -67,9 +67,8 @@ class Main extends Component {
 				<ScrollView>
 
 					<View style={{marginTop: 20, marginBottom: 20, marginLeft: 20}}>
-						<Text style={{fontFamily: 'OpenSans-Semibold', fontSize: 20}}>Today's Pickup</Text>
+						<Text style={{fontFamily: 'OpenSans-Semibold', fontSize: 20}}>Orders</Text>
 					</View>
-
 
 					{
 						_.map(this.state.orders, (item, i) => {
@@ -89,7 +88,7 @@ class Main extends Component {
 										<Text style={{fontSize: 16}}>{item.Order.sale_details}</Text>
 									</View>
 									<View>
-										<Text style={{fontSize: 16}}>Pickup {moment(item.Order.sale_dispense_datetime).format("HH:mmA")} at {item.sale_dispense_location}</Text>
+										<Text style={{fontSize: 16}}>Pickup {moment(item.Order.sale_dispense_datetime).format("HH:mmA")} at {item.Order.sale_dispense_location}</Text>
 									</View>
 								</View>}
 								bottomDivider

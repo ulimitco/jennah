@@ -19,8 +19,7 @@ class OrderView extends Component {
   }
 
   render() {
-      //{ id: 1, order: '6" Chocolate Cake', pickupTime: '12:30PM', addon: 'Addon details', status: 'done', pickupLoc: 'Burgos' },
-    
+
     const { params } = this.props.navigation.state
     
     let statColor = 'black'
