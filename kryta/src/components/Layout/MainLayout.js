@@ -42,7 +42,10 @@ export default class MainLayout extends React.Component {
         break
       case '/admin/modifiers':
         this.setState({ pageTitle: 'modifiers' })
-        break        
+        break
+      case '/admin/orders':
+        this.setState({ pageTitle: 'orders' })
+        break
       default:
         this.setState({ pageTitle: this.props.pageTitle })
         break
@@ -87,6 +90,9 @@ export default class MainLayout extends React.Component {
                   </Menu.Item>
                   <Menu.Item key="/admin/modifiers">
                     <Icon type="setting" />Manage Modifiers
+                  </Menu.Item>
+                  <Menu.Item key="/admin/orders">
+                    <Icon type="setting" />Manage Orders
                   </Menu.Item>
                   <Menu.Item key="/admin/settings">
                     <Icon type="setting" />Settings

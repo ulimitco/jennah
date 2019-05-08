@@ -6,6 +6,7 @@ export { default as AdminSuppliersMgmt } from './Pages/Admin/AdminSuppliersMgmt'
 export { default as AdminModifierMgmt } from './Pages/Admin/AdminModifierMgmt'
 export { default as AdminSettings } from './Pages/Admin/AdminSettings'
 export { default as AdminBranchesMgmt } from './Pages/Admin/AdminBranchesMgmt'
+export { default as AdminOrders } from './Pages/Admin/AdminOrders'
 
 export { default as BranchDashboard } from './Pages/Branch/BranchDashboard'
 

@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
-import { Icon, ListItem, Badge, Button, Divider } from 'react-native-elements'
+import { Icon, Divider } from 'react-native-elements'
 
-import { JText, JLayout, JButton } from '../components'
-
-import { NavigationActions } from '../utils'
-import _ from 'lodash'
+import { JText, JLayout } from '../components'
 
 @connect(({ app }) => ({ ...app }))
 class OrderView extends Component {

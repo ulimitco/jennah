@@ -10,6 +10,7 @@ import {
   AdminBranchesMgmt,
   AdminModifierMgmt,
   InventoryMgmt,
+  AdminOrders
 } from 'components'
 
 import { Route } from 'react-router-dom'
@@ -27,6 +28,7 @@ export default class AdminContainer extends React.Component {
         <Route path={'/admin/inventories'} exact render={() => <InventoryMgmt {...this.props} />} />
         <Route path={'/admin/modifiers'} exact render={() => <AdminModifierMgmt {...this.props} />} />
         <Route path={'/admin/settings'} exact render={() => <AdminSettings {...this.props} />} />
+        <Route path={'/admin/orders'} exact render={() => <AdminOrders {...this.props} />} />
       </MainLayout>
     )
   }

@@ -62,6 +62,18 @@ func GetSalesFunc(db *sqlx.DB) echo.HandlerFunc {
 	}
 }
 
+func GetAllSales(db *sqlx.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		sales, err := model.GetSales(db)
+
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+
+		return c.JSON(http.StatusOK, sales)
+	}
+}
+
 func GetSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
