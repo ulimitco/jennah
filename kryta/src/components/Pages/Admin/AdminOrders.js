@@ -40,7 +40,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong style={{ color: '#eb2f96' }}>Pending Orders</strong>}>
                {
                   _.map(this.state.pending, sale => {
-                     return <SaleCard data={sale} status={'pending'} icon={<a href='#' onClick={() => alert("Pending")}><Icon type='setting' theme='twoTone' twoToneColor='#eb2f96' /></a>} />
+                     return <SaleCard style={{ borderColor: '#eb2f96', marginBottom: 10 }} data={sale} status={'pending'} icon={<a href='#' onClick={() => alert("Pending")}><Icon type='setting' theme='twoTone' twoToneColor='#eb2f96' /></a>} />
                   })
                }
             </Card>
@@ -50,7 +50,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong style={{ color: 'blue' }}>Processing Orders</strong>}>
                {
                   _.map(this.state.processing, sale => {
-                  return <SaleCard data={sale} status={'processing'} icon={<a href='#' onClick={() => alert("Processing")}><Icon type='setting' theme='twoTone' twoToneColor='blue' /></a>} />
+                  return <SaleCard style={{ borderColor: 'blue', marginBottom: 10 }} data={sale} status={'processing'} icon={<a href='#' onClick={() => alert("Processing")}><Icon type='setting' theme='twoTone' twoToneColor='blue' /></a>} />
                   })
                }
             </Card>
@@ -59,7 +59,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong style={{ color: 'green' }}>Done Orders</strong>}>
                {
                   _.map(this.state.done, sale => {
-                     return <SaleCard data={sale} status={'done'} icon={<a href='#' onClick={() => alert("Done")}><Icon type='setting' theme='twoTone' twoToneColor='green' /></a>} />
+                     return <SaleCard style={{ borderColor: 'green', marginBottom: 10 }} data={sale} status={'done'} icon={<a href='#' onClick={() => alert("Done")}><Icon type='setting' theme='twoTone' twoToneColor='green' /></a>} />
                   })
                }
             </Card>

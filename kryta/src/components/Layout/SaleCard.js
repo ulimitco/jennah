@@ -7,7 +7,7 @@ class SaleCard extends React.Component {
 
       return (
          <List
-            style={{ marginBottom: 10 }}
+            style={this.props.style}
             size="small"
             header={
                <Row>
