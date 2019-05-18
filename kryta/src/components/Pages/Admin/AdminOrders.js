@@ -1,5 +1,6 @@
 import React from 'react'
 import { Row, Col, Card } from 'antd'
+import { SaleCard } from 'components'
 import { _getSales } from '../../../rest/sales.api'
 import _ from 'lodash'
 
@@ -45,7 +46,7 @@ class AdminOrders extends React.Component {
           >
             {
               _.map(this.state.pending, sale => {
-                return <p>{sale.sale_no}</p>
+                return <SaleCard title={sale.sale_no} />
               })
             }
           </Card>
@@ -58,7 +59,7 @@ class AdminOrders extends React.Component {
           >
             {
               _.map(this.state.processing, sale => {
-                return <p>{sale.sale_no}</p>
+                return <SaleCard title={sale.sale_no} />
               })
             }
 
@@ -72,7 +73,7 @@ class AdminOrders extends React.Component {
           >
             {
               _.map(this.state.fordelivery, sale => {
-                return <p>{sale.sale_no}</p>
+                return <SaleCard title={sale.sale_no} />
               })
             }
 
@@ -86,7 +87,7 @@ class AdminOrders extends React.Component {
           >
             {
               _.map(this.state.done, sale => {
-                return <p>{sale.sale_no}</p>
+                return <SaleCard title={sale.sale_no} />
               })
             }
 

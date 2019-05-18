@@ -17,7 +17,7 @@ const CheckAuthentication = (Component, AllowedRoles) => {
     }
   }
 
-  return checkAuth ? Component : <Redirect to="/login" />
+  return !_.isEmpty(localStorage.getItem('access_token')) ? Component : <Redirect to="/login" />
 }
 
 const ActOnBranch = (method, name = null, value = null) => {
