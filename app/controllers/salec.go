@@ -18,47 +18,13 @@ import (
 func GetSalesFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		type OrderDTO struct {
-			Customer model.Customer
-			Order    model.Sale
-			Items    []model.SaleItem
-		}
-
 		sales, err := model.GetSales(db)
-
-		var OrdersDTO []OrderDTO
-		for _, sale := range sales {
-
-			//CustomerGet
-			customerID, _ := strconv.Atoi(sale.CustomerID)
-			customer, custErr := model.GetCustomer(db, customerID)
-
-			if custErr != nil {
-				fmt.Println(custErr.Error())
-			}
-
-			saleItems, itemErr := model.GetSaleItemsBySaleID(db, sale.ID)
-
-			if itemErr != nil {
-				fmt.Println(itemErr.Error())
-			}
-
-			orderObj := OrderDTO{
-				Customer: customer,
-				Order:    sale,
-				Items:    saleItems,
-			}
-
-			fmt.Println(orderObj)
-
-			OrdersDTO = append(OrdersDTO, orderObj)
-		}
 
 		if err != nil {
 			fmt.Println(err.Error())
 		}
 
-		return c.JSON(http.StatusOK, OrdersDTO)
+		return c.JSON(http.StatusOK, sales)
 	}
 }
 

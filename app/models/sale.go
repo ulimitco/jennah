@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strconv"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -15,10 +17,23 @@ type Sale struct {
 	CustomerID           string `json:"customer_id" db:"customer_id"`
 }
 
+type SaleWithItems struct {
+	ID                   int    `json:"id"`
+	SaleDateTime         string `json:"sale_datetime" db:"sale_datetime"`
+	SaleDispenseLocation string `json:"sale_dispense_location" db:"sale_dispense_location"`
+	SaleDispenseDateTime string `json:"sale_dispense_datetime" db:"sale_dispense_datetime"`
+	SaleNo               string `json:"sale_no" db:"sale_no"`
+	SaleDetails          string `json:"sale_details" db:"sale_details"`
+	SaleStatus           string `json:"sale_status" db:"sale_status"`
+	Customer             Customer
+	SaleItems            []SaleItem
+}
+
 //GetSales get all sales
-func GetSales(db *sqlx.DB) ([]Sale, error) {
+func GetSales(db *sqlx.DB) ([]SaleWithItems, error) {
 
 	objects := []Sale{}
+	objectsWithItems := []SaleWithItems{}
 
 	err := db.Select(&objects, "SELECT * FROM sales")
 
@@ -26,7 +41,26 @@ func GetSales(db *sqlx.DB) ([]Sale, error) {
 		return nil, err
 	}
 
-	return objects, nil
+	for _, obj := range objects {
+
+		cID, _ := strconv.Atoi(obj.CustomerID)
+		customer, _ := GetCustomer(db, cID)
+		items, _ := GetSaleItemsBySaleID(db, obj.ID)
+
+		objectsWithItems = append(objectsWithItems, SaleWithItems{
+			ID:                   obj.ID,
+			SaleDateTime:         obj.SaleDateTime,
+			SaleDispenseLocation: obj.SaleDispenseLocation,
+			SaleDispenseDateTime: obj.SaleDispenseDateTime,
+			SaleNo:               obj.SaleNo,
+			SaleDetails:          obj.SaleDetails,
+			SaleStatus:           obj.SaleStatus,
+			Customer:             customer,
+			SaleItems:            items,
+		})
+	}
+
+	return objectsWithItems, nil
 }
 
 //GetSale get one sale

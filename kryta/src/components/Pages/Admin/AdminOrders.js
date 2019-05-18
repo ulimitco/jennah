@@ -20,10 +20,10 @@ class AdminOrders extends React.Component {
    }
 
    fetchSuccess = orders => {
-      
-      let pending = _.filter(orders, p => p.Order.sale_status == 'PENDING')
-      let processing = _.filter(orders, p => p.Order.sale_status == 'PROCESSING')
-      let done = _.filter(orders, p => p.Order.sale_status == 'DONE')
+
+      let pending = _.filter(orders, p => p.sale_status === 'PENDING')
+      let processing = _.filter(orders, p => p.sale_status === 'PROCESSING')
+      let done = _.filter(orders, p => p.sale_status === 'DONE')
 
       this.setState({
          pending,
@@ -39,8 +39,8 @@ class AdminOrders extends React.Component {
 
             <Card size="small" title={<strong>Pending Orders</strong>}>
                {
-                  _.map(this.state.pending.Order, sale => {
-                     return <SaleCard title={sale.sale_no} status={'pending'} />
+                  _.map(this.state.pending, sale => {
+                     return <SaleCard data={sale} status={'pending'} />
                   })
                }
             </Card>
@@ -49,8 +49,8 @@ class AdminOrders extends React.Component {
          <Col span={8} style={{ paddingRight: 5 }}>
             <Card size="small" title={<strong>Processing Orders</strong>}>
                {
-                  _.map(this.state.processing.Order, sale => {
-                     return <SaleCard title={sale.sale_no} status={'processing'} />
+                  _.map(this.state.processing, sale => {
+                     return <SaleCard data={sale} status={'processing'} />
                   })
                }
             </Card>
@@ -58,8 +58,8 @@ class AdminOrders extends React.Component {
          <Col span={8}>
             <Card size="small" title={<strong>Done Orders</strong>}>
                {
-                  _.map(this.state.done.Order, sale => {
-                     return <SaleCard title={sale.sale_no} status={'done'} />
+                  _.map(this.state.done, sale => {
+                     return <SaleCard data={sale} status={'done'} />
                   })
                }
             </Card>
