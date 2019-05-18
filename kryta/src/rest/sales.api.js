@@ -1,7 +1,7 @@
 import { get, post, destroy } from '../rest'
 
 export let _getSales = (callback = null) => {
-  get('/api/v1/all_sales')
+  get('/api/v1/sales')
     .then(response => {
       if (callback) callback(response.data)
     })
