@@ -43,7 +43,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong>Pending Orders</strong>}>
                {
                   _.map(this.state.pending, sale => {
-                     return <SaleCard title={sale.sale_no} />
+                     return <SaleCard title={sale.sale_no} status={'pending'} />
                   })
                }
             </Card>
@@ -53,7 +53,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong>Processing Orders</strong>}>
                {
                   _.map(this.state.processing, sale => {
-                     return <SaleCard title={sale.sale_no} />
+                     return <SaleCard title={sale.sale_no} status={'processing'} />
                   })
                }
             </Card>
@@ -62,7 +62,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong>Done Orders</strong>}>
                {
                   _.map(this.state.done, sale => {
-                     return <SaleCard title={sale.sale_no} />
+                     return <SaleCard title={sale.sale_no} status={'done'} />
                   })
                }
             </Card>
