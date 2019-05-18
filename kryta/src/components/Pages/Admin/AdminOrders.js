@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Icon } from 'antd'
 import { SaleCard } from 'components'
 import { _getSales } from '../../../rest/sales.api'
 import _ from 'lodash'
@@ -40,7 +40,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong>Pending Orders</strong>}>
                {
                   _.map(this.state.pending, sale => {
-                     return <SaleCard data={sale} status={'pending'} />
+                     return <SaleCard data={sale} status={'pending'} icon={<Icon type="right-circle" />} />
                   })
                }
             </Card>
@@ -50,7 +50,7 @@ class AdminOrders extends React.Component {
             <Card size="small" title={<strong>Processing Orders</strong>}>
                {
                   _.map(this.state.processing, sale => {
-                     return <SaleCard data={sale} status={'processing'} />
+                  return <SaleCard data={sale} status={'processing'} icon={<Icon type="sync" spin />}/>
                   })
                }
             </Card>
