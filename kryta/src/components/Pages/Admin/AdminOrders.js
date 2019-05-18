@@ -37,29 +37,29 @@ class AdminOrders extends React.Component {
          <Row style={{ marginBottom: 10 }}>
          <Col span={8} style={{ paddingRight: 5 }}>
 
-            <Card size="small" title={<strong>Pending Orders</strong>}>
+            <Card size="small" title={<strong style={{ color: '#eb2f96' }}>Pending Orders</strong>}>
                {
                   _.map(this.state.pending, sale => {
-                     return <SaleCard data={sale} status={'pending'} icon={<Icon type="right-circle" />} />
+                     return <SaleCard data={sale} status={'pending'} icon={<a href='#' onClick={() => alert("Pending")}><Icon type='setting' theme='twoTone' twoToneColor='#eb2f96' /></a>} />
                   })
                }
             </Card>
 
          </Col>
          <Col span={8} style={{ paddingRight: 5 }}>
-            <Card size="small" title={<strong>Processing Orders</strong>}>
+            <Card size="small" title={<strong style={{ color: 'blue' }}>Processing Orders</strong>}>
                {
                   _.map(this.state.processing, sale => {
-                  return <SaleCard data={sale} status={'processing'} icon={<Icon type="sync" spin />}/>
+                  return <SaleCard data={sale} status={'processing'} icon={<a href='#' onClick={() => alert("Processing")}><Icon type='setting' theme='twoTone' twoToneColor='blue' /></a>} />
                   })
                }
             </Card>
          </Col>
          <Col span={8}>
-            <Card size="small" title={<strong>Done Orders</strong>}>
+            <Card size="small" title={<strong style={{ color: 'green' }}>Done Orders</strong>}>
                {
                   _.map(this.state.done, sale => {
-                     return <SaleCard data={sale} status={'done'} />
+                     return <SaleCard data={sale} status={'done'} icon={<a href='#' onClick={() => alert("Done")}><Icon type='setting' theme='twoTone' twoToneColor='green' /></a>} />
                   })
                }
             </Card>
