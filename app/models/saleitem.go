@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+//SaleItem - function SaleItem
 type SaleItem struct {
 	ID     int     `json:"id"`
 	SRP    float32 `json:"srp" db:"srp"`
@@ -28,7 +29,7 @@ func GetSaleItems(db *sqlx.DB) ([]SaleItem, error) {
 	return objects, nil
 }
 
-//GetSaleItems get all SaleItems
+//GetSaleItemsBySaleID - function GetSaleItemsBySaleID
 func GetSaleItemsBySaleID(db *sqlx.DB, id int) ([]SaleItem, error) {
 
 	objects := []SaleItem{}

@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+//Supplier struct Supplier
 type Supplier struct {
 	ID              int    `json:"id" db:"id"`
 	SupplierCode    string `json:"supplier_code" db:"supplier_code"`
