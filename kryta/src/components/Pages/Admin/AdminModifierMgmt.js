@@ -125,7 +125,7 @@ class AdminModifierMgmt extends React.Component {
 
   addContent = () => {
     let contentData = this.state.contentData
-    contentData.push({ id: uuidv1(), value: this.props.form.getFieldValue('modifier_content_unit') })
+    contentData.push({ id: uuidv1(), value: this.props.form.getFieldValue('modifier_content_unit'), price: this.props.form.getFieldValue('modifier_content_price') })
 
     this.setState({ contentData })
   }
@@ -151,7 +151,7 @@ class AdminModifierMgmt extends React.Component {
           <span>
             {
               _.map(JSON.parse(record.modifier_items), rec => {
-                return rec.value + ','
+                return rec.value + '(' + rec.price + ')' + ','
               })
             }
           </span>
@@ -214,12 +214,20 @@ class AdminModifierMgmt extends React.Component {
             <Divider orientation={"left"}>Modifier Contents</Divider>
 
             <Row>
-              <Col span={18} style={{ paddingRight: 10 }}>
+              <Col span={12} style={{ paddingRight: 10 }}>
                 <JInput
                   gfd={getFieldDecorator}
                   message={'Add modifier content'}
                   name={'modifier_content_unit'}
                   placeholder={'Add modifier content'}
+                />
+              </Col>
+              <Col span={6} style={{ paddingRight: 10 }}>
+                <JInput
+                  gfd={getFieldDecorator}
+                  message={'Price'}
+                  name={'modifier_content_price'}
+                  placeholder={'Price'}
                 />
               </Col>
               <Col span={6} style={{ paddingTop: 3 }}>
@@ -237,7 +245,7 @@ class AdminModifierMgmt extends React.Component {
                 <List.Item>
                   <Row style={{ width: '100%' }}>
                     <Col span={12}>
-                      {item.value}
+                      {item.value} - {item.price}
                     </Col>
                     <Col span={12} style={{ textAlign: 'right' }}>
                       <Button size={'small'} type={'danger'} onClick={() => this.removeContent(item)}>
