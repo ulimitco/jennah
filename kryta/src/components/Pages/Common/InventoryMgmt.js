@@ -170,17 +170,6 @@ class InventoryMgmt extends React.Component {
         dataIndex: 'item',
       },
       {
-        title: 'Units/Pkg',
-        dataIndex: 'uom',
-        render: (text, record) => {
-          if(record.packaging === record.uom){
-            return <span>{record.package_qty}{record.uom}</span>
-          } else {
-            return <span>{record.package_qty}{record.uom}/{record.packaging}</span>
-          }
-        }
-      },
-      {
         title: 'IN',
         dataIndex: 'qty_in',
         width: 80,

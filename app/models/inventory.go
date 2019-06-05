@@ -84,12 +84,15 @@ func StoreInventories(db *sqlx.DB, binv *BatchInventory) (int64, error) {
 			return 404, err3
 		}
 
+		unitCost, _ := strconv.ParseFloat(item.DefaultUnitCost, 64)
+		unitSRP, _ := strconv.ParseFloat(item.DefaultSRP, 64)
+
 		inventory := Inventory{
 			InventoryType: "PRODUCTION",
 			QtyIN:         int64(qtyIn),
 			QtyOUT:        0,
-			UnitCost:      item.DefaultUnitCost,
-			SRP:           item.DefaultSRP,
+			UnitCost:      unitCost,
+			SRP:           unitSRP,
 			ItemID:        int64(item.ID),
 			BranchID:      int64(binv.BranchTo),
 			TransferID:    id,

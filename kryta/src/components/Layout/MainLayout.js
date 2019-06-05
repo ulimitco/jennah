@@ -82,21 +82,21 @@ export default class MainLayout extends React.Component {
                   <Menu.Item key="/admin/items">
                     <Icon type="rest" />Items Master File
                   </Menu.Item>
-                  <Menu.Item key="/admin/suppliers">
-                    <Icon type="car" />Manage Suppliers
-                  </Menu.Item>
-                  <Menu.Item key="/admin/inventories">
-                    <Icon type="setting" />Inventory Mgmt
-                  </Menu.Item>
                   <Menu.Item key="/admin/modifiers">
                     <Icon type="setting" />Manage Modifiers
+                  </Menu.Item>
+                  {/* <Menu.Item key="/admin/suppliers">
+                    <Icon type="car" />Manage Suppliers
+                  </Menu.Item> */}
+                  <Menu.Item key="/admin/inventories">
+                    <Icon type="setting" />Inventory Mgmt
                   </Menu.Item>
                   <Menu.Item key="/admin/orders">
                     <Icon type="setting" />Manage Orders
                   </Menu.Item>
-                  <Menu.Item key="/admin/settings">
+                  {/* <Menu.Item key="/admin/settings">
                     <Icon type="setting" />Settings
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </MenuItemGroup>
               </Menu>
             </Col>

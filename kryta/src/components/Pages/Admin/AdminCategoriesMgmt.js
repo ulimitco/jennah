@@ -78,7 +78,7 @@ class AdminCategoriesMgmt extends React.Component {
       description: record.description,
     })
 
-    this.setState({ visible: true }, () => console.log(this.state.record))
+    this.setState({ visible: true })
   }
 
   deleteSuccess = data => {

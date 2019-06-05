@@ -76,7 +76,25 @@ func DeleteBranchFunc(db *sqlx.DB) echo.HandlerFunc {
 		_, berr := model.DestroyBranch(db, id)
 
 		if berr != nil {
-			return c.JSON(http.StatusInternalServerError, R{"response": err.Error()})
+			return c.JSON(http.StatusInternalServerError, R{"response": berr.Error()})
+		}
+
+		return c.JSON(http.StatusCreated, R{"response": 200})
+	}
+}
+
+func SoftDeleteBranchFunc(db *sqlx.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+
+		if err != nil {
+			return c.JSON(404, R{"response": "branch id is required"})
+		}
+
+		_, berr := model.DestroyBranch(db, id)
+
+		if berr != nil {
+			return c.JSON(http.StatusInternalServerError, R{"response": berr.Error()})
 		}
 
 		return c.JSON(http.StatusCreated, R{"response": 200})

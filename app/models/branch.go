@@ -53,6 +53,7 @@ func StoreBranch(db *sqlx.DB, branch *Branch) (int64, error) {
 
 //DestroyBranch delete branch by id
 func DestroyBranch(db *sqlx.DB, id int) (int64, error) {
+
 	_, err := db.Exec("DELETE FROM branches WHERE id=$1", id)
 
 	if err != nil {

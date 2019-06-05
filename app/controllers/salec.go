@@ -40,6 +40,36 @@ func GetAllSales(db *sqlx.DB) echo.HandlerFunc {
 	}
 }
 
+func UpdateSaleStatusFunc(db *sqlx.DB) echo.HandlerFunc {
+	return func(c echo.Context) error {
+
+		m := echo.Map{}
+		_ = c.Bind(&m)
+
+		statusData, err := json.Marshal(m)
+
+		type SaleStatus struct {
+			SaleID int
+			Status string
+		}
+
+		if err != nil {
+			return c.JSON(404, err.Error())
+		}
+
+		var sale SaleStatus
+		_ = json.Unmarshal(statusData, &sale)
+
+		_, saleErr := model.UpdateSaleStatus(db, sale.SaleID, sale.Status)
+
+		if saleErr != nil {
+			return c.JSON(404, saleErr.Error())
+		}
+
+		return c.JSON(200, nil)
+	}
+}
+
 func GetSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -67,15 +97,6 @@ func GetSaleFunc(db *sqlx.DB) echo.HandlerFunc {
 type Orders struct {
 	ItemID int    `json:"item_id"`
 	Item   string `json:"item"`
-}
-
-func TestSumbit(db *sqlx.DB) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		m := echo.Map{}
-		_ = c.Bind(&m)
-
-		return c.JSON(http.StatusCreated, R{"response": 1})
-	}
 }
 
 func GenerateSaleNo() string {

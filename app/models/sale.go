@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/jmoiron/sqlx"
@@ -74,6 +75,21 @@ func GetSale(db *sqlx.DB, id int) (Sale, error) {
 	}
 
 	return sale, nil
+}
+
+//UpdateSaleStatus - update sale status
+func UpdateSaleStatus(db *sqlx.DB, saleID int, status string) (int, error) {
+
+	fmt.Println(status)
+	fmt.Println(saleID)
+
+	_, err := db.Exec("UPDATE sales SET sale_status=$1 WHERE id=$2", status, saleID)
+
+	if err != nil {
+		return 400, err
+	}
+
+	return 200, nil
 }
 
 //StoreSale create new sale

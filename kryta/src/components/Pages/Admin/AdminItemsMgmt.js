@@ -138,27 +138,11 @@ class AdminItemsMgmt extends React.Component {
         width: 110,
       },
       {
-        title: 'Stock Code',
-        dataIndex: 'stock_code',
-        width: 100,
-      },
-      {
         title: 'Item',
         dataIndex: 'item',
         render: (text, record) => (
           <span>{record.item}</span>
         )
-      },
-      {
-        title: 'Units/Pkg',
-        dataIndex: 'uom',
-        render: (text, record) => {
-          if(record.packaging === record.uom){
-            return <span>{record.package_qty}{record.uom}</span>
-          } else {
-            return <span>{record.package_qty}{record.uom}/{record.packaging}</span>
-          }
-        }
       },
       {
         title: 'Cost',
@@ -235,11 +219,11 @@ class AdminItemsMgmt extends React.Component {
             <JInput
               gfd={getFieldDecorator}
               required
-              message={'Please input stock code'}
-              name={'stock_code'}
-              placeholder={'Enter stock code'}
-              initVal={record.stock_code}
-              label={'Stock Code'}
+              message={'Please input brand'}
+              name={'brand'}
+              placeholder={'Enter brand'}
+              initVal={record.brand}
+              label={'Brand'}
             />
 
             <JInput
@@ -285,22 +269,21 @@ class AdminItemsMgmt extends React.Component {
             <JInput
               gfd={getFieldDecorator}
               required
-              message={'Please input packaging'}
-              name={'packaging'}
-              placeholder={'Enter type of packaging'}
-              initVal={record.packaging}
-              label={'Packaging'}
+              message={'Please input default unit cost'}
+              name={'default_unit_cost'}
+              placeholder={'Enter default unit cost'}
+              initVal={record.default_unit_cost}
+              label={'Default Cost'}
             />
 
             <JInput
               gfd={getFieldDecorator}
               required
-              message={'Please input quantity per package'}
-              name={'package_qty'}
-              placeholder={'Enter quantity per package'}
-              initVal={record.package_qty}
-              type={'number'}
-              label={'Package Quantity'}
+              message={'Please input default srp'}
+              name={'default_srp'}
+              placeholder={'Enter default srp'}
+              initVal={record.default_srp}
+              label={'Default SRP'}
             />
 
           </Form>

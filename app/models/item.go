@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strconv"
+
 	"github.com/jmoiron/sqlx"
 )
 
@@ -8,14 +10,12 @@ type Item struct {
 	ID               int     `json:"id" db:"id"`
 	Item             string  `json:"item" db:"item"`
 	Description      string  `json:"description,omitempty" db:"description"`
-	StockCode        string  `json:"stock_code,omitempty" db:"stock_code"`
+	Brand            string  `json:"brand,omitempty" db:"brand"`
 	Barcode          string  `json:"barcode,omitempty" db:"barcode"`
 	CategoryID       int     `json:"category_id" db:"category_id"`
 	UOM              string  `json:"uom,omitempty" db:"uom"`
-	Packaging        string  `json:"packaging,omitempty" db:"packaging"`
-	PackageQty       int     `json:"package_qty,omitempty" db:"package_qty"`
-	DefaultUnitCost  float64 `json:"default_unit_cost,omitempty" db:"default_unit_cost"`
-	DefaultSRP       float64 `json:"default_srp,omitempty" db:"default_srp"`
+	DefaultUnitCost  string  `json:"default_unit_cost,omitempty" db:"default_unit_cost"`
+	DefaultSRP       string  `json:"default_srp,omitempty" db:"default_srp"`
 	MarkupPercent    float64 `json:"markup_percent,omitempty" db:"markup_percent"`
 	MarkupAmount     float64 `json:"markup_amount,omitempty" db:"markup_amount"`
 	StockNotifyLimit int     `json:"stock_notify_limit,omitempty" db:"stock_notify_limit"`
@@ -58,8 +58,35 @@ func GetItem(db *sqlx.DB, id int) (Item, error) {
 //StoreItem create new item
 func StoreItem(db *sqlx.DB, item *Item) (int64, error) {
 
-	insertItem := `INSERT INTO items (item, description, stock_code, barcode, category_id, uom, packaging, package_qty, default_unit_cost, default_srp, markup_percent, markup_amount, stock_notify_limit, stock_limit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`
-	_, err := db.Exec(insertItem, item.Item, item.Description, item.StockCode, item.Barcode, item.CategoryID, item.UOM, item.Packaging, item.PackageQty, item.DefaultUnitCost, item.DefaultSRP, item.MarkupPercent, item.MarkupAmount, item.StockNotifyLimit, item.StockLimit)
+	unitCost, _ := strconv.ParseFloat(item.DefaultUnitCost, 64)
+	unitSRP, _ := strconv.ParseFloat(item.DefaultSRP, 64)
+
+	insertQuery := `INSERT INTO items (
+		item, 
+		description, 
+		brand, 
+		barcode, 
+		category_id, 
+		uom, 
+		default_unit_cost,
+		default_srp,
+		markup_percent, 
+		markup_amount, 
+		stock_notify_limit, 
+		stock_limit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id`
+	_, err := db.Exec(insertQuery,
+		item.Item,
+		item.Description,
+		item.Brand,
+		item.Barcode,
+		item.CategoryID,
+		item.UOM,
+		unitCost,
+		unitSRP,
+		item.MarkupPercent,
+		item.MarkupAmount,
+		item.StockNotifyLimit,
+		item.StockLimit)
 
 	if err != nil {
 		return 404, err

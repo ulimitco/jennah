@@ -85,18 +85,18 @@ class Main extends Component {
 								}</Text>}
 								subtitle={<View>
 									<View>
-										<Text style={{fontSize: 16}}>{item.Order.sale_details}</Text>
+										<Text style={{fontSize: 16}}>{item.sale_details}</Text>
 									</View>
 									<View>
-										<Text style={{fontSize: 16}}>Pickup {moment(item.Order.sale_dispense_datetime).format("HH:mmA")} at {item.Order.sale_dispense_location}</Text>
+										<Text style={{fontSize: 16}}>Pickup {moment(item.sale_dispense_datetime).format("HH:mmA")} at {item.sale_dispense_location}</Text>
 									</View>
 								</View>}
 								bottomDivider
 								leftElement={
 									<View style={{alignItems: 'center'}}>
 										<View style={{justifyContent: 'flex-start'}}><Text
-											style={{fontWeight: 'bold', color: 'red'}}>{moment(item.Order.sale_dispense_datetime).format("MMM")}</Text></View>
-										<View><Text>{moment(item.Order.sale_dispense_datetime).format("DD")}</Text></View>
+											style={{fontWeight: 'bold', color: 'red'}}>{moment(item.sale_dispense_datetime).format("MMM")}</Text></View>
+										<View><Text>{moment(item.sale_dispense_datetime).format("DD")}</Text></View>
 									</View>
 								}
 								rightElement={() => {
