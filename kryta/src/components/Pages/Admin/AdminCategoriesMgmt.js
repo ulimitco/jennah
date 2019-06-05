@@ -73,10 +73,12 @@ class AdminCategoriesMgmt extends React.Component {
   }
 
   onEdit = record => {
-    this.props.form.setFieldsValue({
-      code: record.code,
-      description: record.description,
-    })
+    setTimeout(() => {
+      this.props.form.setFieldsValue({
+        code: record.code,
+        description: record.description,
+      })
+    }, 500)
 
     this.setState({ visible: true })
   }

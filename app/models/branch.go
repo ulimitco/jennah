@@ -41,11 +41,21 @@ func GetBranch(db *sqlx.DB, id int) (Branch, error) {
 //StoreBranch create new branch
 func StoreBranch(db *sqlx.DB, branch *Branch) (int64, error) {
 
-	insertBranch := `INSERT INTO branches (code, name) VALUES ($1, $2) RETURNING id`
-	_, err := db.Exec(insertBranch, branch.Code, branch.Name)
+	if branch.ID != 0 {
+		insertBranch := `UPDATE branches SET code = $1, name = $2 WHERE id = $3`
+		_, err := db.Exec(insertBranch, branch.Code, branch.Name, branch.ID)
 
-	if err != nil {
-		return 404, err
+		if err != nil {
+			return 404, err
+		}
+
+	} else {
+		insertBranch := `INSERT INTO branches (code, name) VALUES ($1, $2) RETURNING id`
+		_, err := db.Exec(insertBranch, branch.Code, branch.Name)
+
+		if err != nil {
+			return 404, err
+		}
 	}
 
 	return 200, nil

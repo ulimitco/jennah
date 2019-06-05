@@ -14,7 +14,8 @@ class AdminBranchesMgmt extends React.Component {
     record: {},
     error: false,
     errorMessage: '',
-    mode: 'add'
+    mode: 'add',
+    selectedID: ''
   }
 
   componentDidMount() {
@@ -55,7 +56,10 @@ class AdminBranchesMgmt extends React.Component {
     this.setState({ loading: true })
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _saveBranch(values, this.success)
+        let payload = _.clone(values)
+        payload.id = this.state.selectedID
+
+        _saveBranch(payload, this.success)
       }
     })
   }
@@ -82,7 +86,7 @@ class AdminBranchesMgmt extends React.Component {
     }, 500)
 
 
-    this.setState({ visible: true, mode: 'edit' })
+    this.setState({ visible: true, mode: 'edit', selectedID: record.id })
   }
 
   deleteSuccess = data => {
@@ -102,7 +106,7 @@ class AdminBranchesMgmt extends React.Component {
     if (data.response === 200) {
       this.handleCancel()
 
-      this.setState({ loading: false, record: {} })
+      this.setState({ loading: false, record: {}, selectedID: 0 })
 
       this.props.form.resetFields()
 

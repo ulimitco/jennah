@@ -56,10 +56,14 @@ func CreateBranchFunc(db *sqlx.DB) echo.HandlerFunc {
 		err := c.Bind(branch)
 
 		if err != nil {
-			return c.JSON(http.StatusCreated, R{"response": err.Error()})
+			return c.JSON(http.StatusCreated, R{"responsesss": err.Error()})
 		}
 
-		id, err := model.StoreBranch(db, branch)
+		id, errs := model.StoreBranch(db, branch)
+
+		if errs != nil {
+			return c.JSON(http.StatusCreated, R{"responsesss": errs.Error()})
+		}
 
 		return c.JSON(http.StatusCreated, R{"response": id})
 	}
