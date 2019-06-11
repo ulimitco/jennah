@@ -18,6 +18,7 @@ class AdminUsersMgmt extends React.Component {
     confirmDirty: false,
     error: false,
     errorMessage: '',
+    selectedUser: {}
   }
 
   componentDidMount() {
@@ -70,7 +71,13 @@ class AdminUsersMgmt extends React.Component {
         if (values.password !== values.confirm) {
           this.setState({ error: true, errorMessage: 'Password did not match', loading: false })
         } else {
-          _saveUser(values, this.success)
+
+         let payload = _.clone(values)
+
+         if(this.state.isNewUser == false)
+            payload.id = this.state.selectedUser.id
+
+          _saveUser(payload, this.success)
         }
       }
     })
@@ -90,15 +97,18 @@ class AdminUsersMgmt extends React.Component {
   }
 
   onEdit = record => {
-    this.props.form.setFieldsValue({
-      name: record.name,
-      email: record.email,
-      username: record.username,
-      branch_id: record.branch_name,
-      role: record.role,
-    })
+    
+    setTimeout(() => {
+      this.props.form.setFieldsValue({
+        name: record.name,
+        email: record.email,
+        username: record.username,
+        branch_id: record.branch_id,
+        role: record.role,
+      })
+    }, 500)
 
-    this.setState({ visible: true }, () => console.log(this.state.record))
+    this.setState({ visible: true, isNewUser: false, selectedUser: record }, () => console.log(this.state.record))
   }
 
   deleteSuccess = data => {
@@ -173,11 +183,7 @@ class AdminUsersMgmt extends React.Component {
       },
       {
         title: 'Role',
-        dataIndex: 'role',
-        render: (text, row, index) => {
-          if (text == 1) return 'administrator'
-          else return 'user'
-        },
+        dataIndex: 'role'
       },
       {
         title: 'Action',
@@ -231,29 +237,27 @@ class AdminUsersMgmt extends React.Component {
               initVal={record.name}
               label={'Name'}
             />
-
-            <JInput
-              gfd={getFieldDecorator}
-              required
-              message={'Please input username'}
-              name={'username'}
-              placeholder={'Enter your username'}
-              initVal={record.username}
-              label={'Username'}
-            />
-
-            <JInput
-              gfd={getFieldDecorator}
-              required
-              message={'Please input email of user'}
-              name={'email'}
-              placeholder={'Enter your email'}
-              initVal={record.email}
-              label={'Email'}
-            />
-
-            {this.state.isNewUser
-              ? [
+          
+          {this.state.isNewUser
+            ? [
+               <JInput
+                  gfd={getFieldDecorator}
+                  required
+                  message={'Please input username'}
+                  name={'username'}
+                  placeholder={'Enter your username'}
+                  initVal={record.username}
+                  label={'Username'}
+               />,
+               <JInput
+                  gfd={getFieldDecorator}
+                  required
+                  message={'Please input email of user'}
+                  name={'email'}
+                  placeholder={'Enter your email'}
+                  initVal={record.email}
+                  label={'Email'}
+               />,
                   <JInput
                     gfd={getFieldDecorator}
                     required

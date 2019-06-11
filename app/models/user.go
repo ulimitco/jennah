@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"jennah/app/tools"
 
 	"github.com/jmoiron/sqlx"
@@ -24,6 +25,7 @@ type UserDTO struct {
 	Role       string `json:"role" db:"role"`
 	BranchCode string `json:"branch_code" db:"branch_code"`
 	BranchName string `json:"branch_name" db:"branch_name"`
+	BranchID   int    `json:"branch_id" db:"branch_id"`
 }
 
 //ValidateCredentials authenticates credentials
@@ -51,7 +53,7 @@ func GetUsers(db *sqlx.DB) ([]UserDTO, error) {
 
 	users := []UserDTO{}
 
-	err := db.Select(&users, "SELECT u.id, u.email, u.username, u.name, u.role, b.code AS branch_code, b.name AS branch_name FROM users u LEFT JOIN branches b ON u.branch_id = b.id")
+	err := db.Select(&users, "SELECT u.id, u.email, u.username, u.name, u.role, b.code AS branch_code, b.name AS branch_name, b.id AS branch_id FROM users u LEFT JOIN branches b ON u.branch_id = b.id")
 
 	if err != nil {
 		return nil, err
@@ -90,14 +92,26 @@ func GetUser(db *sqlx.DB, id int) (User, error) {
 //StoreUser create new user
 func StoreUser(db *sqlx.DB, user *User) (int64, error) {
 
-	insertUser := `INSERT INTO users (email, username, name, role, branch_id, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+	fmt.Println(user)
 
-	hashedPassword, err := tools.HashPassword(user.Password)
+	if user.ID != 0 {
+		insertUser := `UPDATE users SET name = $1, branch_id = $2, role = $3 WHERE id = $4`
+		_, err := db.Exec(insertUser, user.Name, user.BranchID, user.Role, user.ID)
 
-	_, err = db.Exec(insertUser, user.Email, user.Username, user.Name, user.Role, user.BranchID, hashedPassword)
+		if err != nil {
+			return 404, err
+		}
 
-	if err != nil {
-		return 404, err
+	} else {
+		insertUser := `INSERT INTO users (email, username, name, role, branch_id, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+
+		hashedPassword, err := tools.HashPassword(user.Password)
+
+		_, err = db.Exec(insertUser, user.Email, user.Username, user.Name, user.Role, user.BranchID, hashedPassword)
+
+		if err != nil {
+			return 404, err
+		}
 	}
 
 	return 200, nil
