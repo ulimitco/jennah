@@ -5,9 +5,9 @@ import (
 )
 
 type Category struct {
-	ID                  int    `json:"id"`
-	Code                string `json:"code"`
-	CategoryDescription string `json:"category_description"`
+	ID                  int    `json:"id" db:"id"`
+	Code                string `json:"code" db:"code"`
+	CategoryDescription string `json:"category_description" db:"category_description"`
 }
 
 //GetCategories get all categories

@@ -235,10 +235,10 @@ class AdminItemsMgmt extends React.Component {
               required
               message={'Please select a category'}
               name={'category_id'}
-              fieldname={'description'}
+              fieldname={'category_description'}
               fieldvalue={'id'}
               placeholder={'Select category for item'}
-              initVal={record.description || undefined}
+              initVal={record.category_description || undefined}
               options={this.state.categories}
               type={'select'}
               label={'Category'}
