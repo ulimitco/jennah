@@ -5,9 +5,9 @@ import (
 )
 
 type Category struct {
-	ID          int    `json:"id"`
-	Code        string `json:"code"`
-	Description string `json:"description"`
+	ID                  int    `json:"id"`
+	Code                string `json:"code"`
+	CategoryDescription string `json:"category_description"`
 }
 
 //GetCategories get all categories
@@ -39,12 +39,20 @@ func GetCategory(db *sqlx.DB, id int) (Category, error) {
 
 //StoreCategory create new category
 func StoreCategory(db *sqlx.DB, category *Category) (int64, error) {
+	if category.ID != 0 {
+		insertCategory := `UPDATE categories SET code=$1, category_description=$2 WHERE id=$3`
+		_, err := db.Exec(insertCategory, category.Code, category.CategoryDescription, category.ID)
 
-	insertCategory := `INSERT INTO categories (code, description) VALUES ($1, $2) RETURNING id`
-	_, err := db.Exec(insertCategory, category.Code, category.Description)
+		if err != nil {
+			return 404, err
+		}
+	} else {
+		insertCategory := `INSERT INTO categories (code, category_description) VALUES ($1, $2) RETURNING id`
+		_, err := db.Exec(insertCategory, category.Code, category.CategoryDescription)
 
-	if err != nil {
-		return 404, err
+		if err != nil {
+			return 404, err
+		}
 	}
 
 	return 200, nil

@@ -19,6 +19,7 @@ class AdminItemsMgmt extends React.Component {
     record: {},
     error: false,
     errorMessage: '',
+    selectedRecord: {}
   }
 
   componentDidMount() {
@@ -68,7 +69,26 @@ class AdminItemsMgmt extends React.Component {
     this.setState({ loading: true })
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _saveItem(values, this.success)
+        let payload = _.clone(values)
+
+        // item: record.item,
+        // description: record.description,
+        // barcode: record.barcode,
+        // category_id: record.category_id,
+        // brand: record.brand,
+        // default_unit_cost: record.default_unit_cost,
+        // default_srp: record.default_srp,
+        // uom: record.uom
+
+        // item.MarkupPercent,
+        // item.MarkupAmount,
+        // item.StockNotifyLimit,
+        // item.StockLimit)
+
+        if(!_.isEmpty(this.state.selectedRecord))
+          payload.id = this.state.selectedRecord.item_id
+
+        _saveItem(payload, this.success)
       }
     })
   }
@@ -87,15 +107,23 @@ class AdminItemsMgmt extends React.Component {
   }
 
   onEdit = record => {
-    this.props.form.setFieldsValue({
-      item: record.item,
-      description: record.description,
-      stock_code: record.stock_code,
-      barcode: record.barcode,
-      category_id: record.description,
-    })
 
-    this.setState({ visible: true }, () => console.log(this.state.record))
+    console.log(record)
+    
+    setTimeout(() => {
+      this.props.form.setFieldsValue({
+        item: record.item,
+        description: record.description,
+        barcode: record.barcode,
+        category_id: record.category_id,
+        brand: record.brand,
+        default_unit_cost: record.default_unit_cost,
+        default_srp: record.default_srp,
+        uom: record.uom
+      })
+    }, 500)
+
+    this.setState({ visible: true, selectedRecord: record })
   }
 
   deleteSuccess = data => {
@@ -148,14 +176,14 @@ class AdminItemsMgmt extends React.Component {
         title: 'Cost',
         dataIndex: 'default_unit_cost',
         render: (text, record) => {
-          return numeral(record.default_unit_cost).format('0.00')
+          return numeral(record.default_unit_cost).format('0,0.00')
         }
       },
       {
         title: 'SRP',
         dataIndex: 'default_srp',
         render: (text, record) => {
-          return numeral(record.default_srp).format('0.00')
+          return numeral(record.default_srp).format('0,0.00')
         }
       },
       {
@@ -218,7 +246,6 @@ class AdminItemsMgmt extends React.Component {
 
             <JInput
               gfd={getFieldDecorator}
-              required
               message={'Please input brand'}
               name={'brand'}
               placeholder={'Enter brand'}
@@ -242,13 +269,12 @@ class AdminItemsMgmt extends React.Component {
               message={'Enter item name'}
               name={'item'}
               placeholder={'Enter item name'}
-              initVal={record.code}
+              initVal={record.item}
               label={'Item Name'}
             />
 
             <JInput
               gfd={getFieldDecorator}
-              required
               message={'Please input description'}
               name={'description'}
               placeholder={'Enter description'}
@@ -268,7 +294,6 @@ class AdminItemsMgmt extends React.Component {
 
             <JInput
               gfd={getFieldDecorator}
-              required
               message={'Please input default unit cost'}
               name={'default_unit_cost'}
               placeholder={'Enter default unit cost'}

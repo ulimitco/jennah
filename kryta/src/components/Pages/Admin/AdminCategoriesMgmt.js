@@ -14,6 +14,7 @@ class AdminCategoriesMgmt extends React.Component {
     record: {},
     error: false,
     errorMessage: '',
+    selectedRecord: {}
   }
 
   componentDidMount() {
@@ -54,7 +55,13 @@ class AdminCategoriesMgmt extends React.Component {
     this.setState({ loading: true })
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        _saveCategory(values, this.success)
+
+        let payload = _.clone(values)
+
+        if(!_.isEmpty(this.state.selectedRecord))
+          payload.id = this.state.selectedRecord.id
+
+        _saveCategory(payload, this.success)
       }
     })
   }
@@ -76,11 +83,11 @@ class AdminCategoriesMgmt extends React.Component {
     setTimeout(() => {
       this.props.form.setFieldsValue({
         code: record.code,
-        description: record.description,
+        category_description: record.category_description,
       })
     }, 500)
 
-    this.setState({ visible: true })
+    this.setState({ visible: true, selectedRecord: record })
   }
 
   deleteSuccess = data => {
@@ -123,7 +130,7 @@ class AdminCategoriesMgmt extends React.Component {
       },
       {
         title: 'Description',
-        dataIndex: 'description',
+        dataIndex: 'category_description',
       },
       {
         title: 'Action',
@@ -149,6 +156,7 @@ class AdminCategoriesMgmt extends React.Component {
         <Button icon="user-add" onClick={this.showModal}>
           Add New Category
         </Button>
+
         <Table columns={columns} dataSource={this.state.data} size="small" style={{ marginTop: 10 }} />
 
         <Modal
@@ -168,6 +176,7 @@ class AdminCategoriesMgmt extends React.Component {
           ) : null}
 
           <Form layout={'horizontal'}>
+
             <JInput
               gfd={getFieldDecorator}
               required
@@ -182,9 +191,9 @@ class AdminCategoriesMgmt extends React.Component {
               gfd={getFieldDecorator}
               required
               message={'Please input category'}
-              name={'description'}
+              name={'category_description'}
               placeholder={'Enter category'}
-              initVal={record.description}
+              initVal={record.category_description}
               label={'description'}
             />
           </Form>
