@@ -5,7 +5,7 @@
   "author": "uLimit",
   "dependencies": {
     "antd": "^3.13.0",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "immutability-helper": "^2.6.5",
     "lodash": "^4.17.4",
     "moment": "^2.19.2",
