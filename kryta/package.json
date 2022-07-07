@@ -8,7 +8,7 @@
     "axios": "^0.17.1",
     "immutability-helper": "^2.6.5",
     "lodash": "^4.17.4",
-    "moment": "^2.19.2",
+    "moment": "^2.29.4",
     "numeral": "^2.0.6",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
